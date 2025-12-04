@@ -1,2 +1,3 @@
-# UBC-Game-Dev-2025-6-Team-7
+# MonstroCity
 A tower defense where you play as the bad guys.
+Created by UBC Game Dev Team 7, 2025/26.
