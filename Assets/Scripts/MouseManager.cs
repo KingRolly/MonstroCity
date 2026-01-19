@@ -24,6 +24,6 @@ public class MouseManager : MonoBehaviour
         if (selectPos.y > 8) selectPos.y = 8;
         if (selectPos.y < 0) selectPos.y = 0;
         indicator.transform.position = selectPos;
-        Debug.Log("[" + selectPos.x + ", " + selectPos.y + "]");
+        //Debug.Log("[" + selectPos.x + ", " + selectPos.y + "]");
     }
 }
