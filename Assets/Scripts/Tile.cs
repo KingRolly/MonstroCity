@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
+    // public Tile(Type type, ) {
+
+    // }
+
     // Start is called before the first frame update
     void Start()
     {

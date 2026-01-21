@@ -6,24 +6,44 @@ using UnityEngine;
 public class MouseManager : MonoBehaviour
 {
     public GameObject indicator;
+    Vector2 selectPos;
+    public bool locked;
+    public Sprite hover;
+    public Sprite select;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+    
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetMouseButtonDown(0)) {
+                locked = !locked;
+        }
+
         Vector2 screenPos = Input.mousePosition;
         Vector2 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
-        Vector2 selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
+        if (!locked) {
+            gameObject.GetComponent<SpriteRenderer>().sprite = hover;
+            selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
+        } else {
+            gameObject.GetComponent<SpriteRenderer>().sprite = select;
+        }
+
+        // Keep indicator within bounds
         if (selectPos.x > 15) selectPos.x = 15;
         if (selectPos.x < 0) selectPos.x = 0;
         if (selectPos.y > 8) selectPos.y = 8;
         if (selectPos.y < 0) selectPos.y = 0;
+        
         indicator.transform.position = selectPos;
-        //Debug.Log("[" + selectPos.x + ", " + selectPos.y + "]");
+
+        // Press "P" to get coords of hovered tile
+        if (Input.GetKeyDown(KeyCode.P)) {
+            Debug.Log("[" + selectPos.x + ", " + selectPos.y + "]");
+        }
     }
 }
