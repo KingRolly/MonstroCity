@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-    // public Tile(Type type, ) {
-
-    // }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        //Debug.Log(transform.position.x + ", " + transform.position.y);
     }
 
     // Update is called once per frame

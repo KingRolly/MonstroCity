@@ -12,8 +12,6 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        Tile[,] grid = new Tile[width, height];
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 Instantiate(tile, new Vector2(i, j), Quaternion.identity);

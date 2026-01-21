@@ -20,9 +20,6 @@ public class MouseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)) {
-                locked = !locked;
-        }
 
         Vector2 screenPos = Input.mousePosition;
         Vector2 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
@@ -40,6 +37,16 @@ public class MouseManager : MonoBehaviour
         if (selectPos.y < 0) selectPos.y = 0;
         
         indicator.transform.position = selectPos;
+
+        // Click while hovering to "lock" or "unlock" position
+        if (Input.GetMouseButtonDown(0)) {
+            if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y))) {
+                locked = !locked;
+            } else {
+                selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
+            }
+        }
+
 
         // Press "P" to get coords of hovered tile
         if (Input.GetKeyDown(KeyCode.P)) {
