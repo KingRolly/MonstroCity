@@ -32,6 +32,6 @@ public class GridManager : MonoBehaviour
                 //tileData.Initialize("something");
             }
         }
-        
+
     }
 }

@@ -5,9 +5,10 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
 
-    public float posX;
-    public float posY;
     public GameObject tile;
+    private float posX;
+    private float posY;
+    private bool placeable;
 
     // Start is called before the first frame update
     void Start()
@@ -34,5 +35,25 @@ public class Tile : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.P)) {
             Debug.Log("[" + posX + ", " + posY + "]");
         }
+    }
+
+    public float getX()
+    {
+        return posX;
+    }
+
+    public float getY()
+    {
+        return posY;
+    }
+
+    public bool getPlaceable()
+    {
+        return placeable;
+    }
+
+    public void togglePlaceable(bool val)
+    {
+        placeable = val;
     }
 }
