@@ -7,7 +7,7 @@ public class MouseManager : MonoBehaviour
 {
     public GameObject indicator;
     Vector2 selectPos;
-    public bool locked;
+    public static bool locked;
     [SerializeField] Sprite hover;
     [SerializeField] Sprite select;
     public GridManager gridManager;
@@ -50,7 +50,7 @@ public class MouseManager : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && !gridManager.editingPath) {
             if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y)))
             {
-                locked = !locked;
+                setLock(!locked);
             }
             else
             {
@@ -58,5 +58,10 @@ public class MouseManager : MonoBehaviour
             }
             Debug.Log(selectPos);
         }
+    }
+
+    public void setLock(bool val)
+    {
+        locked = val;
     }
 }

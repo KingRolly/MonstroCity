@@ -12,6 +12,7 @@ public class GridManager : MonoBehaviour
     public Tile backgroundTile;
     public PathTile pathTile;
     public bool editingPath = false;
+    public MouseManager mouseManager;
 
     // Start is called before the first frame update
     void Start()
@@ -91,5 +92,6 @@ public class GridManager : MonoBehaviour
     public void toggleEditingPath()
     {
         editingPath = !editingPath;
+        mouseManager.setLock(false);
     }
 }
