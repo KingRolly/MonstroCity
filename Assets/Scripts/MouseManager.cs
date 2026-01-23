@@ -8,8 +8,8 @@ public class MouseManager : MonoBehaviour
     public GameObject indicator;
     Vector2 selectPos;
     public bool locked;
-    public Sprite hover;
-    public Sprite select;
+    [SerializeField] Sprite hover;
+    [SerializeField] Sprite select;
 
     // Start is called before the first frame update
     void Start()
