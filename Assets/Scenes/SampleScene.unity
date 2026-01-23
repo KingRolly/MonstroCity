@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2b6f0b59d2fb94782110225b12804c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tile: {fileID: 2901524119302030562, guid: c2d23550b75c20641a9e59503ea73976, type: 3}
+  backgroundTile: {fileID: 0}
 --- !u!1001 &287162271
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2696,7 +2696,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2901524119302030562, guid: c2d23550b75c20641a9e59503ea73976, type: 3}
       propertyPath: m_Name
-      value: Tile
+      value: BackgroundTile
       objectReference: {fileID: 0}
     - target: {fileID: 2901524119302030562, guid: c2d23550b75c20641a9e59503ea73976, type: 3}
       propertyPath: m_IsActive

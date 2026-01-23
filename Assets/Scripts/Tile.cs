@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class Tile : MonoBehaviour
 {
-
-    public GameObject tile;
     private float posX;
     private float posY;
     private bool placeable;

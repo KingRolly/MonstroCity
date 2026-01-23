@@ -7,7 +7,7 @@ public class GridManager : MonoBehaviour
     public static int width = 16;
     public static int height = 9;
     public static GameObject[,] grid = new GameObject[width, height];
-    public GameObject tile;
+    public GameObject backgroundTile;
 
     // Start is called before the first frame update
     void Start()
@@ -26,7 +26,7 @@ public class GridManager : MonoBehaviour
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 // Creates prefab at correct pos and adds to grid Array
-                grid[i, j] = Instantiate(tile, new Vector2(i, j), Quaternion.identity);
+                grid[i, j] = Instantiate(backgroundTile, new Vector2(i, j), Quaternion.identity);
                 // Initializes tile info
                 //Tile tileData = grid[i, j].GetComponent<Tile>();
                 //tileData.Initialize("something");
