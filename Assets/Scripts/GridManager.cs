@@ -7,6 +7,7 @@ public class GridManager : MonoBehaviour
     public static int width = 16;
     public static int height = 9;
     public static GameObject[,] grid = new GameObject[width, height];
+    public static List<Vector2> path = new List<Vector2>();
     public GameObject backgroundTile;
 
     // Start is called before the first frame update
