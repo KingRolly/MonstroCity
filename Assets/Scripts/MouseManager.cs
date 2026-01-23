@@ -10,6 +10,7 @@ public class MouseManager : MonoBehaviour
     public bool locked;
     [SerializeField] Sprite hover;
     [SerializeField] Sprite select;
+    public GridManager gridManager;
 
     // Start is called before the first frame update
     void Start()
@@ -39,12 +40,20 @@ public class MouseManager : MonoBehaviour
         
         indicator.transform.position = selectPos;
 
-        // Click while hovering to "lock" or "unlock" position
-        if (Input.GetMouseButtonDown(0))
+        //Attempt to place tiles
+        if (Input.GetMouseButton(0) && gridManager.editingPath)
         {
-            if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y))) {
+            gridManager.placePath(selectPos);
+        }
+
+        // Click while hovering to "lock" or "unlock" position
+        if (Input.GetMouseButtonDown(0) && !gridManager.editingPath) {
+            if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y)))
+            {
                 locked = !locked;
-            } else {
+            }
+            else
+            {
                 selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
             }
             Debug.Log(selectPos);

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,11 @@ public class Tile : MonoBehaviour
     private bool placeable;
 
     // Start is called before the first frame update
-    void Start()
+    protected virtual void Start()
     {
         posX = transform.position.x;
         posY = transform.position.y;
+        placeable = false; //default to false
     }
 
     // Called from GridManager to preset certain information?
@@ -24,7 +26,7 @@ public class Tile : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     // Pressing "P" prints tile info when hovering
@@ -50,7 +52,7 @@ public class Tile : MonoBehaviour
         return placeable;
     }
 
-    public void togglePlaceable(bool val)
+    public void setPlaceable(bool val)
     {
         placeable = val;
     }
