@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2b6f0b59d2fb94782110225b12804c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundTile: {fileID: 1546478661}
+  backgroundTile: {fileID: 2502489344522406862, guid: 68e35283ab2a7094aad84b446b6b03c8, type: 3}
   pathTile: {fileID: 5409159205120673324, guid: 5ee82fc0b6e07144cbfd34a577caf78f, type: 3}
   editingPath: 0
   mouseManager: {fileID: 2019142844}
@@ -2190,7 +2190,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 85, y: 29.100006}
+  m_AnchoredPosition: {x: 85, y: 21}
   m_SizeDelta: {x: 160, y: 46.760803}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1818628685
