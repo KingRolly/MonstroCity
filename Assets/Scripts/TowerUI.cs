@@ -6,7 +6,7 @@ using TMPro;
 public class TowerUI : MonoBehaviour
 {
     public TextMeshProUGUI priceText;
-    public TextMeshProUGUI goblinCounter;
+    public MoneyManager moneyManager;
 
     [Header("Tower Stats")]
     public string towerName = "Archer";
@@ -18,7 +18,7 @@ public class TowerUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        priceText.text = price.ToString() + " Goblins";
     }
 
     // Update is called once per frame
@@ -48,7 +48,8 @@ public class TowerUI : MonoBehaviour
     // Purchase tower and prompt player to place tower
     public void buyTower()
     {
-        // TODO: Subtract tower cost from player's goblin count and intiate tower placement
+        // TODO: Intiate tower placement
+        moneyManager.addMoney(-price);
         Debug.Log("purchased " + towerName); // stub
     }
 }
