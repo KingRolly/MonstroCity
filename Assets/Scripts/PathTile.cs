@@ -12,6 +12,7 @@ public class PathTile : Tile
     protected override void Start()
     {
         base.Start();
+        setPlaceable(false);
         EnemySpeed = 0;
         EnemyDamage = 0;
     }
