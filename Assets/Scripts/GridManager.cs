@@ -112,6 +112,46 @@ public class GridManager : MonoBehaviour
         }
     }
 
+    void updatePathSprites(Boolean placed) //Call this after each placement + deletion
+    {
+        if (placed)
+        {
+            //Deal with path array of size 1 first, then deal with 2, then deal with 3
+            if (path.Count == 1)
+            {
+                //Set to generic starter path sprite (?)
+
+            }
+            else if (path.Count == 2)
+            {
+                //Base this off of the previous path location
+
+            }
+            else
+            {
+                //Base this off of the previous path location + check if there was a turn
+            }
+        }
+        else{
+            //path deleted case
+            //Deal with path array of size 1 first, then deal with 2, then deal with 3
+            if (path.Count == 1)
+            {
+                //Set to generic starter path sprite (?)
+
+            }
+            else if (path.Count == 2)
+            {
+                //Base this off of the previous path location
+
+            }
+            else
+            {
+                //Base this off of the previous path location + check if there was a turn
+            }
+        }
+    }
+
     void deletePlaceableIndicators()
     {
         for (int i = 0; i < placeableIndicators.Count; i++) {
