@@ -7,9 +7,11 @@ public class TowerUI : MonoBehaviour
 {
     public TextMeshProUGUI priceText;
     public MoneyManager moneyManager;
+    public GridManager gridManager;
+    public MouseManager mouseManager;
 
     [Header("Tower Stats")]
-    public string towerName = "Archer";
+    public string towerType = "Archer";
     public int price;
     public float damage;
     public float attackSpeed;
@@ -28,9 +30,9 @@ public class TowerUI : MonoBehaviour
     }
 
     // Assigns info of tower
-    public void setTowerInfo(string name, int price, float dmg, float atkSpd, float atkRg)
+    public void setTowerInfo(string type, int price, float dmg, float atkSpd, float atkRg)
     {
-        this.towerName = name;
+        this.towerType = name;
         this.price = price;
         priceText.text = price.ToString() + " Goblins";
         this.damage = dmg;
@@ -42,14 +44,23 @@ public class TowerUI : MonoBehaviour
     public void displayTowerInfoPopup()
     {
         // TODO: Enable tower info popup and update its stats to reflect currently hovered tower
-        Debug.Log("display " + towerName + "'s tower info popup"); // stub
+        Debug.Log("Diplay " + towerType + " Tower's info popup"); // stub
     }
 
     // Purchase tower and prompt player to place tower
     public void buyTower()
     {
-        // TODO: Intiate tower placement
-        moneyManager.addMoney(-price);
-        Debug.Log("purchased " + towerName); // stub
+        if (mouseManager.getLock()) {
+            if (moneyManager.getMoney() >= price) {
+                Debug.Log("Placing...");
+                if (gridManager.placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), towerType)) {
+                    moneyManager.addMoney(-price);
+                    Debug.Log("Placed an " + towerType);
+                }
+            } else {
+                // TODO: Show that the tower can't be placed in some way
+                Debug.Log("Not enough goblins!!!");
+            }
+        }
     }
 }

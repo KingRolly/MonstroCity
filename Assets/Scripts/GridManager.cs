@@ -17,6 +17,7 @@ public class GridManager : MonoBehaviour
     public GameObject placeableIndicator;
     public BackgroundTile backgroundTile;
     public PathTile pathTile;
+    public TowerTile towerTile;
     public bool editingPath = false;
     public MouseManager mouseManager;
 
@@ -90,9 +91,25 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    bool IsInBounds(Vector2Int position)
+    public bool placeTower(Vector2Int position, string type)
     {
-        return position.x >= 0 && position.x < grid.GetLength(0) && position.y >= 0 && position.y < grid.GetLength(1);
+        // Place tower tile
+        // TODO: Add more conditions when other types of path exist
+        if (!(grid[position.x, position.y] is PathTile)
+            && !(grid[position.x, position.y] is TowerTile)) {
+            Destroy(grid[position.x, position.y].gameObject);
+            grid[position.x, position.y] = Instantiate(towerTile, new Vector2(position.x, position.y), Quaternion.identity);
+            return true;
+            
+        } else {
+            Debug.Log("Couldn't place tower :( (is something else there?)");
+            return false;
+        }
+    }
+
+    public bool IsInBounds(Vector2Int position)
+    {
+        return position.x >= 0 && position.x < width && position.y >= 0 && position.y < height;
     }
 
     void updatePlaceablePositions(Vector2Int position)

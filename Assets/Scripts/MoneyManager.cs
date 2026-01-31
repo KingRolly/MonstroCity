@@ -20,6 +20,10 @@ public class MoneyManager : MonoBehaviour
         
     }
 
+    public int getMoney() {
+        return money;
+    }
+
     // set current money to amt
     public void setMoney(int amt)
     {

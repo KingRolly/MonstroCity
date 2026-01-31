@@ -263,7 +263,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 50
+  m_text: $$$
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -370,7 +370,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goblinCounter: {fileID: 80726277}
-  money: 0
+  money: 100
 --- !u!4 &135745662
 Transform:
   m_ObjectHideFlags: 0
@@ -433,6 +433,7 @@ MonoBehaviour:
   placeableIndicator: {fileID: 7085749667101040808, guid: 7ee11a5c36dd5f441adce60e2905f5ad, type: 3}
   backgroundTile: {fileID: 2502489344522406862, guid: 68e35283ab2a7094aad84b446b6b03c8, type: 3}
   pathTile: {fileID: 5409159205120673324, guid: 5ee82fc0b6e07144cbfd34a577caf78f, type: 3}
+  towerTile: {fileID: 8287657778203470292, guid: f706f98a1a2cd53418c3c275bb8c5090, type: 3}
   editingPath: 0
   mouseManager: {fileID: 2019142844}
 --- !u!1001 &287162271
@@ -532,9 +533,17 @@ PrefabInstance:
       value: Slime Tower
       objectReference: {fileID: 0}
     - target: {fileID: 3787222040130789344, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
+      propertyPath: gridManager
+      value: 
+      objectReference: {fileID: 203767970}
+    - target: {fileID: 3787222040130789344, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
       propertyPath: moneyManager
       value: 
       objectReference: {fileID: 135745661}
+    - target: {fileID: 3787222040130789344, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
+      propertyPath: mouseManager
+      value: 
+      objectReference: {fileID: 2019142844}
     - target: {fileID: 5518434622953607693, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
       propertyPath: m_Name
       value: Tower Icon (2)
@@ -1006,9 +1015,17 @@ PrefabInstance:
       value: Gnome Tower
       objectReference: {fileID: 0}
     - target: {fileID: 3787222040130789344, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
+      propertyPath: gridManager
+      value: 
+      objectReference: {fileID: 203767970}
+    - target: {fileID: 3787222040130789344, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
       propertyPath: moneyManager
       value: 
       objectReference: {fileID: 135745661}
+    - target: {fileID: 3787222040130789344, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
+      propertyPath: mouseManager
+      value: 
+      objectReference: {fileID: 2019142844}
     - target: {fileID: 5518434622953607693, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
       propertyPath: m_Name
       value: Tower Icon (1)
@@ -1282,9 +1299,17 @@ PrefabInstance:
       value: Archer
       objectReference: {fileID: 0}
     - target: {fileID: 3787222040130789344, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
+      propertyPath: gridManager
+      value: 
+      objectReference: {fileID: 203767970}
+    - target: {fileID: 3787222040130789344, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
       propertyPath: moneyManager
       value: 
       objectReference: {fileID: 135745661}
+    - target: {fileID: 3787222040130789344, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
+      propertyPath: mouseManager
+      value: 
+      objectReference: {fileID: 2019142844}
     - target: {fileID: 5518434622953607693, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
       propertyPath: m_Name
       value: Tower Icon

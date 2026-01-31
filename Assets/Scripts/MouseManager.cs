@@ -7,7 +7,7 @@ public class MouseManager : MonoBehaviour
 {
     public GameObject indicator;
     Vector2 selectPos;
-    public static bool locked;
+    static bool locked;
     [SerializeField] Sprite hover;
     [SerializeField] Sprite select;
     public GridManager gridManager;
@@ -23,7 +23,7 @@ public class MouseManager : MonoBehaviour
     {
 
         Vector2 screenPos = Input.mousePosition;
-        Vector2 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+        Vector2Int worldPos = Vector2Int.RoundToInt(Camera.main.ScreenToWorldPoint(screenPos));
         if (!locked)
         {
             gameObject.GetComponent<SpriteRenderer>().sprite = hover;
@@ -51,7 +51,7 @@ public class MouseManager : MonoBehaviour
         }
 
         // Click while hovering to "lock" or "unlock" position
-        if (Input.GetMouseButtonDown(0) && !gridManager.editingPath)
+        if (Input.GetMouseButtonDown(0) && !gridManager.editingPath && gridManager.IsInBounds(worldPos))
         {
             if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y)))
             {
@@ -59,7 +59,7 @@ public class MouseManager : MonoBehaviour
             }
             else
             {
-                selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
+                selectPos = new Vector2Int((int)Mathf.Round(worldPos.x), (int)Mathf.Round(worldPos.y));
             }
             Debug.Log(selectPos);
         }
@@ -68,5 +68,13 @@ public class MouseManager : MonoBehaviour
     public void setLock(bool val)
     {
         locked = val;
+    }
+
+    public bool getLock() {
+        return locked;
+    }
+
+    public Vector2 getPos() {
+        return selectPos;
     }
 }
