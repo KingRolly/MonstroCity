@@ -100,9 +100,9 @@ public class GridManager : MonoBehaviour
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(towerTile, new Vector2(position.x, position.y), Quaternion.identity);
             return true;
-            
+
         } else {
-            Debug.Log("Couldn't place tower :( (is something else there?)");
+            Debug.Log("Couldn't place tower :( (Is something else there?)");
             return false;
         }
     }
