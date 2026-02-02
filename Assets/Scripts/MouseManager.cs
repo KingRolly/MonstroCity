@@ -42,9 +42,9 @@ public class MouseManager : MonoBehaviour
 
         //Attempt to place tiles
         if (gridManager.editing.Equals("Path")) {
-            if (Input.GetMouseButtonDown(0)) {
+            if (Input.GetMouseButton(0)) {
                 gridManager.placePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
-            } else if (Input.GetMouseButtonDown(1)) {
+            } else if (Input.GetMouseButton(1)) {
                 gridManager.deletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
             }
         }

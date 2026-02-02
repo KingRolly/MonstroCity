@@ -436,7 +436,7 @@ MonoBehaviour:
   backgroundTile: {fileID: 2502489344522406862, guid: 68e35283ab2a7094aad84b446b6b03c8, type: 3}
   pathTile: {fileID: 5409159205120673324, guid: 5ee82fc0b6e07144cbfd34a577caf78f, type: 3}
   towerTile: {fileID: 8287657778203470292, guid: f706f98a1a2cd53418c3c275bb8c5090, type: 3}
-  editingPath: 0
+  editing: None
   mouseManager: {fileID: 2019142844}
 --- !u!1001 &287162271
 PrefabInstance:
@@ -3005,14 +3005,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 203767970}
         m_TargetAssemblyTypeName: GridManager, Assembly-CSharp
-        m_MethodName: toggleEditingPath
-        m_Mode: 1
+        m_MethodName: setEditing
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Path
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 203767970}
@@ -3025,7 +3025,7 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 1
+          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1818628686
 MonoBehaviour:
