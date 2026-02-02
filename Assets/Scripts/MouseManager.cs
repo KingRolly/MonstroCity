@@ -41,17 +41,16 @@ public class MouseManager : MonoBehaviour
         indicator.transform.position = selectPos;
 
         //Attempt to place tiles
-        if (Input.GetMouseButton(0) && gridManager.editingPath)
-        {
-            gridManager.placePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
-        }
-        else if(Input.GetMouseButton(1) && gridManager.editingPath) //right click to delete
-        {
-            gridManager.deletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+        if (gridManager.editing.Equals("Path")) {
+            if (Input.GetMouseButtonDown(0)) {
+                gridManager.placePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+            } else if (Input.GetMouseButtonDown(1)) {
+                gridManager.deletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+            }
         }
 
         // Click while hovering to "lock" or "unlock" position
-        if (Input.GetMouseButtonDown(0) && !gridManager.editingPath && gridManager.IsInBounds(worldPos))
+        if (Input.GetMouseButtonDown(0) && !gridManager.editing.Equals("Path") && gridManager.IsInBounds(worldPos))
         {
             if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y)))
             {

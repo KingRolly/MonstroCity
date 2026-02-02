@@ -22,6 +22,7 @@ public class TowerUI : MonoBehaviour
     [SerializeField] private float damage;
     [SerializeField] private float attackSpeed;
     [SerializeField] private float attackRange;
+    public static string holding = "None";
 
     // Start is called before the first frame update
     void Start()
@@ -65,13 +66,12 @@ public class TowerUI : MonoBehaviour
     {
         if (mouseManager.getLock()) {
             if (moneyManager.getMoney() >= price) {
-                Debug.Log("Placing...");
-                if (gridManager.placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), towerType)) {
-                    moneyManager.addMoney(-price);
-                    Debug.Log("Placed an " + towerType);
-                }
+                moneyManager.addMoney(-price);
+                holding = towerType;
+
+                // placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), towerType
             } else {
-                // TODO: Show that the tower can't be placed in some way
+                // TODO: Show that the tower is too expensive
                 Debug.Log("Not enough goblins!!!");
             }
         }
