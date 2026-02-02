@@ -3,19 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+
+// Class description:
+// Used by Tower Icon prefab to implement functionality for purchasing towers and other UI features related to it (i.e display tower info popup as of now)
+// - Nicholas Liang (Feb. 2nd, 2026)
 public class TowerUI : MonoBehaviour
 {
+    [Header("References")]
     public TextMeshProUGUI priceText;
     public MoneyManager moneyManager;
     public GridManager gridManager;
     public MouseManager mouseManager;
+    public TowerInfoPopup towerInfoPopup;
 
     [Header("Tower Stats")]
-    public string towerType = "Archer";
-    public int price;
-    public float damage;
-    public float attackSpeed;
-    public float attackRange;
+    [SerializeField] private string towerType = "Archer";
+    [SerializeField] private int price;
+    [SerializeField] private float damage;
+    [SerializeField] private float attackSpeed;
+    [SerializeField] private float attackRange;
 
     // Start is called before the first frame update
     void Start()
@@ -43,8 +49,15 @@ public class TowerUI : MonoBehaviour
     // Make info popup visible, should be called upon hovering over icon
     public void displayTowerInfoPopup()
     {
-        // TODO: Enable tower info popup and update its stats to reflect currently hovered tower
-        Debug.Log("Diplay " + towerType + " Tower's info popup"); // stub
+        // Enable tower info popup and update its stats to reflect currently hovered tower
+        towerInfoPopup.displayPopup(this.damage, this.attackSpeed, this.attackRange, gameObject.transform.position.x, gameObject.transform.position.y);
+        // Debug.Log("Diplay " + towerType + " Tower's info popup");
+    }
+
+    // Hide info popup, should be called upon exiting hover over icon
+    public void hideTowerInfoPopup()
+    {
+        towerInfoPopup.hidePopup();
     }
 
     // Purchase tower and prompt player to place tower
@@ -62,5 +75,28 @@ public class TowerUI : MonoBehaviour
                 Debug.Log("Not enough goblins!!!");
             }
         }
+    }
+
+    // Basic getters for private variables
+    public string getTowerType()
+    {
+        return this.towerType;
+    }
+    public int getPrice()
+    {
+        return this.price;
+    }
+    public float getDmg()
+    {
+        return this.damage;
+    }
+    public float getAtkSpeed()
+    {
+        return this.attackSpeed;
+    }
+
+    public float getAtkRange()
+    {
+        return this.attackRange;
     }
 }

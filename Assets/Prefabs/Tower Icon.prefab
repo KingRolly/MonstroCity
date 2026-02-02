@@ -93,11 +93,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   priceText: {fileID: 621932558365204621}
   moneyManager: {fileID: 0}
-  towerName: Archer
+  gridManager: {fileID: 0}
+  mouseManager: {fileID: 0}
+  towerInfoPopup: {fileID: 0}
+  towerType: Archer
   price: 20
-  damage: 0
-  attackSpeed: 0
-  attackRange: 0
+  damage: 5
+  attackSpeed: 5
+  attackRange: 5
 --- !u!114 &3080372288906820825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,6 +177,22 @@ MonoBehaviour:
         - m_Target: {fileID: 3787222040130789344}
           m_TargetAssemblyTypeName: TowerUI, Assembly-CSharp
           m_MethodName: displayTowerInfoPopup
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+  - eventID: 1
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 3787222040130789344}
+          m_TargetAssemblyTypeName: TowerUI, Assembly-CSharp
+          m_MethodName: hideTowerInfoPopup
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

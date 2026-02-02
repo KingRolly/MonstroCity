@@ -11,7 +11,7 @@ public class MoneyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        goblinCounter.text = money.ToString();
     }
 
     // Update is called once per frame
