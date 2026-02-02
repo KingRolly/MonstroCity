@@ -9,6 +9,8 @@ public class BackgroundTile : Tile
     [SerializeField] Sprite grass;
     [SerializeField] Sprite brick;
     [SerializeField] Sprite stone;
+
+    [SerializeField] Sprite dirt;
     protected override void Start()
     {
         base.Start();
@@ -25,7 +27,8 @@ public class BackgroundTile : Tile
     {
         Grass, 
         Brick, 
-        Stone
+        Stone, 
+        Dirt
     }
 
     public void setTileTexture(TextureType type)
@@ -40,6 +43,11 @@ public class BackgroundTile : Tile
             case TextureType.Stone:
                 gameObject.GetComponent<SpriteRenderer>().sprite = stone;
                 return;
+            
+            default: 
+                gameObject.GetComponent<SpriteRenderer>().sprite = dirt;
+                return;
+
            
         }
     }
