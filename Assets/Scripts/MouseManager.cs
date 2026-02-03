@@ -42,7 +42,7 @@ public class MouseManager : MonoBehaviour
         indicator.transform.position = selectPos;
 
         //Attempt to place tiles
-        if (gridManager.getEditingPath()) {
+        if (gridManager.getEditing()) {
             if (Input.GetMouseButton(0)) {
                 gridManager.placePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
             } else if (Input.GetMouseButton(1)) {
@@ -51,7 +51,7 @@ public class MouseManager : MonoBehaviour
         }
 
         // Click while hovering to "lock" or "unlock" position
-        if (Input.GetMouseButtonDown(0) && !gridManager.getEditingPath() && gridManager.IsInBounds(worldPos))
+        if (Input.GetMouseButtonDown(0) && !gridManager.getEditing() && gridManager.IsInBounds(worldPos))
         {
             if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y)))
             {
