@@ -9,6 +9,8 @@ using TMPro;
 // - Nicholas Liang (Feb. 2nd, 2026)
 public class TowerUI : MonoBehaviour
 {
+    public static string holding = "None";
+
     [Header("References")]
     public TextMeshProUGUI priceText;
     public MoneyManager moneyManager;
@@ -22,7 +24,6 @@ public class TowerUI : MonoBehaviour
     [SerializeField] private float damage;
     [SerializeField] private float attackSpeed;
     [SerializeField] private float attackRange;
-    public static string holding = "None";
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,21 @@ public class TowerUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (Input.GetKeyUp(KeyCode.H)) {
+            Debug.Log("Holding " + holding);
+        }
+        if (holding != "None") {
+            if (Input.GetMouseButtonDown(0)) {
+                if (gridManager.placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), towerType)) {
+                    moneyManager.addMoney(-price);
+                    holding = "None";
+                }
+            }
+            if (Input.GetKeyUp(KeyCode.Escape)) {
+                holding = "None";
+            }
+            mouseManager.setLock(false);
+        }
     }
 
     // Assigns info of tower
@@ -64,15 +79,11 @@ public class TowerUI : MonoBehaviour
     // Purchase tower and prompt player to place tower
     public void buyTower()
     {
-        if (mouseManager.getLock()) {
+        if (holding.Equals("None")) { // Check that player isn't already holding a tower
             if (moneyManager.getMoney() >= price) {
-                moneyManager.addMoney(-price);
-                holding = towerType;
-
-                // placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), towerType
+                holding = towerType; // Set the held tower to this tower's type
             } else {
-                // TODO: Show that the tower is too expensive
-                Debug.Log("Not enough goblins!!!");
+                Debug.Log("Not enough goblins!");
             }
         }
     }

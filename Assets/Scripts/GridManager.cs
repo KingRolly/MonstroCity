@@ -18,7 +18,7 @@ public class GridManager : MonoBehaviour
     public BackgroundTile backgroundTile;
     public PathTile pathTile;
     public TowerTile towerTile;
-    public string editing = "None";
+    public bool editingPath = false;
     public MouseManager mouseManager;
 
     // Start is called before the first frame update
@@ -177,12 +177,14 @@ public class GridManager : MonoBehaviour
         placeableIndicators.Clear();
     }
 
-    public void setEditing(string mode)
+    public void toggleEditingPath()
     {
-        editing = mode;
-        if (editing.Equals("Path")) {
-            mouseManager.setLock(false);
-        }
+        editingPath = !editingPath;
+        mouseManager.setLock(false);
+    }
+
+    public bool getEditingPath() {
+        return editingPath;
     }
 
     public void togglePlaceableIndicatorsVisible()

@@ -29,10 +29,10 @@ public class Tile : MonoBehaviour
 
     }
 
-    // Pressing "P" prints tile info when hovering
+    // Pressing "I" prints tile info when hovering
     void OnMouseOver()
     {
-        if (Input.GetKeyUp(KeyCode.P)) {
+        if (Input.GetKeyUp(KeyCode.I)) {
             Debug.Log("[" + posX + ", " + posY + "]");
         }
     }
