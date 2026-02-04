@@ -70,7 +70,7 @@ public class GridManager : MonoBehaviour
             //Update placeable grid areas
             placeablePositions.Clear();
             deletePlaceableIndicators();
-            updatePlaceablePositions(position);
+            updatePlaceablePositions(position, true);
         }
     }
 
@@ -88,7 +88,7 @@ public class GridManager : MonoBehaviour
             //Update placeable grid areas
             placeablePositions.Clear();
             deletePlaceableIndicators();
-            updatePlaceablePositions(path[path.Count - 1]);
+            updatePlaceablePositions(path[path.Count - 1], false);
         }
     }
 
@@ -112,7 +112,7 @@ public class GridManager : MonoBehaviour
         return position.x >= 0 && position.x < width && position.y >= 0 && position.y < height;
     }
 
-    void updatePlaceablePositions(Vector2Int position)
+    void updatePlaceablePositions(Vector2Int position, Boolean placingPath)
     {
         Vector2Int[] directions = {Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down};
 
@@ -120,11 +120,13 @@ public class GridManager : MonoBehaviour
             Vector2Int adjacentPos = position + direction;
 
             if (IsInBounds(adjacentPos) && !path.Contains(adjacentPos)) {
+                if (grid[adjacentPos.x, adjacentPos.y].getPlaceable() || !placingPath)
+                {
+                    GameObject indicator = Instantiate(placeableIndicator, new Vector2(adjacentPos.x, adjacentPos.y), Quaternion.identity);
+                    indicator.GetComponent<SpriteRenderer>().enabled = true;
+                    placeableIndicators.Add(indicator);
+                }
                 placeablePositions.Add(adjacentPos);
-                GameObject indicator = Instantiate(placeableIndicator, new Vector2(adjacentPos.x, adjacentPos.y), Quaternion.identity);
-                indicator.GetComponent<SpriteRenderer>().enabled = true;
-                placeableIndicators.Add(indicator);
-                
             }
         }
     }
