@@ -7,6 +7,6 @@ public class TowerTile : Tile
     
     protected override void Start()
     {
-
+        setPlaceable(false);
     }
 }

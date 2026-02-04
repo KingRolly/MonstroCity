@@ -62,7 +62,7 @@ public class GridManager : MonoBehaviour
     public void placePath(Vector2Int position)
     {
         //Place path tile
-        if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].getPlaceable() == true) { 
+        if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].getPlaceable()) { 
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(pathTile, new Vector2(position.x, position.y), Quaternion.identity);
             path.Add(position);
@@ -96,8 +96,7 @@ public class GridManager : MonoBehaviour
     {
         // Place tower tile
         // TODO: Add more conditions when other types of path exist
-        if (!(grid[position.x, position.y] is PathTile)
-            && !(grid[position.x, position.y] is TowerTile)) {
+        if (grid[position.x, position.y].getPlaceable()) {
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(towerTile, new Vector2(position.x, position.y), Quaternion.identity);
             return true;
