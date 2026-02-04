@@ -131,7 +131,7 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    void updatePathSprites(Boolean placed) //Call this after each placement + deletion
+    void updatePathSprites(Boolean placed) //Call this after each placement + deletion IN PROGRESS RIGHT NOW
     {
         if (placed)
         {
@@ -139,6 +139,7 @@ public class GridManager : MonoBehaviour
             if (path.Count == 1)
             {
                 //Set to generic starter path sprite (?)
+                grid[path[0].x, path[0].y].setSpriteType(PathTile.spriteType.Vertical);
 
             }
             else if (path.Count == 2)

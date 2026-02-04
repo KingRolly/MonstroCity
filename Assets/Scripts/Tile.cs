@@ -56,4 +56,8 @@ public class Tile : MonoBehaviour
     {
         placeable = val;
     }
+
+    public virtual void setSpriteType(PathTile.spriteType sprite) {
+        //this is kind of a hack job but it's okay probably
+    }
 }
