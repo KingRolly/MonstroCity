@@ -9,23 +9,34 @@ public class PathTile : Tile
 {
     private float enemySpeed;
     private float enemyDamage;
-    [SerializeField] Sprite verticalPath;
-    [SerializeField] Sprite horizontalPath;
-    [SerializeField] Sprite upperEndPath;
-    [SerializeField] Sprite lowerEndPath;
-    [SerializeField] Sprite rightEndPath; //flip for left
-    [SerializeField] Sprite ceilingTurnPath; //rotate this when necessary
-    [SerializeField] Sprite floorTurnPath; //rotate this when necessary
+    [SerializeField] Sprite horizontal;
+    [SerializeField] Sprite vertical;
+    [SerializeField] Sprite downLeft;
+    [SerializeField] Sprite downRight;
+    [SerializeField] Sprite upLeft;
+    [SerializeField] Sprite upRight;
+    [SerializeField] Sprite downEnd;
+    [SerializeField] Sprite upEnd;
+    [SerializeField] Sprite leftEnd;
+    [SerializeField] Sprite rightEnd;
 
     public enum spriteType //add the flipped types into here and handle that in the sprite type function
     {
-        Vertical,
         Horizontal,
-        UpperEnd,
-        LowerEnd,
+        Vertical,
+        DownLeft,
+        DownRight,
+        UpLeft,
+        UpRight,
+        DownEnd,
+        UpEnd,
+        LeftEnd,
         RightEnd,
-        CeilingTurn,
-        FloorTurn
+    }
+
+    private void Awake()
+    {
+        setSpriteType(spriteType.Vertical);
     }
 
     protected override void Start()
@@ -36,29 +47,38 @@ public class PathTile : Tile
         enemyDamage = 0;
     }
 
-    public void setSpriteType(spriteType type)
+    public override void setSpriteType(spriteType type)
     {
         switch (type){
-            case spriteType.Vertical:
-                gameObject.GetComponent<SpriteRenderer>().sprite = verticalPath;
-                return;
             case spriteType.Horizontal:
-                gameObject.GetComponent<SpriteRenderer>().sprite = horizontalPath;
+                gameObject.GetComponent<SpriteRenderer>().sprite = horizontal;
                 return;
-            case spriteType.UpperEnd:
-                gameObject.GetComponent<SpriteRenderer>().sprite = upperEndPath;
+            case spriteType.Vertical:
+                gameObject.GetComponent<SpriteRenderer>().sprite = vertical;
                 return;
-            case spriteType.LowerEnd:
-                gameObject.GetComponent<SpriteRenderer>().sprite = lowerEndPath;
+            case spriteType.DownLeft:
+                gameObject.GetComponent<SpriteRenderer>().sprite = downLeft;
+                return;
+            case spriteType.DownRight:
+                gameObject.GetComponent<SpriteRenderer>().sprite = downRight;
+                return;
+            case spriteType.UpLeft:
+                gameObject.GetComponent<SpriteRenderer>().sprite = upLeft;
+                return;
+            case spriteType.UpRight:
+                gameObject.GetComponent<SpriteRenderer>().sprite = upRight;
+                return;
+            case spriteType.DownEnd:
+                gameObject.GetComponent<SpriteRenderer>().sprite = downEnd;
+                return;
+            case spriteType.UpEnd:
+                gameObject.GetComponent<SpriteRenderer>().sprite = upEnd;
+                return;
+            case spriteType.LeftEnd:
+                gameObject.GetComponent<SpriteRenderer>().sprite = leftEnd;
                 return;
             case spriteType.RightEnd:
-                gameObject.GetComponent<SpriteRenderer>().sprite = rightEndPath;
-                return;
-            case spriteType.CeilingTurn:
-                gameObject.GetComponent<SpriteRenderer>().sprite = ceilingTurnPath;
-                return;
-            case spriteType.FloorTurn:
-                gameObject.GetComponent<SpriteRenderer>().sprite = floorTurnPath;
+                gameObject.GetComponent<SpriteRenderer>().sprite = rightEnd;
                 return;
         }
     }

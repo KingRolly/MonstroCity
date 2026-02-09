@@ -10,6 +10,7 @@ public class MouseManager : MonoBehaviour
     static bool locked;
     [SerializeField] Sprite hover;
     [SerializeField] Sprite select;
+    [SerializeField] Sprite holding; // this is temporary
     public GridManager gridManager;
 
     // Start is called before the first frame update
@@ -41,17 +42,16 @@ public class MouseManager : MonoBehaviour
         indicator.transform.position = selectPos;
 
         //Attempt to place tiles
-        if (Input.GetMouseButton(0) && gridManager.editingPath)
-        {
-            gridManager.placePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
-        }
-        else if(Input.GetMouseButton(1) && gridManager.editingPath) //right click to delete
-        {
-            gridManager.deletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+        if (gridManager.getEditing()) {
+            if (Input.GetMouseButton(0)) {
+                gridManager.placePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+            } else if (Input.GetMouseButton(1)) {
+                gridManager.deletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+            }
         }
 
         // Click while hovering to "lock" or "unlock" position
-        if (Input.GetMouseButtonDown(0) && !gridManager.editingPath && gridManager.IsInBounds(worldPos))
+        if (Input.GetMouseButtonDown(0) && !gridManager.getEditing() && gridManager.IsInBounds(worldPos))
         {
             if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y)))
             {
@@ -61,7 +61,7 @@ public class MouseManager : MonoBehaviour
             {
                 selectPos = new Vector2Int((int)Mathf.Round(worldPos.x), (int)Mathf.Round(worldPos.y));
             }
-            Debug.Log(selectPos);
+            //Debug.Log(selectPos);
         }
     }
 

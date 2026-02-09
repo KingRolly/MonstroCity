@@ -29,10 +29,10 @@ public class Tile : MonoBehaviour
 
     }
 
-    // Pressing "P" prints tile info when hovering
+    // Pressing "I" prints tile info when hovering
     void OnMouseOver()
     {
-        if (Input.GetKeyUp(KeyCode.P)) {
+        if (Input.GetKeyUp(KeyCode.I)) {
             Debug.Log("[" + posX + ", " + posY + "]");
         }
     }
@@ -55,5 +55,9 @@ public class Tile : MonoBehaviour
     public void setPlaceable(bool val)
     {
         placeable = val;
+    }
+
+    public virtual void setSpriteType(PathTile.spriteType sprite) {
+        //this is kind of a hack job but it's okay probably
     }
 }

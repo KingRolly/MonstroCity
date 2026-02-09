@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -18,13 +19,14 @@ public class GridManager : MonoBehaviour
     public BackgroundTile backgroundTile;
     public PathTile pathTile;
     public TowerTile towerTile;
-    public bool editingPath = false;
+    public bool editing;
     public MouseManager mouseManager;
 
     // Start is called before the first frame update
     void Start()
     {
         placeTiles(width, height);
+        editing = true;
     }
 
     // Update is called once per frame
@@ -61,15 +63,16 @@ public class GridManager : MonoBehaviour
     public void placePath(Vector2Int position)
     {
         //Place path tile
-        if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].getPlaceable() == true) { 
+        if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].getPlaceable()) { 
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(pathTile, new Vector2(position.x, position.y), Quaternion.identity);
             path.Add(position);
+            updatePathSprites();
 
             //Update placeable grid areas
             placeablePositions.Clear();
             deletePlaceableIndicators();
-            updatePlaceablePositions(position);
+            updatePlaceablePositions(position, true);
         }
     }
 
@@ -83,11 +86,12 @@ public class GridManager : MonoBehaviour
             //grid array at the start of the level in order to instantiate what was previously there
             grid[position.x, position.y] = Instantiate(backgroundTile, new Vector2(position.x, position.y), Quaternion.identity);
             path.Remove(position);
+            updatePathSprites();
 
             //Update placeable grid areas
             placeablePositions.Clear();
             deletePlaceableIndicators();
-            updatePlaceablePositions(path[path.Count - 1]);
+            updatePlaceablePositions(path[path.Count - 1], false);
         }
     }
 
@@ -95,12 +99,15 @@ public class GridManager : MonoBehaviour
     {
         // Place tower tile
         // TODO: Add more conditions when other types of path exist
-        if (!(grid[position.x, position.y] is PathTile)
-            && !(grid[position.x, position.y] is TowerTile)) {
+        if (grid[position.x, position.y].getPlaceable()) {
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(towerTile, new Vector2(position.x, position.y), Quaternion.identity);
-            return true;
 
+            //Update placeable grid areas in case we placed it on a flag tile
+            placeablePositions.Clear();
+            deletePlaceableIndicators();
+            updatePlaceablePositions(path[path.Count - 1], true);
+            return true;
         } else {
             Debug.Log("Couldn't place tower :( (Is something else there?)");
             return false;
@@ -112,7 +119,7 @@ public class GridManager : MonoBehaviour
         return position.x >= 0 && position.x < width && position.y >= 0 && position.y < height;
     }
 
-    void updatePlaceablePositions(Vector2Int position)
+    void updatePlaceablePositions(Vector2Int position, Boolean placingPath)
     {
         Vector2Int[] directions = {Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down};
 
@@ -120,52 +127,90 @@ public class GridManager : MonoBehaviour
             Vector2Int adjacentPos = position + direction;
 
             if (IsInBounds(adjacentPos) && !path.Contains(adjacentPos)) {
+                if (grid[adjacentPos.x, adjacentPos.y].getPlaceable() || !placingPath)
+                {
+                    GameObject indicator = Instantiate(placeableIndicator, new Vector2(adjacentPos.x, adjacentPos.y), Quaternion.identity);
+                    indicator.GetComponent<SpriteRenderer>().enabled = true;
+                    placeableIndicators.Add(indicator);
+                }
                 placeablePositions.Add(adjacentPos);
-                GameObject indicator = Instantiate(placeableIndicator, new Vector2(adjacentPos.x, adjacentPos.y), Quaternion.identity);
-                indicator.GetComponent<SpriteRenderer>().enabled = true;
-                placeableIndicators.Add(indicator);
-                
             }
         }
     }
 
-    void updatePathSprites(Boolean placed) //Call this after each placement + deletion
+    enum PathDirection { Up, Down, Left, Right }
+    PathDirection getDirection(Vector2Int previous, Vector2Int next)
     {
-        if (placed)
+        if (next.x > previous.x) return PathDirection.Right;
+        if (next.x < previous.x) return PathDirection.Left;
+        if (next.y > previous.y) return PathDirection.Up;
+        return PathDirection.Down;
+    }
+
+    void updatePathSprites() //Call this after each placement + deletion
+    {
+        //Deal with path array of size 1 first, then deal with 2, then deal with 3
+        if (path.Count == 1)
         {
-            //Deal with path array of size 1 first, then deal with 2, then deal with 3
-            if (path.Count == 1)
-            {
-                //Set to generic starter path sprite (?)
-
-            }
-            else if (path.Count == 2)
-            {
-                //Base this off of the previous path location
-
-            }
-            else
-            {
-                //Base this off of the previous path location + check if there was a turn
-            }
+            //Set to generic starter path sprite (?) (this will be changed once we add the start/end tiles)
+            grid[path[0].x, path[0].y].setSpriteType(PathTile.spriteType.Vertical);
         }
-        else{
-            //path deleted case
-            //Deal with path array of size 1 first, then deal with 2, then deal with 3
-            if (path.Count == 1)
-            {
-                //Set to generic starter path sprite (?)
+        else if (path.Count == 2)
+        {
+            //Base this off of the previous path location
+            PathDirection direction = getDirection(path[0], path[1]);
+            grid[path[0].x, path[0].y].setSpriteType(
+                (direction == PathDirection.Right || direction == PathDirection.Left) ?
+                PathTile.spriteType.Horizontal : PathTile.spriteType.Vertical
+                );
+            grid[path[1].x, path[1].y].setSpriteType(
+                direction == PathDirection.Right ?
+                PathTile.spriteType.RightEnd : direction == PathDirection.Left ?
+                PathTile.spriteType.LeftEnd : direction == PathDirection.Up ?
+                PathTile.spriteType.UpEnd : PathTile.spriteType.DownEnd
+                );
+        }
+        else
+        {
+            //Base this off of the previous path location + check if there was a turn
+            PathDirection directionToHead = getDirection(path[path.Count - 2], path[path.Count - 1]);
+            PathDirection directionToMid = getDirection(path[path.Count - 3], path[path.Count - 2]);
 
-            }
-            else if (path.Count == 2)
+            if (directionToHead == directionToMid)
             {
-                //Base this off of the previous path location
-
+                grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(
+                    (directionToHead == PathDirection.Left || directionToHead == PathDirection.Right) ?
+                    PathTile.spriteType.Horizontal : PathTile.spriteType.Vertical
+                );
             }
             else
             {
-                //Base this off of the previous path location + check if there was a turn
+                if (directionToMid == PathDirection.Left && directionToHead == PathDirection.Up)
+                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.DownRight);
+                if (directionToMid == PathDirection.Left && directionToHead == PathDirection.Down)
+                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.UpRight);
+                if (directionToMid == PathDirection.Right && directionToHead == PathDirection.Up)
+                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.DownLeft);
+                if (directionToMid == PathDirection.Right && directionToHead == PathDirection.Down)
+                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.UpLeft);
+
+                if (directionToMid == PathDirection.Up && directionToHead == PathDirection.Left)
+                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.UpLeft);
+                if (directionToMid == PathDirection.Up && directionToHead == PathDirection.Right)
+                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.UpRight);
+                if (directionToMid == PathDirection.Down && directionToHead == PathDirection.Left)
+                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.DownLeft);
+                if (directionToMid == PathDirection.Down && directionToHead == PathDirection.Right)
+                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.DownRight);
             }
+
+            // Update head of path
+            grid[path[path.Count - 1].x, path[path.Count - 1].y].setSpriteType(
+                directionToHead == PathDirection.Up ? PathTile.spriteType.UpEnd :
+                directionToHead == PathDirection.Down ? PathTile.spriteType.DownEnd :
+                directionToHead == PathDirection.Left ? PathTile.spriteType.LeftEnd :
+                PathTile.spriteType.RightEnd
+            );
         }
     }
 
@@ -177,10 +222,14 @@ public class GridManager : MonoBehaviour
         placeableIndicators.Clear();
     }
 
-    public void toggleEditingPath()
+    public void toggleEditing()
     {
-        editingPath = !editingPath;
+        editing = !editing;
         mouseManager.setLock(false);
+    }
+
+    public bool getEditing() {
+        return editing;
     }
 
     public void togglePlaceableIndicatorsVisible()

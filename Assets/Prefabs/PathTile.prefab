@@ -143,4 +143,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ee1b8cae0b88f441822020c07341d08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highlightSprite: {fileID: 21300000, guid: 4cb99955c48719c45923b4ecc8dda9cf, type: 3}
+  horizontal: {fileID: 21300000, guid: 4f86523a0aeba8b4e86707e060591e86, type: 3}
+  vertical: {fileID: 21300000, guid: 4ccedf0c9baf04d49b87262248eb17ad, type: 3}
+  downLeft: {fileID: 21300000, guid: 7a653e1fb5e22574cb9beb0024ea5157, type: 3}
+  downRight: {fileID: 21300000, guid: 0b26dc85d20683e4badfa034d93b0053, type: 3}
+  upLeft: {fileID: 21300000, guid: 897cc335dfa23ae40a1e3fcb00c297f7, type: 3}
+  upRight: {fileID: 21300000, guid: 53470b160e3776449942380931cd6143, type: 3}
+  downEnd: {fileID: 21300000, guid: 33d3a79a8089d294388c948613c5b6bd, type: 3}
+  upEnd: {fileID: 21300000, guid: c2437b0c08b8b28498de683034829018, type: 3}
+  leftEnd: {fileID: 21300000, guid: 61a2b9c19c137904eb6b8505ac1d9134, type: 3}
+  rightEnd: {fileID: 21300000, guid: f5ddbe496dfe6794590c9759f1a48b1b, type: 3}
