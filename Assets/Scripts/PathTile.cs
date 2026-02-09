@@ -15,6 +15,10 @@ public class PathTile : Tile
     [SerializeField] Sprite downRight;
     [SerializeField] Sprite upLeft;
     [SerializeField] Sprite upRight;
+    [SerializeField] Sprite downEnd;
+    [SerializeField] Sprite upEnd;
+    [SerializeField] Sprite leftEnd;
+    [SerializeField] Sprite rightEnd;
 
     public enum spriteType //add the flipped types into here and handle that in the sprite type function
     {
@@ -23,14 +27,22 @@ public class PathTile : Tile
         DownLeft,
         DownRight,
         UpLeft,
-        UpRight
+        UpRight,
+        DownEnd,
+        UpEnd,
+        LeftEnd,
+        RightEnd,
+    }
+
+    private void Awake()
+    {
+        setSpriteType(spriteType.Vertical);
     }
 
     protected override void Start()
     {
         base.Start();
         setPlaceable(false);
-        setSpriteType(spriteType.Vertical);
         enemySpeed = 0;
         enemyDamage = 0;
     }
@@ -55,6 +67,18 @@ public class PathTile : Tile
                 return;
             case spriteType.UpRight:
                 gameObject.GetComponent<SpriteRenderer>().sprite = upRight;
+                return;
+            case spriteType.DownEnd:
+                gameObject.GetComponent<SpriteRenderer>().sprite = downEnd;
+                return;
+            case spriteType.UpEnd:
+                gameObject.GetComponent<SpriteRenderer>().sprite = upEnd;
+                return;
+            case spriteType.LeftEnd:
+                gameObject.GetComponent<SpriteRenderer>().sprite = leftEnd;
+                return;
+            case spriteType.RightEnd:
+                gameObject.GetComponent<SpriteRenderer>().sprite = rightEnd;
                 return;
         }
     }
