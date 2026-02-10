@@ -106,7 +106,7 @@ public class GridManager : MonoBehaviour
             //Update placeable grid areas in case we placed it on a flag tile
             placeablePositions.Clear();
             deletePlaceableIndicators();
-            updatePlaceablePositions(path[path.Count - 1], true);
+            updatePlaceablePositions(path[path.Count - 1], true); // TODO: Resolve bug that occurs here (out of bounds error)
             return true;
         } else {
             Debug.Log("Couldn't place tower :( (Is something else there?)");

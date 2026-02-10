@@ -9,17 +9,21 @@ using TMPro;
 // - Nicholas Liang (Feb. 2nd, 2026)
 public class TowerUI : MonoBehaviour
 {
-    public static string holding = "None";
+    // TODO: See if this needs to be static
+    // Previously was static and seemingly was the cause of the purchase price bug
+    // Bug was fixed when static was removed because holding being static caused every tower UI to share holding
+    // So when trying to place a tower, every tower UI thought it was being placed, tower highest up in hierachy kept being placed
+    [SerializeField] public string holding = "None";
 
     [Header("References")]
     public TextMeshProUGUI priceText;
-    public MoneyManager moneyManager;
-    public GridManager gridManager;
-    public MouseManager mouseManager;
-    public TowerInfoPopup towerInfoPopup;
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private MouseManager mouseManager;
+    [SerializeField] private TowerInfoPopup towerInfoPopup;
 
     [Header("Tower Stats")]
-    [SerializeField] private string towerType = "Archer";
+    [SerializeField] private string towerType;
     [SerializeField] private int price;
     [SerializeField] private float damage;
     [SerializeField] private float attackSpeed;
@@ -34,32 +38,57 @@ public class TowerUI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.H)) {
+        if (Input.GetKeyUp(KeyCode.H))
+        {
             Debug.Log("Holding " + holding);
         }
-        if (holding != "None") {
-            if (Input.GetMouseButtonDown(0)) {
-                if (gridManager.placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), towerType)) {
-                    moneyManager.addMoney(-price);
-                    holding = "None";
+        if (holding != "None")
+        {
+            if (Input.GetMouseButtonDown(0))
+            {
+                // TODO: Resolve an error originates here when calling placeTower() on line 56
+                // Error occurs on line 109 of GridManager.cs, apparently it's an out of bounds error or smt
+
+                // Placeholder for tower placement testing until we get the above error fixed
+                Debug.Log($"{towerType} purchased for {price} goblins");
+                uiManager.addMoney(-this.price);
+                holding = "None";
+
+                if (gridManager.placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), towerType))
+                {
+                    //Debug.Log($"{towerType} purchased for {price} goblins");
+                    //uiManager.addMoney(-this.price);
+                    //holding = "None";
                 }
             }
-            if (Input.GetKeyUp(KeyCode.Escape)) {
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
                 holding = "None";
             }
             mouseManager.setLock(false);
         }
     }
 
-    // Assigns info of tower
+    // Assigns info of tower upon instantiation
+    // UIManager should call this when setting up the top bar
     public void setTowerInfo(string type, int price, float dmg, float atkSpd, float atkRg)
     {
-        this.towerType = name;
+        this.towerType = type;
         this.price = price;
         priceText.text = price.ToString() + " Goblins";
         this.damage = dmg;
         this.attackSpeed = atkSpd;
         this.attackRange = atkRg;
+    }
+
+    // Used to assign references TowerUI needs upon instantiation
+    // UIManager should call this when setting up the top bar
+    public void assignReferences(UIManager uiManager, GridManager gridManager, MouseManager mouseManager, TowerInfoPopup towerInfoPopup)
+    {
+        this.uiManager = uiManager;
+        this.gridManager = gridManager;
+        this.mouseManager = mouseManager;
+        this.towerInfoPopup = towerInfoPopup;
     }
 
     // Make info popup visible, should be called upon hovering over icon
@@ -79,10 +108,14 @@ public class TowerUI : MonoBehaviour
     // Purchase tower and prompt player to place tower
     public void buyTower()
     {
-        if (holding.Equals("None")) { // Check that player isn't already holding a tower
-            if (moneyManager.getMoney() >= price) {
+        if (holding.Equals("None")) // Check that player isn't already holding a tower
+        { 
+            if (uiManager.getMoney() - this.price >= 0) // check if player can afford tower
+            {
                 holding = towerType; // Set the held tower to this tower's type
-            } else {
+            }
+            else
+            {
                 Debug.Log("Not enough goblins!");
             }
         }
