@@ -69,6 +69,9 @@ public class GridManager : MonoBehaviour
             path.Add(position);
             updatePathSprites();
 
+            // Print path positions for debugging
+            Debug.Log(position.x + ", " + position.y);
+
             //Update placeable grid areas
             placeablePositions.Clear();
             deletePlaceableIndicators();
@@ -230,6 +233,11 @@ public class GridManager : MonoBehaviour
 
     public bool getEditing() {
         return editing;
+    }
+
+    public List<Vector2Int> getPath()
+    {
+        return path;
     }
 
     public void togglePlaceableIndicatorsVisible()

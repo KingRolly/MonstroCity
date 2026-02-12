@@ -46,7 +46,7 @@ public class TowerUI : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                // TODO: Resolve an error originates here when calling placeTower() on line 56
+                // TODO: Resolve an error originates here when calling placeTower() on line 57
                 // Error occurs on line 109 of GridManager.cs, apparently it's an out of bounds error or smt
 
                 // Placeholder for tower placement testing until we get the above error fixed
