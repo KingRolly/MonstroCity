@@ -445,6 +445,8 @@ MonoBehaviour:
   towerTile: {fileID: 8287657778203470292, guid: f706f98a1a2cd53418c3c275bb8c5090, type: 3}
   editing: 0
   mouseManager: {fileID: 2019142844}
+  startPathPosition: {x: 0, y: 0}
+  endPathPosition: {x: 15, y: 8}
 --- !u!1 &386922950
 GameObject:
   m_ObjectHideFlags: 0

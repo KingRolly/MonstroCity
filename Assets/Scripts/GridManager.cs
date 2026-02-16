@@ -21,6 +21,8 @@ public class GridManager : MonoBehaviour
     public TowerTile towerTile;
     public bool editing;
     public MouseManager mouseManager;
+    public Vector2Int startPathPosition;
+    public Vector2Int endPathPosition;
 
     // Start is called before the first frame update
     void Start()
@@ -32,7 +34,9 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (isPathValid()) {
+            print("PATH VALID NOW");
+        }
     }
 
     void placeTiles(int width, int height)
@@ -47,9 +51,18 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        //Set (0, 0) to be the initial placeable position
-        placeablePositions.Add(new Vector2Int(0, 0));
-        placeableIndicators.Add(Instantiate(placeableIndicator, new Vector2(0, 0), Quaternion.identity));
+        //Create the initial starting path tile
+        grid[startPathPosition.x, startPathPosition.y] = Instantiate(pathTile, new Vector2(startPathPosition.x, startPathPosition.y), Quaternion.identity);
+        path.Add(startPathPosition);
+        updatePathSprites();
+
+        //Create the end tile object
+        grid[endPathPosition.x, endPathPosition.y] = Instantiate(pathTile, new Vector2(endPathPosition.x, endPathPosition.y), Quaternion.identity);
+
+        //Update placeable grid areas
+        placeablePositions.Clear();
+        deletePlaceableIndicators();
+        updatePlaceablePositions(startPathPosition, false);
     }
 
     /*How path placement works:
@@ -67,6 +80,9 @@ public class GridManager : MonoBehaviour
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(pathTile, new Vector2(position.x, position.y), Quaternion.identity);
             path.Add(position);
+
+            if()
+
             updatePathSprites();
 
             // Print path positions for debugging
@@ -140,6 +156,12 @@ public class GridManager : MonoBehaviour
             }
         }
     }
+
+    void isNextToEndTile(Vector2Int position)
+    {
+        
+    }
+
 
     enum PathDirection { Up, Down, Left, Right }
     PathDirection getDirection(Vector2Int previous, Vector2Int next)
@@ -215,6 +237,11 @@ public class GridManager : MonoBehaviour
                 PathTile.spriteType.RightEnd
             );
         }
+    }
+
+    public bool isPathValid()
+    {
+        return (path[0] == startPathPosition && path[path.Count - 1] == endPathPosition);
     }
 
     void deletePlaceableIndicators()
