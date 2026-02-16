@@ -9,9 +9,9 @@ using TMPro;
 public class TowerInfoPopup : MonoBehaviour
 {
     [Header("TMP Text")]
-    public TextMeshProUGUI dmgText;
-    public TextMeshProUGUI atkSpeedText;
-    public TextMeshProUGUI atkRangeText;
+    [SerializeField] private TextMeshProUGUI dmgText;
+    [SerializeField] private TextMeshProUGUI atkSpeedText;
+    [SerializeField] private TextMeshProUGUI atkRangeText;
 
     [Header("Stats")]
     [SerializeField] private float damage;

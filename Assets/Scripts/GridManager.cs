@@ -81,8 +81,6 @@ public class GridManager : MonoBehaviour
             grid[position.x, position.y] = Instantiate(pathTile, new Vector2(position.x, position.y), Quaternion.identity);
             path.Add(position);
 
-            if()
-
             updatePathSprites();
 
             // Print path positions for debugging

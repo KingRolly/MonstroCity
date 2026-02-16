@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Pool;
 
 // Class Description:
 // Implements enemy behaviour and stats
@@ -15,6 +16,7 @@ public class Enemy : MonoBehaviour
 
     [SerializeField] private List<Vector2Int> enemyPath;
     private int pathIndex;
+    public IObjectPool<GameObject> enemyObjectPool;
 
     // Start is called before the first frame update
     void Start()

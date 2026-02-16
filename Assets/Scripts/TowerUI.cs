@@ -9,10 +9,6 @@ using TMPro;
 // - Nicholas Liang (Feb. 2nd, 2026)
 public class TowerUI : MonoBehaviour
 {
-    // TODO: See if this needs to be static
-    // Previously was static and seemingly was the cause of the purchase price bug
-    // Bug was fixed when static was removed because holding being static caused every tower UI to share holding
-    // So when trying to place a tower, every tower UI thought it was being placed, tower highest up in hierachy kept being placed
     [SerializeField] public string holding = "None";
 
     [Header("References")]
