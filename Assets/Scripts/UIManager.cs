@@ -63,6 +63,37 @@ public class UIManager : MonoBehaviour
         gnomeShooter.GetComponent<TowerUI>().setTowerInfo("Gnome Shooter", 8, 4, 0.5f, 5);
         gnomeShooter.GetComponent<TowerUI>().assignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
         towersList.Add(gnomeShooter);
+
+        // Orc: 10 price, 1 dmg, 0.8s spd, 10 range
+        GameObject archer = Instantiate(towerIconPrefab, towersPanel.transform);
+        archer.GetComponent<TowerUI>().setTowerInfo("Archer", 2, 2, 0.1f, 8);
+        archer.GetComponent<TowerUI>().assignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
+        towersList.Add(archer);
+
+        // Slime: 15 price, 10 dmg, 2s spd, 25 range
+        GameObject dragon = Instantiate(towerIconPrefab, towersPanel.transform);
+        dragon.GetComponent<TowerUI>().setTowerInfo("Dragon", 50, 25, 1f, 15);
+        dragon.GetComponent<TowerUI>().assignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
+        towersList.Add(dragon);
+
+        // Gnome Shooter: 8 price, 4 dmg, 0.5s spd, 5 range
+        GameObject golem = Instantiate(towerIconPrefab, towersPanel.transform);
+        golem.GetComponent<TowerUI>().setTowerInfo("Golem", 20, 50, 3f, 2);
+        golem.GetComponent<TowerUI>().assignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
+        towersList.Add(golem);
+
+        // Slime: 15 price, 10 dmg, 2s spd, 25 range
+        GameObject cannon = Instantiate(towerIconPrefab, towersPanel.transform);
+        cannon.GetComponent<TowerUI>().setTowerInfo("Cannon", 100, 20, 3f, 50);
+        cannon.GetComponent<TowerUI>().assignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
+        towersList.Add(slime);
+
+        // Gnome Shooter: 8 price, 4 dmg, 0.5s spd, 5 range
+        GameObject hwacha = Instantiate(towerIconPrefab, towersPanel.transform);
+        hwacha.GetComponent<TowerUI>().setTowerInfo("Hwacha", 50, 4, 0.1f, 20);
+        hwacha.GetComponent<TowerUI>().assignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
+        towersList.Add(hwacha);
+
     }
 
     public int getMoney() {
