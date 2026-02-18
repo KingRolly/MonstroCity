@@ -13,6 +13,7 @@ public class TowerUI : MonoBehaviour
 
     [Header("References")]
     public TextMeshProUGUI priceText;
+    public TextMeshProUGUI nameText;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private GridManager gridManager;
     [SerializeField] private MouseManager mouseManager;
@@ -28,7 +29,8 @@ public class TowerUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        priceText.text = price.ToString() + " Goblins";
+        priceText.text = price.ToString();
+        nameText.text = towerType;
     }
 
     // Update is called once per frame
@@ -70,8 +72,9 @@ public class TowerUI : MonoBehaviour
     public void setTowerInfo(string type, int price, float dmg, float atkSpd, float atkRg)
     {
         this.towerType = type;
+        nameText.text = towerType;
         this.price = price;
-        priceText.text = price.ToString() + " Goblins";
+        priceText.text = price.ToString();
         this.damage = dmg;
         this.attackSpeed = atkSpd;
         this.attackRange = atkRg;
