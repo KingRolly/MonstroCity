@@ -86,6 +86,10 @@ public class Enemy : MonoBehaviour
     {
         return this.enemyType;
     }
+    public Sprite getSprite()
+    {
+        return this.enemySprite;
+    }    
     public int getHealth()
     {
         return this.health;
