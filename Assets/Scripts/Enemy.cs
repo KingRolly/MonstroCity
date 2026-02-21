@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-// Class Description:
-// Implements enemy behaviour and stats
-// Likely going to be an interface for the enemies so that we can implement more complex enemies later on
-// - Nicholas Liang (Feb. 20th, 2026)
+/// <summary>
+/// Implements enemy behaviour and stats <br/>
+/// Likely going to be an interface for the enemies so that we can implement more complex enemies later on <br/>
+/// - Nicholas Liang (Feb. 20th, 2026)
+/// </summary>
 public class Enemy : MonoBehaviour
 {
     [Header("Info")]

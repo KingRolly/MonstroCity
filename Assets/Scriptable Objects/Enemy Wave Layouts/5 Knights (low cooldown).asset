@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed7c52ae11a0b954aaffb27d904ffa73, type: 3}
   m_Name: 5 Knights (low cooldown)
   m_EditorClassIdentifier: 
-  enemyToSpawn: {fileID: 11400000, guid: 382967b99087ecf4baa93b5f47e90495, type: 2}
-  amount: 5
-  initialTimeDelay: 0
-  timeDelayBetweenSpawns: 0.1
+  spawnPatterns:
+  - enemyToSpawn: {fileID: 11400000, guid: 382967b99087ecf4baa93b5f47e90495, type: 2}
+    amount: 5
+    initialTimeDelay: 0
+    timeDelayBetweenSpawns: 0.1

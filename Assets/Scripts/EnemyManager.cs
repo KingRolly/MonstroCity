@@ -4,37 +4,37 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-// Class Description:
-// Handles spawning of enemies by directing spawn patterns for each wave
-// - Nicholas Liang (Feb. 11th, 2026)
+/// <summary>
+/// Handles spawning of enemies by directing spawn patterns for each wave <br/>
+/// - Nicholas Liang (Feb. 11th, 2026)
+/// </summary>
 public class EnemyManager : MonoBehaviour
 {
+    #region Fields
     [Header("References")]
     [SerializeField] private GridManager gridManager;
     [SerializeField] private GameObject enemyPrefab;
 
-    // Scriptable objects for testing
-    [SerializeField] private EnemyStats peasantStats;
+    [Header("Scriptable objects for testing")]
     [SerializeField] private EnemyWaveLayout onePeasant;
-    [SerializeField] private EnemyWaveLayout threePeasants_LowCD;
-    [SerializeField] private EnemyWaveLayout tenPeasants_LowCD_TwoSecInitDelay;
-
-    [SerializeField] private EnemyStats knightStats;
-    [SerializeField] private EnemyWaveLayout twoKnights_HighCD_OneSecInitDelay;
     [SerializeField] private EnemyWaveLayout fiveKnights_LowCD;
+    [SerializeField] private EnemyWaveLayout testWave;
 
     // [Header("Private Variables")]
     private List<GameObject> totalEnemies;
     private List<GameObject> aliveEnemies;
     private List<GameObject> deadEnemies;
-    private List<EnemyWaveLayout> currentRoundLayout;
+
+    [Header("Enemy Wave Layout")]
+    [SerializeField] private EnemyWaveLayout currentWaveLayout;
 
     // Object pool stuff
-    [SerializeField] private IObjectPool<GameObject> enemyObjectPool;
+    private IObjectPool<GameObject> enemyObjectPool;
     private bool collectionCheck = true;
     [Header("Object Pool Info")]
     [SerializeField] private int defaultCapacity = 25;
     [SerializeField] private int maxSize = 100;
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -42,11 +42,10 @@ public class EnemyManager : MonoBehaviour
         totalEnemies = new List<GameObject>();
         aliveEnemies = new List<GameObject>();
         deadEnemies = new List<GameObject>();
-        currentRoundLayout = new List<EnemyWaveLayout>();
     }
 
 
-
+    #region Object Pool Functions
     private void Awake()
     {
         // Setup enemy object pool
@@ -79,60 +78,63 @@ public class EnemyManager : MonoBehaviour
     {
         Destroy(pooledEnemyObject);
     }
+    #endregion
 
-
-
+    #region Test Functions
     // Test spawning a peasant
     public void testSpawnPeasantEnemy()
     {
-        currentRoundLayout.Add(onePeasant);
+        setCurrentWaveLayout(onePeasant);
         StartCoroutine(spawnAllEnemiesForCurrentRound());
     }
 
     // Test spawning 5 knights with low spawn cooldown
     public void testSpawn5KnightEnemies()
     {
-        currentRoundLayout.Add(fiveKnights_LowCD);
+        setCurrentWaveLayout(fiveKnights_LowCD);
         StartCoroutine(spawnAllEnemiesForCurrentRound());
     }
 
-    // Test spawning multiple waves of enemies to simulate a round
+    // Test spawning multiple spawn matterns to simulate a wave
     public void testSpawnRound()
     {
-        //zzz
-        currentRoundLayout.Add(threePeasants_LowCD);
-        currentRoundLayout.Add(twoKnights_HighCD_OneSecInitDelay);
-        currentRoundLayout.Add(tenPeasants_LowCD_TwoSecInitDelay);
+        setCurrentWaveLayout(testWave);
         StartCoroutine(spawnAllEnemiesForCurrentRound());
     }
+    #endregion
 
-
-
-    // Spawns in the waves of enemies for the current round
+    #region Enemy Spawning Functions
+    /// <summary>
+    /// Spawns in the enemies for the current wave
+    /// </summary>
     private IEnumerator spawnAllEnemiesForCurrentRound()
     {
-        // Check if layout for current round is empty
-        if (currentRoundLayout.Count == 0)
+        // Check if layout for current wave layout is empty
+        if (currentWaveLayout == null)
         {
             Debug.Log("Nothing to spawn for current round");
             yield break;
         }
 
-        // Read through layout of the current round
-        foreach (EnemyWaveLayout wave in currentRoundLayout)
+        
+        // Read through layout of the current wave
+        for (int i = 0; i < currentWaveLayout.spawnPatterns.Length; i++)
         {
-            // Initial time delay before spawning the wave
-            yield return new WaitForSeconds(wave.initialTimeDelay);
+            // Initial time delay of the spawn pattern
+            yield return new WaitForSeconds(currentWaveLayout.spawnPatterns[i].initialTimeDelay);
 
             // Spawn enemies according to the given EnemyWaveLayout
-            StartCoroutine(spawnEnemies(wave.enemyToSpawn, wave.amount, wave.timeDelayBetweenSpawns));
+            StartCoroutine(spawnEnemies(currentWaveLayout.spawnPatterns[i].enemyToSpawn, currentWaveLayout.spawnPatterns[i].amount, currentWaveLayout.spawnPatterns[i].timeDelayBetweenSpawns));
         }
-
-        // Clear current round layout after spawning in all enemy waves
-        currentRoundLayout.Clear();
     }
 
-    // Spawns amt number of enemies with spawnDelay seconds between each spawn
+    /// <summary>
+    /// Spawns in enemies according to given parameters
+    /// </summary>
+    /// <param name="enemyStats">Scriptable object represting the enemy to spawn</param>
+    /// <param name="amt">Number of enemies to spawn</param>
+    /// <param name="spawnDelay">Length of delay between each spawn</param>
+    /// <returns></returns>
     private IEnumerator spawnEnemies(EnemyStats enemyStats, int amt, float spawnDelay)
     {
         for (int i = 0; i < amt; i++)
@@ -159,13 +161,19 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    // Add an enemy wave layout for the current round
-    public void addEnemyWaveToCurrentRound(EnemyWaveLayout wave)
+    /// <summary>
+    /// Set the enemy wave layout for the current wave
+    /// </summary>
+    /// <param name="wave"></param>
+    public void setCurrentWaveLayout(EnemyWaveLayout wave)
     {
-        currentRoundLayout.Add(wave);
+        currentWaveLayout = wave;
     }
 
-    // Delete the given enemy and update the lists keeping track of enemies
+    /// <summary>
+    /// Delete the given enemy and update the lists keeping track of enemies
+    /// </summary>
+    /// <param name="enemyToDespawn"></param>
     public void despawnEnemy(GameObject enemyToDespawn)
     {
         foreach (GameObject enemy in aliveEnemies)
@@ -181,10 +189,9 @@ public class EnemyManager : MonoBehaviour
 
         Debug.Log("Could not find enemy");
     }
+    #endregion
 
-
-
-    // Basic getters
+    #region Basic Getters
     public List<GameObject> getTotalEnemiesList()
     {
         return this.totalEnemies;
@@ -209,4 +216,5 @@ public class EnemyManager : MonoBehaviour
     {
         return this.deadEnemies.Count;
     }
+    #endregion
 }
