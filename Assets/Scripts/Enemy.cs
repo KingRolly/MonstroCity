@@ -6,10 +6,12 @@ using UnityEngine.Pool;
 // Class Description:
 // Implements enemy behaviour and stats
 // Likely going to be an interface for the enemies so that we can implement more complex enemies later on
+// - Nicholas Liang (Feb. 20th, 2026)
 public class Enemy : MonoBehaviour
 {
-    [Header("Stats")]
+    [Header("Info")]
     [SerializeField] private string enemyType;
+    [SerializeField] private Sprite enemySprite;
     [SerializeField] private int health;
     [SerializeField] private float speed;
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
@@ -44,18 +46,20 @@ public class Enemy : MonoBehaviour
     // Enemy reads the coordinates of enemyPath to travel along the path in-game
     private void travelPath()
     {
-        // TODO: Read the enemyPath list and move enemy towards to the next path coordinate
+        // Read the enemyPath list and move enemy towards to the next path coordinate
         transform.position = Vector2.MoveTowards(transform.position, enemyPath[pathIndex], speed * Time.deltaTime);
     }
 
-    // Used to set stats of enemy
+    // Used to set info of enemy
     // Enemy Manager should call this upon instantiating an enemy
-    public void setStats(string type, int hp, float spd, int dmg)
+    public void setInfo(string type, int hp, float spd, int dmg, Sprite sprite)
     {
         enemyType = type;
         health = hp;
         speed = spd;
         damage = dmg;
+        enemySprite = sprite;
+        this.GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
     // Assign path for enemy to take

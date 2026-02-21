@@ -12,15 +12,25 @@ public class EnemyManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GridManager gridManager;
     [SerializeField] private GameObject enemyPrefab;
+
+    // Scriptable objects for testing
     [SerializeField] private EnemyStats peasantStats;
+    [SerializeField] private EnemyWaveLayout onePeasant;
+    [SerializeField] private EnemyWaveLayout threePeasants_LowCD;
+    [SerializeField] private EnemyWaveLayout tenPeasants_LowCD_TwoSecInitDelay;
+
     [SerializeField] private EnemyStats knightStats;
+    [SerializeField] private EnemyWaveLayout twoKnights_HighCD_OneSecInitDelay;
+    [SerializeField] private EnemyWaveLayout fiveKnights_LowCD;
 
     // [Header("Private Variables")]
     private List<GameObject> totalEnemies;
     private List<GameObject> aliveEnemies;
     private List<GameObject> deadEnemies;
+    private List<EnemyWaveLayout> currentRoundLayout;
 
-    private IObjectPool<GameObject> enemyObjectPool;
+    // Object pool stuff
+    [SerializeField] private IObjectPool<GameObject> enemyObjectPool;
     private bool collectionCheck = true;
     [Header("Object Pool Info")]
     [SerializeField] private int defaultCapacity = 25;
@@ -32,7 +42,10 @@ public class EnemyManager : MonoBehaviour
         totalEnemies = new List<GameObject>();
         aliveEnemies = new List<GameObject>();
         deadEnemies = new List<GameObject>();
+        currentRoundLayout = new List<EnemyWaveLayout>();
     }
+
+
 
     private void Awake()
     {
@@ -67,16 +80,56 @@ public class EnemyManager : MonoBehaviour
         Destroy(pooledEnemyObject);
     }
 
+
+
     // Test spawning a peasant
     public void testSpawnPeasantEnemy()
     {
-        StartCoroutine(spawnEnemies(peasantStats, 1, 1f));
+        currentRoundLayout.Add(onePeasant);
+        StartCoroutine(spawnAllEnemiesForCurrentRound());
     }
 
-    // Test spawning a knight
+    // Test spawning 5 knights with low spawn cooldown
     public void testSpawn5KnightEnemies()
     {
-        StartCoroutine(spawnEnemies(knightStats, 5, 0.3f));
+        currentRoundLayout.Add(fiveKnights_LowCD);
+        StartCoroutine(spawnAllEnemiesForCurrentRound());
+    }
+
+    // Test spawning multiple waves of enemies to simulate a round
+    public void testSpawnRound()
+    {
+        //zzz
+        currentRoundLayout.Add(threePeasants_LowCD);
+        currentRoundLayout.Add(twoKnights_HighCD_OneSecInitDelay);
+        currentRoundLayout.Add(tenPeasants_LowCD_TwoSecInitDelay);
+        StartCoroutine(spawnAllEnemiesForCurrentRound());
+    }
+
+
+
+    // Spawns in the waves of enemies for the current round
+    private IEnumerator spawnAllEnemiesForCurrentRound()
+    {
+        // Check if layout for current round is empty
+        if (currentRoundLayout.Count == 0)
+        {
+            Debug.Log("Nothing to spawn for current round");
+            yield break;
+        }
+
+        // Read through layout of the current round
+        foreach (EnemyWaveLayout wave in currentRoundLayout)
+        {
+            // Initial time delay before spawning the wave
+            yield return new WaitForSeconds(wave.initialTimeDelay);
+
+            // Spawn enemies according to the given EnemyWaveLayout
+            StartCoroutine(spawnEnemies(wave.enemyToSpawn, wave.amount, wave.timeDelayBetweenSpawns));
+        }
+
+        // Clear current round layout after spawning in all enemy waves
+        currentRoundLayout.Clear();
     }
 
     // Spawns amt number of enemies with spawnDelay seconds between each spawn
@@ -91,9 +144,10 @@ public class EnemyManager : MonoBehaviour
             int health = enemyStats.health;
             float speed = enemyStats.speed;
             int damage = enemyStats.damage;
+            Sprite sprite = enemyStats.sprite;
 
             // Set up enemy stats and pathfinding
-            enemyToSpawn.GetComponent<Enemy>().setStats(enemyType, health, speed, damage);
+            enemyToSpawn.GetComponent<Enemy>().setInfo(enemyType, health, speed, damage, sprite);
             enemyToSpawn.GetComponent<Enemy>().setPath(gridManager.getPath());
 
             // Keep track of spawned enemy
@@ -103,6 +157,12 @@ public class EnemyManager : MonoBehaviour
             // Delay between spawns
             yield return new WaitForSeconds(spawnDelay);
         }
+    }
+
+    // Add an enemy wave layout for the current round
+    public void addEnemyWaveToCurrentRound(EnemyWaveLayout wave)
+    {
+        currentRoundLayout.Add(wave);
     }
 
     // Delete the given enemy and update the lists keeping track of enemies
@@ -121,6 +181,8 @@ public class EnemyManager : MonoBehaviour
 
         Debug.Log("Could not find enemy");
     }
+
+
 
     // Basic getters
     public List<GameObject> getTotalEnemiesList()

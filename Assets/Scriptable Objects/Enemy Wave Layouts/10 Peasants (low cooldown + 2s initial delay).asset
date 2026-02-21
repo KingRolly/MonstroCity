@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58350e5b0eb277b4facf386218a8c3ae, type: 3}
-  m_Name: KnightStats
+  m_Script: {fileID: 11500000, guid: ed7c52ae11a0b954aaffb27d904ffa73, type: 3}
+  m_Name: 10 Peasants (low cooldown + 2s initial delay)
   m_EditorClassIdentifier: 
-  enemyType: Knight
-  health: 20
-  speed: 10
-  damage: 5
+  enemyToSpawn: {fileID: 11400000, guid: 0f09336bf67cea94096a8ea374c00d2e, type: 2}
+  amount: 10
+  initialTimeDelay: 2
+  timeDelayBetweenSpawns: 0.5

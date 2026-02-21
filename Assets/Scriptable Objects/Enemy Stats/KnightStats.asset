@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 58350e5b0eb277b4facf386218a8c3ae, type: 3}
-  m_Name: PeasantStats
+  m_Name: KnightStats
   m_EditorClassIdentifier: 
-  enemyType: Peasant
-  health: 10
-  speed: 1
+  enemyType: Knight
+  sprite: {fileID: 21300000, guid: 32ed99857c226da49b663677fc6d15e3, type: 3}
+  health: 20
+  speed: 5
   damage: 5
