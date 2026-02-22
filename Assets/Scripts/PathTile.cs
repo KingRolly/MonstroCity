@@ -19,6 +19,8 @@ public class PathTile : Tile
     [SerializeField] Sprite upEnd;
     [SerializeField] Sprite leftEnd;
     [SerializeField] Sprite rightEnd;
+    [SerializeField] Sprite start;
+    [SerializeField] Sprite end;
 
     public enum spriteType //add the flipped types into here and handle that in the sprite type function
     {
@@ -32,6 +34,8 @@ public class PathTile : Tile
         UpEnd,
         LeftEnd,
         RightEnd,
+        Start,
+        End
     }
 
     private void Awake()
@@ -79,6 +83,12 @@ public class PathTile : Tile
                 return;
             case spriteType.RightEnd:
                 gameObject.GetComponent<SpriteRenderer>().sprite = rightEnd;
+                return;
+            case spriteType.Start:
+                gameObject.GetComponent<SpriteRenderer>().sprite = start;
+                return;
+            case spriteType.End:
+                gameObject.GetComponent<SpriteRenderer>().sprite = end;
                 return;
         }
     }

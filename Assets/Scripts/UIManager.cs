@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
+using System;
 
 // Class description:
 // Manager for setting up and changing anything UI related
@@ -112,5 +113,15 @@ public class UIManager : MonoBehaviour
     {
         money += amt;
         goblinCounter.text = money.ToString();
+    }
+
+    public Boolean isHolding(){
+        foreach (GameObject obj in towersList)
+        {
+            if (obj.GetComponent<TowerUI>().holding != "None") {
+                return true;
+            }
+        }
+        return false;
     }
 }

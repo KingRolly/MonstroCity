@@ -11,6 +11,7 @@ public class MouseManager : MonoBehaviour
     [SerializeField] Sprite hover;
     [SerializeField] Sprite select;
     [SerializeField] Sprite holding; // this is temporary
+    public UIManager uiManager;
     public GridManager gridManager;
 
     // Start is called before the first frame update
@@ -42,7 +43,7 @@ public class MouseManager : MonoBehaviour
         indicator.transform.position = selectPos;
 
         //Attempt to place tiles
-        if (gridManager.getEditing()) {
+        if (gridManager.getEditing() && !uiManager.isHolding()) {
             if (Input.GetMouseButton(0)) {
                 gridManager.placePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
             } else if (Input.GetMouseButton(1)) {

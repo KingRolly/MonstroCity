@@ -56,13 +56,14 @@ public class GridManager : MonoBehaviour
         path.Add(startPathPosition);
         updatePathSprites();
 
+
         //Create the end tile object
         grid[endPathPosition.x, endPathPosition.y] = Instantiate(pathTile, new Vector2(endPathPosition.x, endPathPosition.y), Quaternion.identity);
 
         //Update placeable grid areas
         placeablePositions.Clear();
         deletePlaceableIndicators();
-        updatePlaceablePositions(startPathPosition, false);
+        updatePlaceablePositions(startPathPosition);
     }
 
     /*How path placement works:
@@ -89,7 +90,10 @@ public class GridManager : MonoBehaviour
             //Update placeable grid areas
             placeablePositions.Clear();
             deletePlaceableIndicators();
-            updatePlaceablePositions(position, true);
+            if (path.Count != 0)
+            {
+                updatePlaceablePositions(path[path.Count - 1]);
+            }
         }
     }
 
@@ -108,7 +112,10 @@ public class GridManager : MonoBehaviour
             //Update placeable grid areas
             placeablePositions.Clear();
             deletePlaceableIndicators();
-            updatePlaceablePositions(path[path.Count - 1], false);
+            if (path.Count != 0)
+            {
+                updatePlaceablePositions(path[path.Count - 1], position);
+            }
         }
     }
 
@@ -123,7 +130,10 @@ public class GridManager : MonoBehaviour
             //Update placeable grid areas in case we placed it on a flag tile
             placeablePositions.Clear();
             deletePlaceableIndicators();
-            updatePlaceablePositions(path[path.Count - 1], true); // TODO: Resolve bug that occurs here (out of bounds error)
+            if (path.Count != 0)
+            {
+                updatePlaceablePositions(path[path.Count - 1]);
+            }
             return true;
         } else {
             Debug.Log("Couldn't place tower :( (Is something else there?)");
@@ -136,15 +146,17 @@ public class GridManager : MonoBehaviour
         return position.x >= 0 && position.x < width && position.y >= 0 && position.y < height;
     }
 
-    void updatePlaceablePositions(Vector2Int position, Boolean placingPath)
+    void updatePlaceablePositions(Vector2Int position, Vector2Int? deletedPathPos = null)
     {
-        Vector2Int[] directions = {Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down};
+        Vector2Int[] directions = { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
 
-        foreach (var direction in directions) {
+        foreach (var direction in directions)
+        {
             Vector2Int adjacentPos = position + direction;
 
-            if (IsInBounds(adjacentPos) && !path.Contains(adjacentPos)) {
-                if (grid[adjacentPos.x, adjacentPos.y].getPlaceable() || !placingPath)
+            if (IsInBounds(adjacentPos) && !path.Contains(adjacentPos))
+            {
+                if (grid[adjacentPos.x, adjacentPos.y].getPlaceable() || adjacentPos.Equals(deletedPathPos))
                 {
                     GameObject indicator = Instantiate(placeableIndicator, new Vector2(adjacentPos.x, adjacentPos.y), Quaternion.identity);
                     indicator.GetComponent<SpriteRenderer>().enabled = true;
@@ -176,16 +188,20 @@ public class GridManager : MonoBehaviour
         if (path.Count == 1)
         {
             //Set to generic starter path sprite (?) (this will be changed once we add the start/end tiles)
-            grid[path[0].x, path[0].y].setSpriteType(PathTile.spriteType.Vertical);
+            grid[path[0].x, path[0].y].setSpriteType(PathTile.spriteType.Start);
         }
         else if (path.Count == 2)
         {
             //Base this off of the previous path location
             PathDirection direction = getDirection(path[0], path[1]);
-            grid[path[0].x, path[0].y].setSpriteType(
-                (direction == PathDirection.Right || direction == PathDirection.Left) ?
-                PathTile.spriteType.Horizontal : PathTile.spriteType.Vertical
-                );
+
+            //DONT NEED TO ALTER THE STARTING TILE 
+            //grid[path[0].x, path[0].y].setSpriteType(
+            //    (direction == PathDirection.Right || direction == PathDirection.Left) ?
+            //    PathTile.spriteType.Horizontal : PathTile.spriteType.Vertical
+            //    );
+
+
             grid[path[1].x, path[1].y].setSpriteType(
                 direction == PathDirection.Right ?
                 PathTile.spriteType.RightEnd : direction == PathDirection.Left ?

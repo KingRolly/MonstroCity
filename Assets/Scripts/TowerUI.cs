@@ -44,19 +44,11 @@ public class TowerUI : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                // TODO: Resolve an error originates here when calling placeTower() on line 57
-                // Error occurs on line 109 of GridManager.cs, apparently it's an out of bounds error or smt
-
-                // Placeholder for tower placement testing until we get the above error fixed
-                Debug.Log($"{towerType} purchased for {price} goblins");
-                uiManager.addMoney(-this.price);
-                holding = "None";
-
                 if (gridManager.placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), towerType))
                 {
-                    //Debug.Log($"{towerType} purchased for {price} goblins");
-                    //uiManager.addMoney(-this.price);
-                    //holding = "None";
+                    Debug.Log($"{towerType} purchased for {price} goblins");
+                    uiManager.addMoney(-this.price);
+                    holding = "None";
                 }
             }
             if (Input.GetKeyUp(KeyCode.Escape))
