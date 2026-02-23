@@ -34,9 +34,6 @@ public class GridManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isPathValid()) {
-            print("PATH VALID NOW");
-        }
     }
 
     void placeTiles(int width, int height)
@@ -59,6 +56,7 @@ public class GridManager : MonoBehaviour
 
         //Create the end tile object
         grid[endPathPosition.x, endPathPosition.y] = Instantiate(pathTile, new Vector2(endPathPosition.x, endPathPosition.y), Quaternion.identity);
+        grid[endPathPosition.x, endPathPosition.y].setSpriteType(PathTile.spriteType.End);
 
         //Update placeable grid areas
         placeablePositions.Clear();
@@ -82,24 +80,44 @@ public class GridManager : MonoBehaviour
             grid[position.x, position.y] = Instantiate(pathTile, new Vector2(position.x, position.y), Quaternion.identity);
             path.Add(position);
 
-            updatePathSprites();
-
-            // Print path positions for debugging
-            Debug.Log(position.x + ", " + position.y);
-
-            //Update placeable grid areas
-            placeablePositions.Clear();
-            deletePlaceableIndicators();
-            if (path.Count != 0)
+            if (isNextToEndTile(position))
             {
-                updatePlaceablePositions(path[path.Count - 1]);
+                //Add end tile to our path, and connect the sprite up with it properly
+                path.Add(endPathPosition);
+                updatePathSprites(true);
+                placeablePositions.Clear();
+                deletePlaceableIndicators();
+            }
+            else {
+                updatePathSprites();
+
+                // Print path positions for debugging
+                Debug.Log(position.x + ", " + position.y);
+
+                //Update placeable grid areas
+                placeablePositions.Clear();
+                deletePlaceableIndicators();
+                if (path.Count != 0)
+                {
+                    updatePlaceablePositions(path[path.Count - 1]);
+                }
             }
         }
     }
 
     public void deletePath(Vector2Int position)
     {
-        //Delete path tile at the head of current path
+        if (position == endPathPosition) {
+            return;
+        }
+
+        //Delete path tile at the head of current path (excluding end tile)
+        if (isNextToEndTile(position) && path[path.Count - 2] == position)
+        {
+            //Remove end tile from path
+            path.RemoveAt(path.Count - 1);
+        }
+
         if (IsInBounds(position) && path.Count > 1 && path[path.Count - 1] == position)
         {
             Destroy(grid[position.x, position.y].gameObject);
@@ -167,11 +185,21 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    void isNextToEndTile(Vector2Int position)
+    bool isNextToEndTile(Vector2Int position)
     {
-        
-    }
+        Vector2Int[] directions = { Vector2Int.right, Vector2Int.up, Vector2Int.left, Vector2Int.down };
 
+        foreach (var direction in directions)
+        {
+            Vector2Int adjacentPos = position + direction;
+
+            if (IsInBounds(adjacentPos) && adjacentPos.x == endPathPosition.x && adjacentPos.y == endPathPosition.y) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     enum PathDirection { Up, Down, Left, Right }
     PathDirection getDirection(Vector2Int previous, Vector2Int next)
@@ -182,7 +210,7 @@ public class GridManager : MonoBehaviour
         return PathDirection.Down;
     }
 
-    void updatePathSprites() //Call this after each placement + deletion
+    void updatePathSprites(bool connectingToEndTile = false) //Call this after each placement + deletion
     {
         //Deal with path array of size 1 first, then deal with 2, then deal with 3
         if (path.Count == 1)
@@ -212,44 +240,62 @@ public class GridManager : MonoBehaviour
         else
         {
             //Base this off of the previous path location + check if there was a turn
-            PathDirection directionToHead = getDirection(path[path.Count - 2], path[path.Count - 1]);
             PathDirection directionToMid = getDirection(path[path.Count - 3], path[path.Count - 2]);
+            PathDirection directionToHead = getDirection(path[path.Count - 2], path[path.Count - 1]);
 
-            if (directionToHead == directionToMid)
+            UpdateMiddleTile(path.Count - 2, directionToMid, directionToHead);
+
+            if (connectingToEndTile && path.Count >= 4)
             {
-                grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(
-                    (directionToHead == PathDirection.Left || directionToHead == PathDirection.Right) ?
-                    PathTile.spriteType.Horizontal : PathTile.spriteType.Vertical
+                PathDirection dirToMid =
+                    getDirection(path[path.Count - 4], path[path.Count - 3]);
+
+                PathDirection dirFromMid =
+                    getDirection(path[path.Count - 3], path[path.Count - 2]);
+
+                UpdateMiddleTile(path.Count - 3, dirToMid, dirFromMid);
+            }
+            if (!connectingToEndTile)
+            {
+                // Update head of path
+                grid[path[path.Count - 1].x, path[path.Count - 1].y].setSpriteType(
+                    directionToHead == PathDirection.Up ? PathTile.spriteType.UpEnd :
+                    directionToHead == PathDirection.Down ? PathTile.spriteType.DownEnd :
+                    directionToHead == PathDirection.Left ? PathTile.spriteType.LeftEnd :
+                    PathTile.spriteType.RightEnd
                 );
             }
-            else
-            {
-                if (directionToMid == PathDirection.Left && directionToHead == PathDirection.Up)
-                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.DownRight);
-                if (directionToMid == PathDirection.Left && directionToHead == PathDirection.Down)
-                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.UpRight);
-                if (directionToMid == PathDirection.Right && directionToHead == PathDirection.Up)
-                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.DownLeft);
-                if (directionToMid == PathDirection.Right && directionToHead == PathDirection.Down)
-                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.UpLeft);
+        }
+    }
 
-                if (directionToMid == PathDirection.Up && directionToHead == PathDirection.Left)
-                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.UpLeft);
-                if (directionToMid == PathDirection.Up && directionToHead == PathDirection.Right)
-                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.UpRight);
-                if (directionToMid == PathDirection.Down && directionToHead == PathDirection.Left)
-                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.DownLeft);
-                if (directionToMid == PathDirection.Down && directionToHead == PathDirection.Right)
-                    grid[path[path.Count - 2].x, path[path.Count - 2].y].setSpriteType(PathTile.spriteType.DownRight);
-            }
-
-            // Update head of path
-            grid[path[path.Count - 1].x, path[path.Count - 1].y].setSpriteType(
-                directionToHead == PathDirection.Up ? PathTile.spriteType.UpEnd :
-                directionToHead == PathDirection.Down ? PathTile.spriteType.DownEnd :
-                directionToHead == PathDirection.Left ? PathTile.spriteType.LeftEnd :
-                PathTile.spriteType.RightEnd
+    void UpdateMiddleTile(int index, PathDirection directionToMid, PathDirection directionToHead)
+    {
+        if (directionToHead == directionToMid)
+        {
+            grid[path[index].x, path[index].y].setSpriteType(
+                (directionToHead == PathDirection.Left || directionToHead == PathDirection.Right) ?
+                PathTile.spriteType.Horizontal : PathTile.spriteType.Vertical
             );
+        }
+        else
+        {
+            if (directionToMid == PathDirection.Left && directionToHead == PathDirection.Up)
+                grid[path[index].x, path[index].y].setSpriteType(PathTile.spriteType.DownRight);
+            if (directionToMid == PathDirection.Left && directionToHead == PathDirection.Down)
+                grid[path[index].x, path[index].y].setSpriteType(PathTile.spriteType.UpRight);
+            if (directionToMid == PathDirection.Right && directionToHead == PathDirection.Up)
+                grid[path[index].x, path[index].y].setSpriteType(PathTile.spriteType.DownLeft);
+            if (directionToMid == PathDirection.Right && directionToHead == PathDirection.Down)
+                grid[path[index].x, path[index].y].setSpriteType(PathTile.spriteType.UpLeft);
+
+            if (directionToMid == PathDirection.Up && directionToHead == PathDirection.Left)
+                grid[path[index].x, path[index].y].setSpriteType(PathTile.spriteType.UpLeft);
+            if (directionToMid == PathDirection.Up && directionToHead == PathDirection.Right)
+                grid[path[index].x, path[index].y].setSpriteType(PathTile.spriteType.UpRight);
+            if (directionToMid == PathDirection.Down && directionToHead == PathDirection.Left)
+                grid[path[index].x, path[index].y].setSpriteType(PathTile.spriteType.DownLeft);
+            if (directionToMid == PathDirection.Down && directionToHead == PathDirection.Right)
+                grid[path[index].x, path[index].y].setSpriteType(PathTile.spriteType.DownRight);
         }
     }
 
