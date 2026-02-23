@@ -44,7 +44,6 @@ public class EnemyManager : MonoBehaviour
         deadEnemies = new List<GameObject>();
     }
 
-
     #region Object Pool Functions
     private void Awake()
     {
