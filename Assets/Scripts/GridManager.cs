@@ -24,6 +24,9 @@ public class GridManager : MonoBehaviour
     public Vector2Int startPathPosition;
     public Vector2Int endPathPosition;
 
+    //Temp
+    public Sprite testSprite;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -143,7 +146,10 @@ public class GridManager : MonoBehaviour
         // TODO: Add more conditions when other types of path exist
         if (grid[position.x, position.y].getPlaceable()) {
             Destroy(grid[position.x, position.y].gameObject);
-            grid[position.x, position.y] = Instantiate(towerTile, new Vector2(position.x, position.y), Quaternion.identity);
+            TowerTile tower;
+            tower = Instantiate(towerTile, new Vector2(position.x, position.y), Quaternion.identity);
+            tower.GetComponent<SpriteRenderer>().sprite = testSprite;
+            grid[position.x, position.y] = tower;
 
             //Update placeable grid areas in case we placed it on a flag tile
             placeablePositions.Clear();

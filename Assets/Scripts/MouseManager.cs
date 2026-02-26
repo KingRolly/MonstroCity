@@ -10,7 +10,7 @@ public class MouseManager : MonoBehaviour
     static bool locked;
     [SerializeField] Sprite hover;
     [SerializeField] Sprite select;
-    [SerializeField] Sprite holding; // this is temporary
+    [SerializeField] Sprite testSprite;
     public UIManager uiManager;
     public GridManager gridManager;
 
@@ -26,12 +26,15 @@ public class MouseManager : MonoBehaviour
 
         Vector2 screenPos = Input.mousePosition;
         Vector2Int worldPos = Vector2Int.RoundToInt(Camera.main.ScreenToWorldPoint(screenPos));
-        if (!locked)
-        {
-            gameObject.GetComponent<SpriteRenderer>().sprite = hover;
-            selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
-        } else {
+
+        if (locked) {
             gameObject.GetComponent<SpriteRenderer>().sprite = select;
+        } else if (uiManager.isHolding()) {
+            selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
+            gameObject.GetComponent<SpriteRenderer>().sprite = testSprite;
+        } else {
+            selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
+            gameObject.GetComponent<SpriteRenderer>().sprite = hover;
         }
 
         // Keep indicator within bounds
