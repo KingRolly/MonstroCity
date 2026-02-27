@@ -35,7 +35,7 @@ public class TowerInfoPopup : MonoBehaviour
     
     // Updates popup with information of currently hovered tower and makes popup visible
     // Provide stats to be updated (TODO: method might need to support more stats in the future)
-    public void displayPopup(float dmg, float spd, float range, float xPos, float yPos)
+    public void DisplayPopup(float dmg, float spd, float range, float xPos, float yPos)
     {
         dmgText.text = "DMG " + dmg.ToString();
         atkSpeedText.text = "SPD " + spd.ToString() + "s";
@@ -46,22 +46,22 @@ public class TowerInfoPopup : MonoBehaviour
     }
 
     // Hides popups (should occur upon exiting hover)
-    public void hidePopup()
+    public void HidePopup()
     {
         gameObject.SetActive(false);
     }
 
     // Basic getters for private variables
-    public float getDmg()
+    public float GetDmg()
     {
         return this.damage;
     }
-    public float getAtkSpeed()
+    public float GetAtkSpeed()
     {
         return this.attackSpeed;
     }
 
-    public float getAtkRange()
+    public float GetAtkRange()
     {
         return this.attackRange;
     }

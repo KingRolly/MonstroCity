@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TowerTile : Tile
+public abstract class TowerTile : Tile
 {   
     private string towerType;
     private int price;

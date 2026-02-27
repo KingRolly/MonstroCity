@@ -595,11 +595,7 @@ MonoBehaviour:
   gridManager: {fileID: 0}
   mouseManager: {fileID: 0}
   towerInfoPopup: {fileID: 0}
-  towerType: Archer
-  price: 20
-  damage: 5
-  attackSpeed: 5
-  attackRange: 5
+  data: {fileID: 11400000, guid: 7680f4a057da7f0488ae45dbe94b4761, type: 2}
 --- !u!114 &3080372288906820825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -645,8 +641,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3787222040130789344}
-        m_TargetAssemblyTypeName: TowerUI, Assembly-CSharp
-        m_MethodName: buyTower
+        m_TargetAssemblyTypeName: TowerIcon, Assembly-CSharp
+        m_MethodName: BuyTower
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -674,8 +670,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 3787222040130789344}
-          m_TargetAssemblyTypeName: TowerUI, Assembly-CSharp
-          m_MethodName: displayTowerInfoPopup
+          m_TargetAssemblyTypeName: TowerIcon, Assembly-CSharp
+          m_MethodName: DisplayTowerInfoPopup
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -690,8 +686,8 @@ MonoBehaviour:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 3787222040130789344}
-          m_TargetAssemblyTypeName: TowerUI, Assembly-CSharp
-          m_MethodName: hideTowerInfoPopup
+          m_TargetAssemblyTypeName: TowerIcon, Assembly-CSharp
+          m_MethodName: HideTowerInfoPopup
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

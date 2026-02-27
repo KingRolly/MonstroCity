@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.Cryptography;
+using JetBrains.Annotations;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -18,7 +19,6 @@ public class GridManager : MonoBehaviour
     public GameObject placeableIndicator;
     public BackgroundTile backgroundTile;
     public PathTile pathTile;
-    public TowerTile towerTile;
     public bool editing;
     public MouseManager mouseManager;
     public Vector2Int startPathPosition;
@@ -140,14 +140,14 @@ public class GridManager : MonoBehaviour
         }
     }
 
-    public bool placeTower(Vector2Int position, string type)
+    public bool placeTower(Vector2Int position, TowerData data)
     {
         // Place tower tile
         // TODO: Add more conditions when other types of path exist
         if (grid[position.x, position.y].getPlaceable()) {
             Destroy(grid[position.x, position.y].gameObject);
             TowerTile tower;
-            tower = Instantiate(towerTile, new Vector2(position.x, position.y), Quaternion.identity);
+            tower = Instantiate(data.towerType, new Vector2(position.x, position.y), Quaternion.identity);
             tower.GetComponent<SpriteRenderer>().sprite = testSprite;
             grid[position.x, position.y] = tower;
 

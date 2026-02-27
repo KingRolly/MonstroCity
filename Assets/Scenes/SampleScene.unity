@@ -378,6 +378,7 @@ MonoBehaviour:
   mouseManager: {fileID: 2019142844}
   towerInfoPopup: {fileID: 960855604}
   money: 100
+  archerData: {fileID: 11400000, guid: 7680f4a057da7f0488ae45dbe94b4761, type: 2}
 --- !u!4 &135745662
 Transform:
   m_ObjectHideFlags: 0
@@ -440,7 +441,6 @@ MonoBehaviour:
   placeableIndicator: {fileID: 7085749667101040808, guid: 7ee11a5c36dd5f441adce60e2905f5ad, type: 3}
   backgroundTile: {fileID: 2502489344522406862, guid: 68e35283ab2a7094aad84b446b6b03c8, type: 3}
   pathTile: {fileID: 5409159205120673324, guid: 5ee82fc0b6e07144cbfd34a577caf78f, type: 3}
-  towerTile: {fileID: 8287657778203470292, guid: f706f98a1a2cd53418c3c275bb8c5090, type: 3}
   editing: 0
   mouseManager: {fileID: 2019142844}
   startPathPosition: {x: 0, y: 0}

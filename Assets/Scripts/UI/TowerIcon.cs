@@ -7,7 +7,7 @@ using TMPro;
 // Class description:
 // Used by Tower Icon prefab to implement functionality for purchasing towers and other UI features related to it (i.e display tower info popup as of now)
 // - Nicholas Liang (Feb. 2nd, 2026)
-public class TowerUI : MonoBehaviour
+public class TowerIcon : MonoBehaviour
 {
     [SerializeField] public string holding = "None";
 
@@ -18,19 +18,13 @@ public class TowerUI : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] private MouseManager mouseManager;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
-
-    [Header("Tower Stats")]
-    [SerializeField] private string towerType;
-    [SerializeField] private int price;
-    [SerializeField] private float damage;
-    [SerializeField] private float attackSpeed;
-    [SerializeField] private float attackRange;
+    [SerializeField] private TowerData data;
 
     // Start is called before the first frame update
     void Start()
     {
-        priceText.text = price.ToString();
-        nameText.text = towerType;
+        priceText.text = data.price.ToString();
+        nameText.text = data.towerName;
     }
 
     // Update is called once per frame
@@ -44,10 +38,10 @@ public class TowerUI : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                if (gridManager.placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), towerType))
+                if (gridManager.placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), data))
                 {
-                    Debug.Log($"{towerType} purchased for {price} goblins");
-                    uiManager.addMoney(-this.price);
+                    Debug.Log($"{data.towerName} purchased for {data.price} goblins");
+                    uiManager.addMoney(-data.price);
                     holding = "None";
                 }
             }
@@ -59,22 +53,16 @@ public class TowerUI : MonoBehaviour
         }
     }
 
-    // Assigns info of tower upon instantiation
-    // UIManager should call this when setting up the top bar
-    public void setTowerInfo(string type, int price, float dmg, float atkSpd, float atkRg)
+    public void SetData(TowerData data)
     {
-        this.towerType = type;
-        nameText.text = towerType;
-        this.price = price;
-        priceText.text = price.ToString();
-        this.damage = dmg;
-        this.attackSpeed = atkSpd;
-        this.attackRange = atkRg;
+        this.data = data;
+        priceText.text = data.price.ToString();
+        nameText.text = data.towerName;
     }
 
     // Used to assign references TowerUI needs upon instantiation
     // UIManager should call this when setting up the top bar
-    public void assignReferences(UIManager uiManager, GridManager gridManager, MouseManager mouseManager, TowerInfoPopup towerInfoPopup)
+    public void AssignReferences(UIManager uiManager, GridManager gridManager, MouseManager mouseManager, TowerInfoPopup towerInfoPopup)
     {
         this.uiManager = uiManager;
         this.gridManager = gridManager;
@@ -83,27 +71,27 @@ public class TowerUI : MonoBehaviour
     }
 
     // Make info popup visible, should be called upon hovering over icon
-    public void displayTowerInfoPopup()
+    public void DisplayTowerInfoPopup()
     {
         // Enable tower info popup and update its stats to reflect currently hovered tower
-        towerInfoPopup.displayPopup(this.damage, this.attackSpeed, this.attackRange, gameObject.transform.position.x, gameObject.transform.position.y);
-        // Debug.Log("Diplay " + towerType + " Tower's info popup");
+        towerInfoPopup.DisplayPopup(data.damage, data.attackSpeed, data.attackRange, gameObject.transform.position.x, gameObject.transform.position.y);
+        //Debug.Log("Diplay " + data.towerName + " Tower's info popup");
     }
 
     // Hide info popup, should be called upon exiting hover over icon
-    public void hideTowerInfoPopup()
+    public void HideTowerInfoPopup()
     {
-        towerInfoPopup.hidePopup();
+        towerInfoPopup.HidePopup();
     }
 
     // Purchase tower and prompt player to place tower
-    public void buyTower()
+    public void BuyTower()
     {
         if (holding.Equals("None")) // Check that player isn't already holding a tower
         { 
-            if (uiManager.getMoney() - this.price >= 0) // check if player can afford tower
+            if (uiManager.getMoney() - data.price >= 0) // check if player can afford tower
             {
-                holding = towerType; // Set the held tower to this tower's type
+                holding = data.towerName; // Set the held tower to this tower's type
             }
             else
             {
@@ -113,25 +101,29 @@ public class TowerUI : MonoBehaviour
     }
 
     // Basic getters for private variables
-    public string getTowerType()
+    public TowerTile GetTowerType()
     {
-        return this.towerType;
+        return data.towerType;
     }
-    public int getPrice()
+    public string GetTowerName()
     {
-        return this.price;
+        return data.towerName;
     }
-    public float getDmg()
+    public int GetPrice()
     {
-        return this.damage;
+        return data.price;
     }
-    public float getAtkSpeed()
+    public float GetDmg()
     {
-        return this.attackSpeed;
+        return data.damage;
+    }
+    public float GetAtkSpeed()
+    {
+        return data.attackSpeed;
     }
 
-    public float getAtkRange()
+    public float GetAtkRange()
     {
-        return this.attackRange;
+        return data.attackRange;
     }
 }
