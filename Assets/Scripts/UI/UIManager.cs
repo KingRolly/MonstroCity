@@ -77,7 +77,7 @@ public class UIManager : MonoBehaviour
     public Boolean isHolding(){
         foreach (GameObject obj in towersList)
         {
-            if (obj.GetComponent<TowerIcon>().holding != "None") {
+            if (obj.GetComponent<TowerIcon>().GetHolding() is null) {
                 return true;
             }
         }

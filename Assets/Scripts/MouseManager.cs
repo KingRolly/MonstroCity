@@ -10,8 +10,7 @@ public class MouseManager : MonoBehaviour
     static bool locked;
     [SerializeField] Sprite hover;
     [SerializeField] Sprite select;
-    [SerializeField] Sprite testSprite;
-    public UIManager uiManager;
+    public TowerIcon icon;
     public GridManager gridManager;
 
     // Start is called before the first frame update
@@ -29,9 +28,9 @@ public class MouseManager : MonoBehaviour
 
         if (locked) {
             gameObject.GetComponent<SpriteRenderer>().sprite = select;
-        } else if (uiManager.isHolding()) {
+        } else if (icon.GetHolding()) {
             selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
-            gameObject.GetComponent<SpriteRenderer>().sprite = testSprite;
+            gameObject.GetComponent<SpriteRenderer>().sprite = icon.GetHolding().sprite;
         } else {
             selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
             gameObject.GetComponent<SpriteRenderer>().sprite = hover;
@@ -46,7 +45,7 @@ public class MouseManager : MonoBehaviour
         indicator.transform.position = selectPos;
 
         //Attempt to place tiles
-        if (gridManager.getEditing() && !uiManager.isHolding()) {
+        if (gridManager.getEditing() && icon.GetHolding() is not null) {
             if (Input.GetMouseButton(0)) {
                 gridManager.placePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
             } else if (Input.GetMouseButton(1)) {

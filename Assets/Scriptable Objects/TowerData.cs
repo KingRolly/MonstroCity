@@ -13,6 +13,7 @@ public class TowerData : ScriptableObject
     public TowerTile towerType;
 
     public string towerName;
+    public Sprite sprite;
     public int price;
     public float damage;
     public float attackSpeed;

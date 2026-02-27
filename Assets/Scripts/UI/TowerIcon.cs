@@ -9,8 +9,6 @@ using TMPro;
 // - Nicholas Liang (Feb. 2nd, 2026)
 public class TowerIcon : MonoBehaviour
 {
-    [SerializeField] public string holding = "None";
-
     [Header("References")]
     public TextMeshProUGUI priceText;
     public TextMeshProUGUI nameText;
@@ -19,6 +17,7 @@ public class TowerIcon : MonoBehaviour
     [SerializeField] private MouseManager mouseManager;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
     [SerializeField] private TowerData data;
+    [SerializeField] private TowerData holding = null;
 
     // Start is called before the first frame update
     void Start()
@@ -32,9 +31,9 @@ public class TowerIcon : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.H))
         {
-            Debug.Log("Holding " + holding);
+            Debug.Log("Holding " + holding.towerName);
         }
-        if (holding != "None")
+        if (holding != null)
         {
             if (Input.GetMouseButtonDown(0))
             {
@@ -42,12 +41,12 @@ public class TowerIcon : MonoBehaviour
                 {
                     Debug.Log($"{data.towerName} purchased for {data.price} goblins");
                     uiManager.addMoney(-data.price);
-                    holding = "None";
+                    holding = null;
                 }
             }
             if (Input.GetKeyUp(KeyCode.Escape))
             {
-                holding = "None";
+                holding = null;
             }
             mouseManager.setLock(false);
         }
@@ -87,11 +86,11 @@ public class TowerIcon : MonoBehaviour
     // Purchase tower and prompt player to place tower
     public void BuyTower()
     {
-        if (holding.Equals("None")) // Check that player isn't already holding a tower
+        if (holding == null) // Check that player isn't already holding a tower
         { 
             if (uiManager.getMoney() - data.price >= 0) // check if player can afford tower
             {
-                holding = data.towerName; // Set the held tower to this tower's type
+                holding = data; // Set the held tower to this tower's data
             }
             else
             {
@@ -125,5 +124,10 @@ public class TowerIcon : MonoBehaviour
     public float GetAtkRange()
     {
         return data.attackRange;
+    }
+
+    public TowerData GetHolding()
+    {
+        return holding;
     }
 }
