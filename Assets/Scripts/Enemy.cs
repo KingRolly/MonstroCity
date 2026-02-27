@@ -17,6 +17,8 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
 
+    private EnemyManager enemyManager;
+
     [SerializeField] private List<Vector2Int> enemyPath;
     private int pathIndex;
     public IObjectPool<GameObject> enemyObjectPool;
@@ -53,7 +55,7 @@ public class Enemy : MonoBehaviour
 
     // Used to set info of enemy
     // Enemy Manager should call this upon instantiating an enemy
-    public void setInfo(string type, int hp, float spd, int dmg, Sprite sprite)
+    public void setInfo(string type, int hp, float spd, int dmg, Sprite sprite, EnemyManager enemyManager)
     {
         enemyType = type;
         health = hp;
@@ -61,6 +63,7 @@ public class Enemy : MonoBehaviour
         damage = dmg;
         enemySprite = sprite;
         this.GetComponent<SpriteRenderer>().sprite = sprite;
+        this.enemyManager = enemyManager;
     }
 
     // Assign path for enemy to take
@@ -82,7 +85,27 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Basic getters
+    
+    /// <summary>
+    /// Deal damage to enemy, despawns enemy if damage is fatal
+    /// </summary>
+    /// <param name="dmg">Amount of damage dealt to enemy</param>
+    public void takeDamage(int dmg)
+    {
+        // TODO: Update enemy's health to take correct amount of damage
+        // Despawn enemy and return it to object pool if the damage kills enemy
+    }
+
+    /// <summary>
+    /// Private helper method for despawning enemy
+    /// </summary>
+    private void despawn()
+    {
+        // Call enemy manager's despawn function to depsawn this enemy
+        enemyManager.despawnEnemy(this.gameObject);
+    }
+
+    #region Basic Getters
     public string getType()
     {
         return this.enemyType;
@@ -103,4 +126,5 @@ public class Enemy : MonoBehaviour
     {
         return this.damage;
     }
+    #endregion
 }

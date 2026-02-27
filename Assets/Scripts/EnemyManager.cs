@@ -148,7 +148,7 @@ public class EnemyManager : MonoBehaviour
             Sprite sprite = enemyStats.sprite;
 
             // Set up enemy stats and pathfinding
-            enemyToSpawn.GetComponent<Enemy>().setInfo(enemyType, health, speed, damage, sprite);
+            enemyToSpawn.GetComponent<Enemy>().setInfo(enemyType, health, speed, damage, sprite, this);
             enemyToSpawn.GetComponent<Enemy>().setPath(gridManager.getPath());
 
             // Keep track of spawned enemy
