@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b311e7c26e4f7de49ae1b1e2afd1f39a, type: 3}
   m_Name: ArcherTower
   m_EditorClassIdentifier: 
-  towerType: {fileID: 0}
+  towerType: {fileID: 2073946862857539422, guid: f706f98a1a2cd53418c3c275bb8c5090, type: 3}
   towerName: Archer
   sprite: {fileID: 21300000, guid: 4c2a01973259b414880dcea2c51576fa, type: 3}
   price: 2
