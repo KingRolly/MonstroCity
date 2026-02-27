@@ -86,14 +86,26 @@ public class Enemy : MonoBehaviour
     }
 
     
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // TODO: Check if enemy collided with a tower attack and take appropriate damage
+    }
+
     /// <summary>
     /// Deal damage to enemy, despawns enemy if damage is fatal
     /// </summary>
     /// <param name="dmg">Amount of damage dealt to enemy</param>
     public void takeDamage(int dmg)
     {
-        // TODO: Update enemy's health to take correct amount of damage
+        // Update enemy's health to take correct amount of damage
         // Despawn enemy and return it to object pool if the damage kills enemy
+        this.health -= dmg;
+        if (this.health <= 0)
+        {
+            despawn();
+        }    
+
     }
 
     /// <summary>
