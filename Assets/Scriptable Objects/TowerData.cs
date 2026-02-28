@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Data container for a tower type's information. Used to assign general tower data <br/>
+/// (ScriptableObject) Data container for a tower type's information. Used to assign general tower data <br/>
 /// - Jack Peters (Feb. 27th, 2026)
 /// </summary>
 

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using Microsoft.Unity.VisualStudio.Editor;
+using UnityEngine.UI;
 
 
 // Class description:
@@ -12,6 +14,7 @@ public class TowerIcon : MonoBehaviour
     [Header("References")]
     public TextMeshProUGUI priceText;
     public TextMeshProUGUI nameText;
+    public GameObject icon;
     [SerializeField] private UIManager uiManager;
     [SerializeField] private GridManager gridManager;
     [SerializeField] private MouseManager mouseManager;
@@ -35,6 +38,7 @@ public class TowerIcon : MonoBehaviour
         this.data = data;
         priceText.text = data.price.ToString();
         nameText.text = data.towerName;
+        icon.GetComponent<UnityEngine.UI.Image>().sprite = data.sprite;
     }
 
     // Used to assign references TowerUI needs upon instantiation

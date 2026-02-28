@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 /// <summary>
-/// Data container used to create what the layout/makeup of a wave looks like <br/>
+/// (ScriptableObject) Data container used to create what the layout/makeup of a wave looks like <br/>
 /// Stores a list of enemy spawn patterns combined to make up the layout of a wave <br/>
 /// - Nicholas Liang (Feb. 20th, 2026)
 /// </summary>

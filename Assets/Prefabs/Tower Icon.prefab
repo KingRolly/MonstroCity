@@ -491,7 +491,7 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
-  m_UseSpriteMesh: 0
+  m_UseSpriteMesh: 1
   m_PixelsPerUnitMultiplier: 1
 --- !u!1 &5518434622953607693
 GameObject:
@@ -588,9 +588,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a182769613b949c43b34973aca9337cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  holding: None
   priceText: {fileID: 621932558365204621}
   nameText: {fileID: 1053458680219379577}
+  icon: {fileID: 5185885054500317430}
   uiManager: {fileID: 0}
   gridManager: {fileID: 0}
   mouseManager: {fileID: 0}
