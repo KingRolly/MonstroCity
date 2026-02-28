@@ -17,7 +17,6 @@ public class TowerIcon : MonoBehaviour
     [SerializeField] private MouseManager mouseManager;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
     [SerializeField] private TowerData data;
-    [SerializeField] private TowerData holding = null;
 
     // Start is called before the first frame update
     void Start()
@@ -29,27 +28,6 @@ public class TowerIcon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.H))
-        {
-            Debug.Log("Holding " + holding.towerName);
-        }
-        if (holding != null)
-        {
-            if (Input.GetMouseButtonDown(0))
-            {
-                if (gridManager.placeTower(Vector2Int.RoundToInt(mouseManager.getPos()), data))
-                {
-                    Debug.Log($"{data.towerName} purchased for {data.price} goblins");
-                    uiManager.addMoney(-data.price);
-                    holding = null;
-                }
-            }
-            if (Input.GetKeyUp(KeyCode.Escape))
-            {
-                holding = null;
-            }
-            mouseManager.setLock(false);
-        }
     }
 
     public void SetData(TowerData data)
@@ -86,11 +64,11 @@ public class TowerIcon : MonoBehaviour
     // Purchase tower and prompt player to place tower
     public void BuyTower()
     {
-        if (holding == null) // Check that player isn't already holding a tower
+        if (mouseManager.GetSelectedTowerIcon() == null) // Check that player isn't already holding a tower
         { 
             if (uiManager.getMoney() - data.price >= 0) // check if player can afford tower
             {
-                holding = data; // Set the held tower to this tower's data
+                mouseManager.SetSelectedTowerIcon(this); // Set the held tower to this tower
             }
             else
             {
@@ -99,10 +77,18 @@ public class TowerIcon : MonoBehaviour
         }
     }
 
-    // Basic getters for private variables
+    #region Basic Getters
     public TowerTile GetTowerType()
     {
         return data.towerType;
+    }
+    public TowerData GetTowerData()
+    {
+        return data;
+    }
+    public Sprite GetSprite()
+    {
+        return data.sprite;
     }
     public string GetTowerName()
     {
@@ -125,9 +111,5 @@ public class TowerIcon : MonoBehaviour
     {
         return data.attackRange;
     }
-
-    public TowerData GetHolding()
-    {
-        return holding;
-    }
+    #endregion
 }

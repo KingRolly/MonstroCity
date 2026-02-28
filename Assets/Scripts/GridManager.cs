@@ -78,7 +78,7 @@ public class GridManager : MonoBehaviour
     public void placePath(Vector2Int position)
     {
         //Place path tile
-        if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].getPlaceable()) { 
+        if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].getPlaceable()) {
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(pathTile, new Vector2(position.x, position.y), Quaternion.identity);
             path.Add(position);

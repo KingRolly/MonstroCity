@@ -73,14 +73,4 @@ public class UIManager : MonoBehaviour
         money += amt;
         goblinCounter.text = money.ToString();
     }
-
-    public Boolean isHolding(){
-        foreach (GameObject obj in towersList)
-        {
-            if (obj.GetComponent<TowerIcon>().GetHolding() is null) {
-                return true;
-            }
-        }
-        return false;
-    }
 }
