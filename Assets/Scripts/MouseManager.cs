@@ -7,10 +7,12 @@ using TMPro;
 public class MouseManager : MonoBehaviour
 {
     public GameObject indicator;
+    public GameObject heldTower;
     Vector2 selectPos;
     static bool locked;
     [SerializeField] Sprite hover;
     [SerializeField] Sprite select;
+    [SerializeField] Sprite hold;
     [SerializeField] TowerIcon selectedTowerIcon = null;
     [SerializeField] GridManager gridManager;
     [SerializeField] UIManager uiManager;
@@ -36,13 +38,26 @@ public class MouseManager : MonoBehaviour
         // Tower has been purchased and being held
         else if (selectedTowerIcon != null) { 
             selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
-            gameObject.GetComponent<SpriteRenderer>().sprite = selectedTowerIcon.GetSprite();
+            gameObject.GetComponent<SpriteRenderer>().sprite = hold;
         }
         // Default state
         else
         { 
             selectPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
             gameObject.GetComponent<SpriteRenderer>().sprite = hover;
+        }
+
+        // Set sprite of child object representing held tower
+        SpriteRenderer heldTowerRenderer = heldTower.GetComponent<SpriteRenderer>();
+        if (selectedTowerIcon == null)
+        {
+            heldTower.SetActive(false);
+        } else
+        {
+            heldTower.SetActive(true);
+            heldTowerRenderer = heldTower.GetComponent<SpriteRenderer>();
+            heldTowerRenderer.sprite = selectedTowerIcon.GetSprite();
+            heldTowerRenderer.color = new Color(1f, 1f, 1f, 0.5f);
         }
         #endregion
 

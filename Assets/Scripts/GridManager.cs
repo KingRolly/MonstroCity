@@ -24,9 +24,6 @@ public class GridManager : MonoBehaviour
     public Vector2Int startPathPosition;
     public Vector2Int endPathPosition;
 
-    //Temp
-    public Sprite testSprite;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -148,7 +145,7 @@ public class GridManager : MonoBehaviour
             Destroy(grid[position.x, position.y].gameObject);
             TowerTile tower;
             tower = Instantiate(data.towerType, new Vector2(position.x, position.y), Quaternion.identity);
-            tower.GetComponent<SpriteRenderer>().sprite = testSprite;
+            tower.GetComponent<SpriteRenderer>().sprite = mouseManager.GetSelectedTowerIcon().GetSprite();
             grid[position.x, position.y] = tower;
 
             //Update placeable grid areas in case we placed it on a flag tile
