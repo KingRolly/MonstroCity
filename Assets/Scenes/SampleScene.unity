@@ -463,6 +463,7 @@ MonoBehaviour:
   towerInfoPopup: {fileID: 960855604}
   money: 100
   archerData: {fileID: 11400000, guid: 7680f4a057da7f0488ae45dbe94b4761, type: 2}
+  gnomeData: {fileID: 11400000, guid: 7a6324922fa70d049b0fd3e234cf5ba2, type: 2}
 --- !u!4 &135745662
 Transform:
   m_ObjectHideFlags: 0

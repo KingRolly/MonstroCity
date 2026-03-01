@@ -25,6 +25,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private int money;
     private List<GameObject> towersList;
     [SerializeField] private TowerData archerData;
+    [SerializeField] private TowerData gnomeData;
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +54,12 @@ public class UIManager : MonoBehaviour
         archer.GetComponent<TowerIcon>().SetData(archerData);
         archer.GetComponent<TowerIcon>().AssignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
         towersList.Add(archer);
+
+        // Gnome Shooter: 10 price, 2 dmg, 1s spd, 10 range
+        GameObject gnome = Instantiate(towerIconPrefab, towersPanel.transform);
+        gnome.GetComponent<TowerIcon>().SetData(gnomeData);
+        gnome.GetComponent<TowerIcon>().AssignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
+        towersList.Add(gnome);
 
     }
 
