@@ -68,7 +68,7 @@ public class TowerIcon : MonoBehaviour
     // Purchase tower and prompt player to place tower
     public void BuyTower()
     {
-        if (mouseManager.GetSelectedTowerIcon() == null) // Check that player isn't already holding a tower
+        if (mouseManager.GetSelectedTowerIcon() != this) // Check that player isn't already holding this tower
         { 
             if (uiManager.getMoney() - data.price >= 0) // check if player can afford tower
             {
