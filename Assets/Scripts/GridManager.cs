@@ -148,12 +148,15 @@ public class GridManager : MonoBehaviour
             tower.GetComponent<SpriteRenderer>().sprite = mouseManager.GetSelectedTowerIcon().GetSprite();
             grid[position.x, position.y] = tower;
 
-            //Update placeable grid areas in case we placed it on a flag tile
-            placeablePositions.Clear();
-            deletePlaceableIndicators();
-            if (path.Count != 0)
+            if (!isPathValid())
             {
-                updatePlaceablePositions(path[path.Count - 1]);
+                //Update placeable grid areas in case we placed it on a flag tile
+                placeablePositions.Clear();
+                deletePlaceableIndicators();
+                if (path.Count != 0)
+                {
+                    updatePlaceablePositions(path[path.Count - 1]);
+                }
             }
             return true;
         } else {

@@ -92,7 +92,7 @@ public class MouseManager : MonoBehaviour
             // 2. There is a selected tower - place tower
             else
             {
-                if (Input.GetMouseButtonDown(0))
+                if (Input.GetMouseButtonDown(0) && gridManager.IsInBounds(worldPos))
                 {
                     if (gridManager.placeTower(Vector2Int.RoundToInt(selectPos), selectedTowerIcon.GetTowerData()))
                     { // Call GridManager to place the tower, update money, unselect tower icon
