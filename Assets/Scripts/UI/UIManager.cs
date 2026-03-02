@@ -23,9 +23,10 @@ public class UIManager : MonoBehaviour
 
     [Header("UI Information")]
     [SerializeField] private int money;
-    private List<GameObject> towersList;
     [SerializeField] private TowerData archerData;
     [SerializeField] private TowerData gnomeData;
+    private List<GameObject> towersList;
+    private readonly int MAX_TOWER_ICONS = 8;
 
     // Start is called before the first frame update
     void Start()
@@ -51,16 +52,24 @@ public class UIManager : MonoBehaviour
         // Placeholder towers for now
         // Archer: 2 price, 1 dmg, 0.1s spd, 8 range
         GameObject archer = Instantiate(towerIconPrefab, towersPanel.transform);
-        archer.GetComponent<TowerIcon>().SetData(archerData);
         archer.GetComponent<TowerIcon>().AssignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
+        archer.GetComponent<TowerIcon>().SetData(archerData);
         towersList.Add(archer);
 
         // Gnome Shooter: 10 price, 2 dmg, 1s spd, 10 range
         GameObject gnome = Instantiate(towerIconPrefab, towersPanel.transform);
-        gnome.GetComponent<TowerIcon>().SetData(gnomeData);
         gnome.GetComponent<TowerIcon>().AssignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
+        gnome.GetComponent<TowerIcon>().SetData(gnomeData);
         towersList.Add(gnome);
 
+        // Fill remaining slots with greyed out (empty) tower icons
+        for (int i = 0; towersList.Count < MAX_TOWER_ICONS; i++)
+        {
+            GameObject emptyIcon = Instantiate(towerIconPrefab, towersPanel.transform);
+            emptyIcon.GetComponent<TowerIcon>().AssignReferences(uiManager, gridManager, mouseManager, towerInfoPopup);
+            emptyIcon.GetComponent<TowerIcon>().MakeEmpty();
+            towersList.Add(emptyIcon);
+        }
     }
 
     public int getMoney() {

@@ -591,6 +591,7 @@ MonoBehaviour:
   priceText: {fileID: 621932558365204621}
   nameText: {fileID: 1053458680219379577}
   icon: {fileID: 5185885054500317430}
+  goblinIcon: {fileID: 1180937950145147869}
   uiManager: {fileID: 0}
   gridManager: {fileID: 0}
   mouseManager: {fileID: 0}
