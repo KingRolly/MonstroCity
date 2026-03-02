@@ -9,6 +9,7 @@ using UnityEngine;
 public abstract class TowerTile : Tile
 {   
     [SerializeField] TowerData data;
+    PhaseManager phaseManager;
 
     protected override void Start()
     {
@@ -16,7 +17,15 @@ public abstract class TowerTile : Tile
         Debug.Log(data.towerName);
     }
 
-    //
+    void Update()
+    {
+        while (phaseManager.GetDaytime())
+        {
+            DoAttackPattern();
+
+        }
+    }
+
     public void DoAttackPattern()
     {
         

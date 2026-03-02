@@ -4,6 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// Manages day and night cycle within a level
+/// - Jack Peters (Mar. 1st, 2026)
 /// </summary>
 public class PhaseManager : MonoBehaviour
 {
@@ -23,6 +24,16 @@ public class PhaseManager : MonoBehaviour
 
     void BeginLevel()
     {
-        daytime = false;
+        SetDaytime(false);
+    }
+
+    public bool GetDaytime()
+    {
+        return daytime;
+    }
+
+    public void SetDaytime(bool state)
+    {
+        
     }
 }
