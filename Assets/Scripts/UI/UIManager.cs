@@ -12,17 +12,19 @@ using System;
 public class UIManager : MonoBehaviour
 {
     [Header("References")]
-    public TextMeshProUGUI goblinCounter;
-    public GameObject topBar;
-    public GameObject towersPanel;
-    public GameObject towerIconPrefab;
-    public UIManager uiManager;
-    public GridManager gridManager;
-    public MouseManager mouseManager;
-    public TowerInfoPopup towerInfoPopup;
+    [SerializeField] private TextMeshProUGUI goblinCounter;
+    [SerializeField] private TextMeshProUGUI healthCounter;
+    [SerializeField] private GameObject topBar;
+    [SerializeField] private GameObject towersPanel;
+    [SerializeField] private GameObject towerIconPrefab;
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private MouseManager mouseManager;
+    [SerializeField] private TowerInfoPopup towerInfoPopup;
 
     [Header("UI Information")]
     [SerializeField] private int money;
+    [SerializeField] private int health;
     [SerializeField] private TowerData archerData;
     [SerializeField] private TowerData gnomeData;
     private List<GameObject> towersList;
@@ -72,21 +74,44 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public int getMoney() {
-        return money;
-    }
-
-    // set current money to amt
-    public void setMoney(int amt)
-    {
-        money = amt;
-        goblinCounter.text = money.ToString();
-    }
-
-    // add money by amt (can be positive or negative)
-    public void addMoney(int amt)
+    /// <summary>
+    /// Change player money (can be positive or negative)
+    /// </summary>
+    /// <param name="amt">Amount of money to change by</param>
+    public void ChangeMoney(int amt)
     {
         money += amt;
         goblinCounter.text = money.ToString();
     }
+
+    /// <summary>
+    /// Change player health (can be positive or negative)
+    /// </summary>
+    /// <param name="amt">Amount of health to change by</param>
+    public void ChangeHealth(int amt)
+    {
+        health += amt;
+        healthCounter.text = health.ToString();
+    }
+
+    #region Basic Getters and Setters
+    public int GetMoney()
+    {
+        return money;
+    }
+    public void SetMoney(int amt)
+    {
+        money = amt;
+    }
+
+    public int GetHealth()
+    {
+        return money;
+    }
+
+    public void SetHealth(int amt)
+    {
+        health = amt;
+    }
+    #endregion
 }

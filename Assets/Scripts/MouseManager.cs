@@ -97,8 +97,8 @@ public class MouseManager : MonoBehaviour
                     if (gridManager.placeTower(Vector2Int.RoundToInt(selectPos), selectedTowerIcon.GetTowerData()))
                     { // Call GridManager to place the tower, update money, unselect tower icon
                         Debug.Log($"{selectedTowerIcon.GetTowerName()} purchased for {selectedTowerIcon.GetPrice()} goblins");
-                        uiManager.addMoney(-selectedTowerIcon.GetPrice());
-                        if (uiManager.getMoney() < selectedTowerIcon.GetPrice())
+                        uiManager.ChangeMoney(-selectedTowerIcon.GetPrice());
+                        if (uiManager.GetMoney() < selectedTowerIcon.GetPrice())
                         {
                             selectedTowerIcon = null;
                         }

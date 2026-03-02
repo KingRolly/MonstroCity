@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
 
     private EnemyManager enemyManager;
+    private UIManager uiManager;
 
     [SerializeField] private List<Vector2Int> enemyPath;
     private int pathIndex;
@@ -35,7 +36,7 @@ public class Enemy : MonoBehaviour
         // Check if there is remaining path to traverse and that path exists
         if (pathIndex < enemyPath.Count && enemyPath != null)
         {
-            travelPath();
+            TravelPath();
 
             // Check if enemy has reached the next path coordinate
             if (transform.position == new Vector3(enemyPath[pathIndex].x, enemyPath[pathIndex].y, transform.position.z))
@@ -43,11 +44,18 @@ public class Enemy : MonoBehaviour
                 pathIndex++;
             }
         }
+        // Enemy reached end of path
+        else
+        {
+            // TODO: Change this (deals damage to player and despawns upon reaching end of path for debugging rn)
+            DamagePlayerHealth();
+            Despawn();
+        }
     }
 
 
     // Enemy reads the coordinates of enemyPath to travel along the path in-game
-    private void travelPath()
+    private void TravelPath()
     {
         // Read the enemyPath list and move enemy towards to the next path coordinate
         transform.position = Vector2.MoveTowards(transform.position, enemyPath[pathIndex], speed * Time.deltaTime);
@@ -55,7 +63,7 @@ public class Enemy : MonoBehaviour
 
     // Used to set info of enemy
     // Enemy Manager should call this upon instantiating an enemy
-    public void setInfo(string type, int hp, float spd, int dmg, Sprite sprite, EnemyManager enemyManager)
+    public void SetInfo(string type, int hp, float spd, int dmg, Sprite sprite)
     {
         enemyType = type;
         health = hp;
@@ -63,11 +71,22 @@ public class Enemy : MonoBehaviour
         damage = dmg;
         enemySprite = sprite;
         this.GetComponent<SpriteRenderer>().sprite = sprite;
+    }
+
+    /// <summary>
+    /// Used to assign references Enemy needs upon instantiation <br/> 
+    /// EnemyManager should call this when spawning in enemies
+    /// </summary>
+    /// <param name="enemyManager"></param>
+    /// <param name="uiManager"></param>
+    public void AssignReferences(EnemyManager enemyManager, UIManager uiManager)
+    {
+        this.uiManager = uiManager;
         this.enemyManager = enemyManager;
     }
 
     // Assign path for enemy to take
-    public void setPath(List<Vector2Int> path)
+    public void SetPath(List<Vector2Int> path)
     {
         enemyPath = path;
 
@@ -93,17 +112,26 @@ public class Enemy : MonoBehaviour
     }
 
     /// <summary>
+    /// Enemy deals damage to player's healh
+    /// </summary>
+    public void DamagePlayerHealth()
+    {
+        // Update health in UIManager
+        uiManager.ChangeHealth(-damage);
+    }
+
+    /// <summary>
     /// Deal damage to enemy, despawns enemy if damage is fatal
     /// </summary>
     /// <param name="dmg">Amount of damage dealt to enemy</param>
-    public void takeDamage(int dmg)
+    public void TakeDamage(int dmg)
     {
         // Update enemy's health to take correct amount of damage
         // Despawn enemy and return it to object pool if the damage kills enemy
         this.health -= dmg;
         if (this.health <= 0)
         {
-            despawn();
+            Despawn();
         }    
 
     }
@@ -111,7 +139,7 @@ public class Enemy : MonoBehaviour
     /// <summary>
     /// Private helper method for despawning enemy
     /// </summary>
-    private void despawn()
+    private void Despawn()
     {
         // Call enemy manager's despawn function to depsawn this enemy
         enemyManager.despawnEnemy(this.gameObject);

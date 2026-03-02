@@ -14,6 +14,7 @@ public class EnemyManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GridManager gridManager;
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private UIManager uiManager;
 
     [Header("Scriptable objects for testing")]
     [SerializeField] private EnemyWaveLayout onePeasant;
@@ -148,8 +149,9 @@ public class EnemyManager : MonoBehaviour
             Sprite sprite = enemyStats.sprite;
 
             // Set up enemy stats and pathfinding
-            enemyToSpawn.GetComponent<Enemy>().setInfo(enemyType, health, speed, damage, sprite, this);
-            enemyToSpawn.GetComponent<Enemy>().setPath(gridManager.getPath());
+            enemyToSpawn.GetComponent<Enemy>().SetInfo(enemyType, health, speed, damage, sprite);
+            enemyToSpawn.GetComponent<Enemy>().AssignReferences(this, uiManager);
+            enemyToSpawn.GetComponent<Enemy>().SetPath(gridManager.getPath());
 
             // Keep track of spawned enemy
             totalEnemies.Add(enemyToSpawn);
