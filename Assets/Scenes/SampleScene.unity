@@ -2511,7 +2511,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68a15a6b5e3f7e04d8bacfd387db4d7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  daytime: 0
+  uiManager: {fileID: 135745661}
+  enemyManager: {fileID: 684380037}
+  currentPhase: 
+  dayCounter: 0
+  currentLevelEnemyWaveLayouts:
+  - {fileID: 11400000, guid: 8c29a4d359ae0a24c93f64eb8a5c4240, type: 2}
+  layoutIndex: 0
 --- !u!4 &1198051989
 Transform:
   m_ObjectHideFlags: 0
@@ -3152,7 +3158,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1699129147}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1198051988}
+        m_TargetAssemblyTypeName: PhaseManager, Assembly-CSharp
+        m_MethodName: BeginLevel
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1699129147
 MonoBehaviour:
   m_ObjectHideFlags: 0

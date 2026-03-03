@@ -101,6 +101,16 @@ public class EnemyManager : MonoBehaviour
         setCurrentWaveLayout(testWave);
         StartCoroutine(spawnAllEnemiesForCurrentRound());
     }
+
+    /// <summary>
+    /// Spawn a wave of enemies for given EnemyWaveLayout
+    /// </summary>
+    /// <param name="layout">EnemyWaveLayout to spawn</param>
+    public void SpawnWave(EnemyWaveLayout layout)
+    {
+        setCurrentWaveLayout(layout);
+        StartCoroutine(spawnAllEnemiesForCurrentRound());
+    }
     #endregion
 
     #region Enemy Spawning Functions

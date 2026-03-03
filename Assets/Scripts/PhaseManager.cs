@@ -8,12 +8,24 @@ using UnityEngine;
 /// </summary>
 public class PhaseManager : MonoBehaviour
 {
-    [SerializeField] private bool daytime;
+    #region Fields
+    [Header("References")]
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private EnemyManager enemyManager;
+
+    [Header("Phase Information")]
+    [SerializeField] private string currentPhase;
+    [SerializeField] private int dayCounter;
+    [SerializeField] private EnemyWaveLayout[] currentLevelEnemyWaveLayouts;
+    [SerializeField] private int layoutIndex;
+    #endregion
 
     // Start is called before the first frame update
     void Start()
     {
-        BeginLevel();
+        currentPhase = "night";
+        dayCounter = 0;
+        layoutIndex = 0;
     }
 
     // Update is called once per frame
@@ -22,18 +34,22 @@ public class PhaseManager : MonoBehaviour
         
     }
 
-    void BeginLevel()
+    public void BeginLevel()
     {
-        SetDaytime(false);
+        currentPhase = "day";
+        if (currentLevelEnemyWaveLayouts != null)
+        {
+            enemyManager.SpawnWave(currentLevelEnemyWaveLayouts[0]);
+        }
     }
 
-    public bool GetDaytime()
+    public string GetCurrentPhase()
     {
-        return daytime;
+        return currentPhase;
     }
 
-    public void SetDaytime(bool state)
+    public void SetPhase(string state)
     {
-        
+        currentPhase = state;
     }
 }

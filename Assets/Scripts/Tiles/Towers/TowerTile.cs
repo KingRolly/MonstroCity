@@ -19,7 +19,7 @@ public abstract class TowerTile : Tile
 
     void Update()
     {
-        while (phaseManager.GetDaytime())
+        while (phaseManager.GetCurrentPhase() == "day")
         {
             DoAttackPattern();
 
