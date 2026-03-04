@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -27,7 +28,7 @@ public class EnemyManager : MonoBehaviour
     private List<GameObject> deadEnemies;
 
     [Header("Enemy Wave Layout")]
-    [SerializeField] private EnemyWaveLayout currentWaveLayout;
+    [SerializeField] private EnemyWaveLayout currentDayWaveLayout;
 
     // Object pool stuff
     private IObjectPool<GameObject> enemyObjectPool;
@@ -84,57 +85,81 @@ public class EnemyManager : MonoBehaviour
     // Test spawning a peasant
     public void testSpawnPeasantEnemy()
     {
-        setCurrentWaveLayout(onePeasant);
-        StartCoroutine(spawnAllEnemiesForCurrentRound());
+        SetCurrentDayWaveLayout(onePeasant);
+        InitiateSpawning();
     }
 
     // Test spawning 5 knights with low spawn cooldown
     public void testSpawn5KnightEnemies()
     {
-        setCurrentWaveLayout(fiveKnights_LowCD);
-        StartCoroutine(spawnAllEnemiesForCurrentRound());
+        SetCurrentDayWaveLayout(fiveKnights_LowCD);
+        InitiateSpawning();
     }
 
     // Test spawning multiple spawn matterns to simulate a wave
     public void testSpawnRound()
     {
-        setCurrentWaveLayout(testWave);
-        StartCoroutine(spawnAllEnemiesForCurrentRound());
-    }
-
-    /// <summary>
-    /// Spawn a wave of enemies for given EnemyWaveLayout
-    /// </summary>
-    /// <param name="layout">EnemyWaveLayout to spawn</param>
-    public void SpawnWave(EnemyWaveLayout layout)
-    {
-        setCurrentWaveLayout(layout);
-        StartCoroutine(spawnAllEnemiesForCurrentRound());
+        SetCurrentDayWaveLayout(testWave);
+        InitiateSpawning();
     }
     #endregion
 
     #region Enemy Spawning Functions
     /// <summary>
-    /// Spawns in the enemies for the current wave
+    /// Spawn a list of wave of enemies for given EnemyWaveLayout list
     /// </summary>
-    private IEnumerator spawnAllEnemiesForCurrentRound()
+    /// <param name="layout">EnemyWaveLayout to spawn</param>
+    public void SpawnWaves(EnemyWaveLayout layout)
+    {
+        // Assign list of wave layouts
+        SetCurrentDayWaveLayout(layout);
+
+        // Call private helper to start spawning
+        InitiateSpawning();
+    }
+
+    /// <summary>
+    /// Private helper for SpawnWaves() to initiate spawning all the wave layouts for current day
+    /// </summary>
+    private void InitiateSpawning()
+    {
+        // Reset lists tracking enemies
+        totalEnemies.Clear();
+        aliveEnemies.Clear();
+        deadEnemies.Clear();
+
+        // Check for empty wave layout list
+        if (currentDayWaveLayout == null)
+        {
+            Debug.Log("There are no waves to spawn for current day");
+            return;
+        }
+
+        // Start spawning
+        StartCoroutine(SpawnAllEnemiesForCurrentWaveLayout());
+    }
+
+    /// <summary>
+    /// Spawns in the enemies for the given current wave layout
+    /// </summary>
+    private IEnumerator SpawnAllEnemiesForCurrentWaveLayout()
     {
         // Check if layout for current wave layout is empty
-        if (currentWaveLayout == null)
+        if (currentDayWaveLayout == null)
         {
-            Debug.Log("Nothing to spawn for current round");
+            Debug.Log("Nothing to spawn for current wave layout");
             yield break;
         }
 
         
         // Read through layout of the current wave
-        for (int i = 0; i < currentWaveLayout.spawnPatterns.Length; i++)
+        for (int i = 0; i < currentDayWaveLayout.spawnPatterns.Length; i++)
         {
             // Initial time delay of the spawn pattern
-            yield return new WaitForSeconds(currentWaveLayout.spawnPatterns[i].initialTimeDelay);
+            yield return new WaitForSeconds(currentDayWaveLayout.spawnPatterns[i].initialTimeDelay);
 
-            // Spawn enemies according to the given EnemyWaveLayout
-            StartCoroutine(spawnEnemies(currentWaveLayout.spawnPatterns[i].enemyToSpawn, currentWaveLayout.spawnPatterns[i].amount, currentWaveLayout.spawnPatterns[i].timeDelayBetweenSpawns));
+            // Spawn enemies according to the given spawn pattern in wave layout
+            StartCoroutine(SpawnEnemies(currentDayWaveLayout.spawnPatterns[i].enemyToSpawn, currentDayWaveLayout.spawnPatterns[i].amount, currentDayWaveLayout.spawnPatterns[i].timeDelayBetweenSpawns));
         }
     }
 
@@ -145,7 +170,7 @@ public class EnemyManager : MonoBehaviour
     /// <param name="amt">Number of enemies to spawn</param>
     /// <param name="spawnDelay">Length of delay between each spawn</param>
     /// <returns></returns>
-    private IEnumerator spawnEnemies(EnemyStats enemyStats, int amt, float spawnDelay)
+    private IEnumerator SpawnEnemies(EnemyStats enemyStats, int amt, float spawnDelay)
     {
         for (int i = 0; i < amt; i++)
         {
@@ -172,20 +197,21 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+
     /// <summary>
-    /// Set the enemy wave layout for the current wave
+    /// Assigns the wave layout for the current day
     /// </summary>
-    /// <param name="wave"></param>
-    public void setCurrentWaveLayout(EnemyWaveLayout wave)
+    /// <param name="waveLayout">Wave layout to assign</param>
+    public void SetCurrentDayWaveLayout(EnemyWaveLayout waveLayout)
     {
-        currentWaveLayout = wave;
+        currentDayWaveLayout = waveLayout;
     }
 
     /// <summary>
     /// Delete the given enemy and update the lists keeping track of enemies
     /// </summary>
     /// <param name="enemyToDespawn"></param>
-    public void despawnEnemy(GameObject enemyToDespawn)
+    public void DespawnEnemy(GameObject enemyToDespawn)
     {
         foreach (GameObject enemy in aliveEnemies)
         {
@@ -203,27 +229,27 @@ public class EnemyManager : MonoBehaviour
     #endregion
 
     #region Basic Getters
-    public List<GameObject> getTotalEnemiesList()
+    public List<GameObject> GetTotalEnemiesList()
     {
         return this.totalEnemies;
     }
-    public List<GameObject> getAliveEnemiesList()
+    public List<GameObject> GetAliveEnemiesList()
     {
         return this.aliveEnemies;
     }
-    public List<GameObject> getDeadEnemiesList()
+    public List<GameObject> GetDeadEnemiesList()
     {
         return this.deadEnemies;
     }
-    public int getTotalEnemiesCount()
+    public int GetTotalEnemiesCount()
     {
         return this.totalEnemies.Count;
     }
-    public int getAliveEnemiesCount()
+    public int GetAliveEnemiesCount()
     {
         return this.aliveEnemies.Count;
     }
-    public int getDeadEnemiesCount()
+    public int GetDeadEnemiesCount()
     {
         return this.deadEnemies.Count;
     }

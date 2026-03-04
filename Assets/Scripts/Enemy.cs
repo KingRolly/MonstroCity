@@ -142,7 +142,7 @@ public class Enemy : MonoBehaviour
     private void Despawn()
     {
         // Call enemy manager's despawn function to depsawn this enemy
-        enemyManager.despawnEnemy(this.gameObject);
+        enemyManager.DespawnEnemy(this.gameObject);
     }
 
     #region Basic Getters
