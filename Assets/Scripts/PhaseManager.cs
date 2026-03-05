@@ -18,6 +18,7 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private Image phaseIcon;
     [SerializeField] private Sprite daytimeIcon;
     [SerializeField] private Sprite nightIcon;
+    [SerializeField] private TextMeshProUGUI dayCounterText;
 
     [Header("Phase Information")]
     [SerializeField] private string currentPhase;
@@ -31,7 +32,7 @@ public class PhaseManager : MonoBehaviour
     void Start()
     {
         SetPhase("Night");
-        dayCounter = 0;
+        SetDayCounter(0);
         layoutIndex = 0;
     }
 
@@ -49,7 +50,7 @@ public class PhaseManager : MonoBehaviour
         // TODO: Disable path placement and any other things that are supposed to be only available at the start of a level
 
         // Reset phase and day counter
-        dayCounter = 0;
+        IncrementDayCounter();
         layoutIndex = 0;
 
         // Switch to daytime
@@ -74,7 +75,7 @@ public class PhaseManager : MonoBehaviour
         // Update phase and counters
         SetPhase("Night");
         layoutIndex++;
-        dayCounter++;
+        IncrementDayCounter();
     }
 
     public string GetCurrentPhase()
@@ -99,5 +100,24 @@ public class PhaseManager : MonoBehaviour
             phaseIcon.sprite = nightIcon;
         }
         
+    }
+
+    /// <summary>
+    /// Set day counter
+    /// </summary>
+    /// <param name="num"></param>
+    public void SetDayCounter(int num)
+    {
+        dayCounter = num;
+        dayCounterText.text = "Day " + num.ToString();
+    }
+
+    /// <summary>
+    /// Incrememnt day counter
+    /// </summary>
+    private void IncrementDayCounter()
+    {
+        dayCounter++;
+        dayCounterText.text = "Day " + dayCounter.ToString();
     }
 }
