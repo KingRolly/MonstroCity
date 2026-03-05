@@ -19,11 +19,12 @@ public abstract class TowerTile : Tile
 
     void Update()
     {
-        while (phaseManager.GetCurrentPhase() == "day")
-        {
-            DoAttackPattern();
+        // TODO: Assign a reference to PhaseManager when instantiating a tower otherwise error occurs here
+        //while (phaseManager.GetCurrentPhase() == "Daytime")
+        //{
+        //    DoAttackPattern();
 
-        }
+        //}
     }
 
     public void DoAttackPattern()
