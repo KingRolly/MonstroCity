@@ -23,6 +23,7 @@ public class GridManager : MonoBehaviour
     public MouseManager mouseManager;
     public Vector2Int startPathPosition;
     public Vector2Int endPathPosition;
+    public PhaseManager phaseManager;
 
     // Start is called before the first frame update
     void Start()
