@@ -19,6 +19,8 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private Sprite daytimeIcon;
     [SerializeField] private Sprite nightIcon;
     [SerializeField] private TextMeshProUGUI dayCounterText;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private GameObject readyButton;
 
     [Header("Phase Information")]
     [SerializeField] private string currentPhase;
@@ -39,7 +41,13 @@ public class PhaseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (GetCurrentPhase() == "Night")
+        {
+            readyButton.SetActive(true);
+        } else
+        {
+            readyButton.SetActive(false);
+        }
     }
 
     /// <summary>
@@ -47,14 +55,17 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     public void BeginLevel()
     {
-        // TODO: Disable path placement and any other things that are supposed to be only available at the start of a level
+        if (gridManager.isPathValid())
+        {
+            // TODO: Disable path placement and any other things that are supposed to be only available at the start of a level
 
-        // Reset phase and day counter
-        IncrementDayCounter();
-        layoutIndex = 0;
+            // Reset phase and day counter
+            IncrementDayCounter();
+            layoutIndex = 0;
 
-        // Switch to daytime
-        StartDay();
+            // Switch to daytime
+            StartDay();
+        }
     }
 
     /// <summary>

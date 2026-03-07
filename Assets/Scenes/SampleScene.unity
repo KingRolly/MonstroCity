@@ -532,6 +532,7 @@ MonoBehaviour:
   mouseManager: {fileID: 2019142844}
   startPathPosition: {x: 0, y: 0}
   endPathPosition: {x: 15, y: 8}
+  phaseManager: {fileID: 0}
 --- !u!1 &256446661
 GameObject:
   m_ObjectHideFlags: 0
@@ -1209,7 +1210,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -104.900024, y: 36.649994}
+  m_AnchoredPosition: {x: -104.8999, y: 36.650024}
   m_SizeDelta: {x: 209.80005, y: 73.29999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &646138165
@@ -2728,6 +2729,8 @@ MonoBehaviour:
   daytimeIcon: {fileID: 21300000, guid: 96a1d53c4f405ea4a85762e451ae0d17, type: 3}
   nightIcon: {fileID: 21300000, guid: 41bf501e9d13239458cfb1a9481184f8, type: 3}
   dayCounterText: {fileID: 921328596}
+  gridManager: {fileID: 203767970}
+  readyButton: {fileID: 1699129144}
   currentPhase: night
   dayCounter: 0
   currentLevelEnemyWaveLayouts:
