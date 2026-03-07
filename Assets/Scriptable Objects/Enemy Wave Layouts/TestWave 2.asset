@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed7c52ae11a0b954aaffb27d904ffa73, type: 3}
-  m_Name: TestWave
+  m_Name: TestWave 2
   m_EditorClassIdentifier: 
   spawnPatterns:
   - enemyToSpawn: {fileID: 11400000, guid: 0f09336bf67cea94096a8ea374c00d2e, type: 2}
@@ -19,13 +19,5 @@ MonoBehaviour:
     timeDelayBetweenSpawns: 1
   - enemyToSpawn: {fileID: 11400000, guid: 382967b99087ecf4baa93b5f47e90495, type: 2}
     amount: 2
-    initialTimeDelay: 4
+    initialTimeDelay: 2
     timeDelayBetweenSpawns: 0.5
-  - enemyToSpawn: {fileID: 11400000, guid: 0f09336bf67cea94096a8ea374c00d2e, type: 2}
-    amount: 5
-    initialTimeDelay: 3
-    timeDelayBetweenSpawns: 0.7
-  - enemyToSpawn: {fileID: 11400000, guid: 382967b99087ecf4baa93b5f47e90495, type: 2}
-    amount: 4
-    initialTimeDelay: 3
-    timeDelayBetweenSpawns: 0.3

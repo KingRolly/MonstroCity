@@ -16,6 +16,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private GridManager gridManager;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private UIManager uiManager;
+    [SerializeField] private PhaseManager phaseManager;
 
     [Header("Scriptable objects for testing")]
     [SerializeField] private EnemyWaveLayout onePeasant;
@@ -23,7 +24,7 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private EnemyWaveLayout testWave;
 
     // [Header("Private Variables")]
-    private List<GameObject> totalEnemies;
+    private int totalEnemies;
     private List<GameObject> aliveEnemies;
     private List<GameObject> deadEnemies;
 
@@ -41,7 +42,7 @@ public class EnemyManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        totalEnemies = new List<GameObject>();
+        totalEnemies = 0;
         aliveEnemies = new List<GameObject>();
         deadEnemies = new List<GameObject>();
     }
@@ -124,7 +125,7 @@ public class EnemyManager : MonoBehaviour
     private void InitiateSpawning()
     {
         // Reset lists tracking enemies
-        totalEnemies.Clear();
+        totalEnemies = 0;
         aliveEnemies.Clear();
         deadEnemies.Clear();
 
@@ -151,6 +152,11 @@ public class EnemyManager : MonoBehaviour
             yield break;
         }
 
+        // Calculate how many enemies in total to spawn
+        for (int i = 0; i < currentDayWaveLayout.spawnPatterns.Length; i++)
+        {
+            totalEnemies += currentDayWaveLayout.spawnPatterns[i].amount;
+        }
         
         // Read through layout of the current wave
         for (int i = 0; i < currentDayWaveLayout.spawnPatterns.Length; i++)
@@ -161,6 +167,10 @@ public class EnemyManager : MonoBehaviour
             // Spawn enemies according to the given spawn pattern in wave layout
             StartCoroutine(SpawnEnemies(currentDayWaveLayout.spawnPatterns[i].enemyToSpawn, currentDayWaveLayout.spawnPatterns[i].amount, currentDayWaveLayout.spawnPatterns[i].timeDelayBetweenSpawns));
         }
+
+        // End the day after all waves have been spawned and all enemies are dead
+        yield return new WaitUntil(() => deadEnemies.Count == totalEnemies && aliveEnemies.Count == 0);
+        phaseManager.EndDay();
     }
 
     /// <summary>
@@ -181,15 +191,15 @@ public class EnemyManager : MonoBehaviour
             int health = enemyStats.health;
             float speed = enemyStats.speed;
             int damage = enemyStats.damage;
+            int money = enemyStats.moneyReward;
             Sprite sprite = enemyStats.sprite;
 
             // Set up enemy stats and pathfinding
-            enemyToSpawn.GetComponent<Enemy>().SetInfo(enemyType, health, speed, damage, sprite);
+            enemyToSpawn.GetComponent<Enemy>().SetInfo(enemyType, health, speed, damage, money ,sprite);
             enemyToSpawn.GetComponent<Enemy>().AssignReferences(this, uiManager);
             enemyToSpawn.GetComponent<Enemy>().SetPath(gridManager.getPath());
 
             // Keep track of spawned enemy
-            totalEnemies.Add(enemyToSpawn);
             aliveEnemies.Add(enemyToSpawn);
 
             // Delay between spawns
@@ -229,7 +239,7 @@ public class EnemyManager : MonoBehaviour
     #endregion
 
     #region Basic Getters
-    public List<GameObject> GetTotalEnemiesList()
+    public int GetTotalEnemies()
     {
         return this.totalEnemies;
     }
@@ -240,10 +250,6 @@ public class EnemyManager : MonoBehaviour
     public List<GameObject> GetDeadEnemiesList()
     {
         return this.deadEnemies;
-    }
-    public int GetTotalEnemiesCount()
-    {
-        return this.totalEnemies.Count;
     }
     public int GetAliveEnemiesCount()
     {

@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int health;
     [SerializeField] private float speed;
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
+    [SerializeField] private int moneyReward; // amount of money given to player when killed 
 
     private EnemyManager enemyManager;
     private UIManager uiManager;
@@ -63,13 +64,14 @@ public class Enemy : MonoBehaviour
 
     // Used to set info of enemy
     // Enemy Manager should call this upon instantiating an enemy
-    public void SetInfo(string type, int hp, float spd, int dmg, Sprite sprite)
+    public void SetInfo(string type, int hp, float spd, int dmg, int money, Sprite sprite)
     {
         enemyType = type;
         health = hp;
         speed = spd;
         damage = dmg;
         enemySprite = sprite;
+        moneyReward = money;
         this.GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
@@ -127,10 +129,11 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         // Update enemy's health to take correct amount of damage
-        // Despawn enemy and return it to object pool if the damage kills enemy
+        // Despawn enemy; Give player money reward and return to object pool if the damage kills enemy
         this.health -= dmg;
         if (this.health <= 0)
         {
+            uiManager.ChangeMoney(moneyReward);
             Despawn();
         }    
 

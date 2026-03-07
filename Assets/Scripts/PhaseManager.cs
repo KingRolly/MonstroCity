@@ -19,7 +19,6 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private Sprite daytimeIcon;
     [SerializeField] private Sprite nightIcon;
     [SerializeField] private TextMeshProUGUI dayCounterText;
-    [SerializeField] private GridManager gridManager;
     [SerializeField] private GameObject readyButton;
 
     [Header("Phase Information")]
@@ -55,17 +54,10 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     public void BeginLevel()
     {
-        if (gridManager.isPathValid())
-        {
-            // TODO: Disable path placement and any other things that are supposed to be only available at the start of a level
+        // TODO: Disable path placement and any other things that are supposed to be only available at the start of a level
 
-            // Reset phase and day counter
-            IncrementDayCounter();
-            layoutIndex = 0;
-
-            // Switch to daytime
-            StartDay();
-        }
+        // Switch to daytime
+        StartDay();
     }
 
     /// <summary>
@@ -73,7 +65,10 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     private void StartDay()
     {
+        // Update counters
+        readyButton.SetActive(false);
         SetPhase("Daytime");
+        IncrementDayCounter();
         if (currentLevelEnemyWaveLayouts != null) // Check for non-empty list
         {
             // Call Enemy Manager to spawn waves for current day
@@ -81,12 +76,15 @@ public class PhaseManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// End the day and switch to night
+    /// </summary>
     public void EndDay()
     {
-        // Update phase and counters
+        // Update counters
+        readyButton.SetActive(true);
         SetPhase("Night");
         layoutIndex++;
-        IncrementDayCounter();
     }
 
     public string GetCurrentPhase()
