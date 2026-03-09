@@ -5,17 +5,10 @@ using UnityEngine;
 
 public class ArcherTower : TowerTile
 {
-    // public string towerName;
-    // public Sprite sprite;
-    // public int price;
-    // public float damage;
-    // public float attackSpeed;
-    // public float attackRange;
-
-    [SerializeField] private EnemyManager enemyManager;
-
-    public override void DoAttack()
+    public override IEnumerator DoAttack()
     {
+        yield return new WaitForSeconds(5);
+
         FindNearestEnemy(new Vector2(getX(), getY()));
     }
 

@@ -5,11 +5,10 @@ using UnityEngine;
 
 public class GnomeShooter : TowerTile
 {
-
-    [SerializeField] private EnemyManager enemyManager;
-    
-    public override void DoAttack()
+    public override IEnumerator DoAttack()
     {
+        yield return new WaitForSeconds(2);
+        
         FindNearestEnemy(new Vector2(getX(), getY()));
     }
 

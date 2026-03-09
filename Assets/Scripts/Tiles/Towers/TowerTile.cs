@@ -8,12 +8,14 @@ using UnityEngine;
 /// </summary>
 public abstract class TowerTile : Tile
 {   
-    [SerializeField] TowerData data;
-    public PhaseManager phaseManager;
+    [SerializeField] public TowerData data;
+    [SerializeField] public EnemyManager enemyManager;
+    [SerializeField] public PhaseManager phaseManager;
 
     void Awake()
     {
         phaseManager = FindObjectOfType<PhaseManager>();
+        enemyManager = FindObjectOfType<EnemyManager>();
     }
 
     protected override void Start()
@@ -27,7 +29,7 @@ public abstract class TowerTile : Tile
     {
         if (phaseManager.GetCurrentPhase() == "Daytime")
         {
-            DoAttack();
+            StartCoroutine(DoAttack());
 
         }
     }
@@ -35,5 +37,5 @@ public abstract class TowerTile : Tile
     /// <summary>
     /// Runs the attack for this tower
     /// </summary>
-    public abstract void DoAttack();
+    public abstract IEnumerator DoAttack();
 }
