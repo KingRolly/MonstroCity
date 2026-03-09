@@ -25,42 +25,15 @@ public abstract class TowerTile : Tile
     // Update is called once per frame
     void Update()
     {
-        while (phaseManager.GetCurrentPhase() == "Daytime")
+        if (phaseManager.GetCurrentPhase() == "Daytime")
         {
-            DoAttackPattern();
+            DoAttack();
 
         }
     }
 
     /// <summary>
-    /// Runs a series of functions to carry out one "unit" of attack for this tower.
+    /// Runs the attack for this tower
     /// </summary>
-    public void DoAttackPattern()
-    {
-        
-    }
-
-    /// <summary>
-    /// Shoots a projectile from this tower, with specified direction, damage, etc.
-    /// </summary>
-    public void FireProjectile(double damage, double angle)
-    {
-        
-    }
-
-    /// <summary>
-    /// Deals damage to enemies within a range of this tower.
-    /// </summary>
-    public void AreaOfEffect(double damage, double range)
-    {
-        
-    }
-
-    /// <summary>
-    /// Picks a path tile or tiles and sets them to do DOT for a specified duration.
-    /// </summary>
-    public void DamageOverTime(double damage, double duration)
-    {
-        
-    }
+    public abstract void DoAttack();
 }
