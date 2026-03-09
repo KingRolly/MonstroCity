@@ -7,8 +7,11 @@ public class ArcherTower : TowerTile
 {
     public override IEnumerator DoAttack()
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitUntil(() => phaseManager.GetCurrentPhase() == "Daytime");
+        // Debug.Log(phaseManager.GetCurrentPhase());
+        FindNearestEnemy().GetComponent<Enemy>().TakeDamage(1000);
 
-        FindNearestEnemy().GetComponent<Enemy>().TakeDamage(5);
+        yield return new WaitForSeconds(3);
+        
     }
 }

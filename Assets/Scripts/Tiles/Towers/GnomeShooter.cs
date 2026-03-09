@@ -7,8 +7,9 @@ public class GnomeShooter : TowerTile
 {
     public override IEnumerator DoAttack()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitUntil(() => phaseManager.GetCurrentPhase() == "Daytime");
+        FindNearestEnemy().GetComponent<Enemy>().TakeDamage(1000);
 
-        FindNearestEnemy().GetComponent<Enemy>().TakeDamage(1);
+        yield return new WaitForSeconds(3);
     }
 }

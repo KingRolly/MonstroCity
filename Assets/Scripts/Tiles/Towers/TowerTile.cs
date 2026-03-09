@@ -22,16 +22,13 @@ public abstract class TowerTile : Tile
     {
         setPlaceable(false);
         Debug.Log(data.towerName);
+        StartCoroutine(DoAttack());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (phaseManager.GetCurrentPhase() == "Daytime")
-        {
-            StartCoroutine(DoAttack());
-
-        }
+        
     }
 
     /// <summary>
@@ -45,11 +42,13 @@ public abstract class TowerTile : Tile
     public GameObject FindNearestEnemy()
     {
         GameObject nearest = null;
-        float minDistance = 1000;
+        float minDistance = Mathf.Infinity;
         foreach (GameObject e in enemyManager.GetAliveEnemiesList())
         {
-            if (Vector2.Distance(transform.position, e.transform.position) < minDistance)
+            float distance = Vector2.Distance(transform.position, e.transform.position);
+            if (distance < minDistance)
             {
+                minDistance = distance;
                 nearest = e;
             }
         }
