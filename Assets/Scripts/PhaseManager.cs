@@ -49,13 +49,7 @@ public class PhaseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if (GetCurrentPhase() == "Night")
-        //{
-        //    readyButton.SetActive(true);
-        //} else
-        //{
-        //    readyButton.SetActive(false);
-        //}
+
     }
 
     /// <summary>
@@ -77,8 +71,6 @@ public class PhaseManager : MonoBehaviour
         // Update graphics
         readyButton.interactable = false;
         readyText.color = readyButton.colors.disabledColor;
-        //bgTilemap.color = DAY_TIME_COLOUR;
-        //pathTilemap.color = DAY_TIME_COLOUR;
 
         // Update counters
         StartCoroutine(SetPhase("Daytime"));
@@ -100,8 +92,6 @@ public class PhaseManager : MonoBehaviour
         // Update graphics
         readyButton.interactable = true;
         readyText.color = Color.red;
-        //bgTilemap.color = NIGHT_TIME_COLOUR;
-        //pathTilemap.color = NIGHT_TIME_COLOUR;
 
         // Update counters
         StartCoroutine(SetPhase("Night"));
