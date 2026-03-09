@@ -19,7 +19,8 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private Sprite daytimeIcon;
     [SerializeField] private Sprite nightIcon;
     [SerializeField] private TextMeshProUGUI dayCounterText;
-    [SerializeField] private GameObject readyButton;
+    [SerializeField] private Button readyButton;
+    [SerializeField] private TextMeshProUGUI readyText;
 
     [Header("Phase Information")]
     [SerializeField] private string currentPhase;
@@ -40,13 +41,13 @@ public class PhaseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GetCurrentPhase() == "Night")
-        {
-            readyButton.SetActive(true);
-        } else
-        {
-            readyButton.SetActive(false);
-        }
+        //if (GetCurrentPhase() == "Night")
+        //{
+        //    readyButton.SetActive(true);
+        //} else
+        //{
+        //    readyButton.SetActive(false);
+        //}
     }
 
     /// <summary>
@@ -66,7 +67,8 @@ public class PhaseManager : MonoBehaviour
     private void StartDay()
     {
         // Update counters
-        readyButton.SetActive(false);
+        readyButton.interactable = false;
+        readyText.color = readyButton.colors.disabledColor;
         SetPhase("Daytime");
         IncrementDayCounter();
         if (currentLevelEnemyWaveLayouts != null) // Check for non-empty list
@@ -82,7 +84,8 @@ public class PhaseManager : MonoBehaviour
     public void EndDay()
     {
         // Update counters
-        readyButton.SetActive(true);
+        readyButton.interactable = true;
+        readyText.color = Color.red;
         SetPhase("Night");
         layoutIndex++;
     }

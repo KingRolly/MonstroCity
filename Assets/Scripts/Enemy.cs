@@ -129,7 +129,7 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         // Update enemy's health to take correct amount of damage
-        // Despawn enemy; Give player money reward and return to object pool if the damage kills enemy
+        // If the damage kills enemy, then give player money reward, despawn enemy, and return it to object pool 
         this.health -= dmg;
         if (this.health <= 0)
         {
