@@ -12,7 +12,7 @@ public class ArcherTower : TowerTile
     // public float attackSpeed;
     // public float attackRange;
 
-    EnemyManager enemyManager;
+    [SerializeField] private EnemyManager enemyManager;
 
     public override void DoAttack()
     {
