@@ -38,4 +38,22 @@ public abstract class TowerTile : Tile
     /// Runs the attack for this tower
     /// </summary>
     public abstract IEnumerator DoAttack();
+
+    /// <summary>
+    /// Finds and returns the enemy closest to this tower
+    /// </summary>
+    public GameObject FindNearestEnemy()
+    {
+        GameObject nearest = null;
+        float minDistance = 1000;
+        foreach (GameObject e in enemyManager.GetAliveEnemiesList())
+        {
+            if (Vector2.Distance(transform.position, e.transform.position) < minDistance)
+            {
+                nearest = e;
+            }
+        }
+
+        return nearest;
+    }
 }

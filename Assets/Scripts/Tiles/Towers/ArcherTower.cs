@@ -9,14 +9,6 @@ public class ArcherTower : TowerTile
     {
         yield return new WaitForSeconds(5);
 
-        FindNearestEnemy(new Vector2(getX(), getY()));
-    }
-
-    void FindNearestEnemy(Vector2 pos)
-    {
-        foreach (GameObject e in enemyManager.GetAliveEnemiesList())
-        {
-            e.GetComponent<Enemy>().TakeDamage(100);
-        }
+        FindNearestEnemy().GetComponent<Enemy>().TakeDamage(5);
     }
 }
