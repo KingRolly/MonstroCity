@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Tilemaps;
 
 /// <summary>
 /// Manages day and night cycle within a level
@@ -21,13 +22,20 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dayCounterText;
     [SerializeField] private Button readyButton;
     [SerializeField] private TextMeshProUGUI readyText;
+    [SerializeField] private Tilemap bgTilemap;
+    [SerializeField] private Tilemap pathTilemap;
 
     [Header("Phase Information")]
     [SerializeField] private string currentPhase;
     [SerializeField] private int dayCounter;
+    [SerializeField] private int layoutIndex;
     // A list of wave layouts where each wave layout represents a day, combined they make up all days for a level
     [SerializeField] private List<EnemyWaveLayout> currentLevelEnemyWaveLayouts;
-    [SerializeField] private int layoutIndex;
+    
+
+    private readonly Color32 NIGHT_TIME_COLOUR = new Color32(100, 100, 200, 255); // muted purplish tint
+    private readonly Color32 DAY_TIME_COLOUR = new Color32(255, 255, 255, 255); // no tint whatsoever
+
     #endregion
 
     // Start is called before the first frame update
@@ -66,11 +74,17 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     private void StartDay()
     {
-        // Update counters
+        // Update graphics
         readyButton.interactable = false;
         readyText.color = readyButton.colors.disabledColor;
-        SetPhase("Daytime");
+        //bgTilemap.color = DAY_TIME_COLOUR;
+        //pathTilemap.color = DAY_TIME_COLOUR;
+
+        // Update counters
+        StartCoroutine(SetPhase("Daytime"));
         IncrementDayCounter();
+
+        // Spawn enemies
         if (currentLevelEnemyWaveLayouts != null) // Check for non-empty list
         {
             // Call Enemy Manager to spawn waves for current day
@@ -83,35 +97,60 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     public void EndDay()
     {
-        // Update counters
+        // Update graphics
         readyButton.interactable = true;
         readyText.color = Color.red;
-        SetPhase("Night");
-        layoutIndex++;
-    }
+        //bgTilemap.color = NIGHT_TIME_COLOUR;
+        //pathTilemap.color = NIGHT_TIME_COLOUR;
 
-    public string GetCurrentPhase()
-    {
-        return currentPhase;
+        // Update counters
+        StartCoroutine(SetPhase("Night"));
+        layoutIndex++;
     }
 
     /// <summary>
     /// Set current phase
     /// </summary>
     /// <param name="state"></param>
-    public void SetPhase(string state)
+    public IEnumerator SetPhase(string state)
     {
+        
+        // Update phase indicator text
         currentPhase = state;
         phaseIndicatorText.text = state;
+
+        // Update indicator icon and graphics
+        Color32 currentBgColour = bgTilemap.color;
+        Color32 currentPathColour = pathTilemap.color;
+        float t = 0.0f;
+        float time = 0.2f;
+
         if (state == "Daytime")
         {
             phaseIcon.sprite = daytimeIcon;
+
+            // Interpolate between colours on tilemap
+            while (t < time)
+            {
+                t += Time.deltaTime;
+                bgTilemap.color = Color32.Lerp(currentBgColour, DAY_TIME_COLOUR, t / time);
+                pathTilemap.color = Color32.Lerp(currentPathColour, DAY_TIME_COLOUR, t / time);
+                yield return null;
+            }
         }
         else
         {
             phaseIcon.sprite = nightIcon;
+
+            // Interpolate between colours on tilemap
+            while (t < time)
+            {
+                t += Time.deltaTime;
+                bgTilemap.color = Color32.Lerp(currentBgColour, NIGHT_TIME_COLOUR, t / time);
+                pathTilemap.color = Color32.Lerp(currentPathColour, NIGHT_TIME_COLOUR, t / time);
+                yield return null;
+            }
         }
-        
     }
 
     /// <summary>
@@ -131,5 +170,10 @@ public class PhaseManager : MonoBehaviour
     {
         dayCounter++;
         dayCounterText.text = "Day " + dayCounter.ToString();
+    }
+
+    public string GetCurrentPhase()
+    {
+        return currentPhase;
     }
 }

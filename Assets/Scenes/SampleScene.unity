@@ -1232,7 +1232,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Daytime
+  m_text: Night
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 9ad269c99dcf42b7aedefd83dd5a7b9d, type: 2}
@@ -1968,7 +1968,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 96a1d53c4f405ea4a85762e451ae0d17, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 41bf501e9d13239458cfb1a9481184f8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2657,13 +2657,15 @@ MonoBehaviour:
   dayCounterText: {fileID: 921328596}
   readyButton: {fileID: 1699129146}
   readyText: {fileID: 386922952}
+  bgTilemap: {fileID: 2028905759}
+  pathTilemap: {fileID: 2074792824}
   currentPhase: night
   dayCounter: 0
+  layoutIndex: 0
   currentLevelEnemyWaveLayouts:
   - {fileID: 11400000, guid: 8c29a4d359ae0a24c93f64eb8a5c4240, type: 2}
   - {fileID: 11400000, guid: e9429dd0b51182a4698c100f395f7d3f, type: 2}
   - {fileID: 11400000, guid: 58294c5afc9c1044c9fa9e9064d16c2d, type: 2}
-  layoutIndex: 0
 --- !u!4 &1198051989
 Transform:
   m_ObjectHideFlags: 0
@@ -3991,7 +3993,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1963671545}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -21563,7 +21565,7 @@ Tilemap:
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.39215687, g: 0.39215687, b: 0.7830189, a: 1}
   m_Origin: {x: -13, y: -12, z: 0}
   m_Size: {x: 53, y: 40, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
@@ -21883,7 +21885,7 @@ Tilemap:
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.39215687, g: 0.39215687, b: 0.78431374, a: 1}
   m_Origin: {x: -3, y: -6, z: 0}
   m_Size: {x: 19, y: 23, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
