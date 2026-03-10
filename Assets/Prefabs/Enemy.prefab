@@ -168,8 +168,7 @@ MonoBehaviour:
   speed: 0
   damage: 0
   moneyReward: 0
-  audioSource: {fileID: 7808691667117077837}
-  damageSound: {fileID: 8300000, guid: 2a786154dafc17f46a3dd785337f081f, type: 3}
+  damageSound: {fileID: 8300000, guid: 917ee0d3e936a3845b880c92cb8e624c, type: 3}
   enemyPath: []
 --- !u!82 &7808691667117077837
 AudioSource:
@@ -181,7 +180,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 2a786154dafc17f46a3dd785337f081f, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

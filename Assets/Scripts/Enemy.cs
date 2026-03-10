@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
 
     private EnemyManager enemyManager;
     private UIManager uiManager;
-    [SerializeField] AudioSource audioSource;
+    //[SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip damageSound;
 
     [SerializeField] private List<Vector2Int> enemyPath;
@@ -132,7 +132,7 @@ public class Enemy : MonoBehaviour
     {
         // Update enemy's health to take correct amount of damage
         // If the damage kills enemy, then give player money reward, despawn enemy, and return it to object pool
-        audioSource.PlayOneShot(damageSound);
+        AudioSource.PlayClipAtPoint(damageSound, transform.position);
         this.health -= dmg;
         if (this.health <= 0)
         {
