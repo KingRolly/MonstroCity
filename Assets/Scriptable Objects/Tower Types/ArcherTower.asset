@@ -18,4 +18,4 @@ MonoBehaviour:
   price: 2
   damage: 9
   attackSpeed: 0.3
-  attackRange: 8
+  attackRange: 7

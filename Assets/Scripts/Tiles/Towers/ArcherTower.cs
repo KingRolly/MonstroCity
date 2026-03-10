@@ -13,7 +13,10 @@ public class ArcherTower : TowerTile
             while (enemyManager.GetAliveEnemiesCount() > 0)
             {
                 yield return new WaitForSeconds(data.attackSpeed);
-                FindNearestEnemy().GetComponent<Enemy>().TakeDamage((int) data.damage);
+                if (FindNearestEnemy(data.attackRange) != null)
+                {
+                    FindNearestEnemy(data.attackRange).GetComponent<Enemy>().TakeDamage((int) data.damage);
+                }
             }
         }
     }

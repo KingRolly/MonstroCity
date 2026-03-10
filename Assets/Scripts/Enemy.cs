@@ -20,7 +20,6 @@ public class Enemy : MonoBehaviour
 
     private EnemyManager enemyManager;
     private UIManager uiManager;
-    //[SerializeField] AudioSource audioSource;
     [SerializeField] AudioClip damageSound;
 
     [SerializeField] private List<Vector2Int> enemyPath;
@@ -30,7 +29,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+    
     }
 
     // Update is called once per frame

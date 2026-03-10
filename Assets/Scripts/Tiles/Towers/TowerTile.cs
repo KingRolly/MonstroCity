@@ -37,15 +37,15 @@ public abstract class TowerTile : Tile
     public abstract IEnumerator AttackCycle();
 
     /// <summary>
-    /// Finds and returns the enemy closest to this tower
+    /// Finds and returns the enemy closest to this tower within a max distance
     /// </summary>
-    public GameObject FindNearestEnemy()
+    public GameObject FindNearestEnemy(double maxDistance)
     {
         GameObject nearest = null;
-        float minDistance = Mathf.Infinity;
+        double minDistance = maxDistance;
         foreach (GameObject e in enemyManager.GetAliveEnemiesList())
         {
-            float distance = Vector2.Distance(transform.position, e.transform.position);
+            double distance = Vector2.Distance(transform.position, e.transform.position);
             if (distance < minDistance)
             {
                 minDistance = distance;
