@@ -50,6 +50,7 @@ public class PhaseManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        spriteMaterial.color = NIGHT_TIME_COLOUR;
         SetPhase("Night");
         SetDayCounter(0);
         layoutIndex = 0;
