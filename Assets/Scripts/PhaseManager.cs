@@ -125,7 +125,7 @@ public class PhaseManager : MonoBehaviour
         Color32 currentSpriteMaterialColour = spriteMaterial.color;
         Color32 toColour;
         float t = 0.0f;
-        float time = 0.2f;
+        float time = 1.0f;
 
         // Assign graphics according to given phase
         if (state == "Daytime")
