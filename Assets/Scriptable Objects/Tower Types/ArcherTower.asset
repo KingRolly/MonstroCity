@@ -17,5 +17,5 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 08b56cae5d44c714e8186c5b15c1dfe6, type: 3}
   price: 2
   damage: 9
-  attackSpeed: 1
+  attackSpeed: 0.3
   attackRange: 8

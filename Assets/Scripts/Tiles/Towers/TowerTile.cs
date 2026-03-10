@@ -22,7 +22,7 @@ public abstract class TowerTile : Tile
     {
         setPlaceable(false);
         Debug.Log(data.towerName);
-        StartCoroutine(DoAttack());
+        StartCoroutine(AttackCycle());
     }
 
     // Update is called once per frame
@@ -34,7 +34,7 @@ public abstract class TowerTile : Tile
     /// <summary>
     /// Runs the attack for this tower
     /// </summary>
-    public abstract IEnumerator DoAttack();
+    public abstract IEnumerator AttackCycle();
 
     /// <summary>
     /// Finds and returns the enemy closest to this tower
