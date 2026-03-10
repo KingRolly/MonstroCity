@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static PathTile;
 
 public class BackgroundTile : Tile
 {   
@@ -11,6 +12,11 @@ public class BackgroundTile : Tile
     [SerializeField] Sprite stone;
 
     [SerializeField] Sprite dirt;
+    private void Awake()
+    {
+        setPlaceable(true);
+    }
+
     protected override void Start()
     {
         base.Start();

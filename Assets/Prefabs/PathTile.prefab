@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.87547165, g: 0.7957858, b: 0.42617303, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -153,3 +153,5 @@ MonoBehaviour:
   upEnd: {fileID: 21300000, guid: c2437b0c08b8b28498de683034829018, type: 3}
   leftEnd: {fileID: 21300000, guid: 61a2b9c19c137904eb6b8505ac1d9134, type: 3}
   rightEnd: {fileID: 21300000, guid: f5ddbe496dfe6794590c9759f1a48b1b, type: 3}
+  start: {fileID: 21300000, guid: 9b05b8d93b5440d4195d0a829665c185, type: 3}
+  end: {fileID: 21300000, guid: 9b05b8d93b5440d4195d0a829665c185, type: 3}
