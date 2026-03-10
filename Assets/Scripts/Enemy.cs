@@ -74,6 +74,7 @@ public class Enemy : MonoBehaviour
         enemySprite = sprite;
         moneyReward = money;
         this.GetComponent<SpriteRenderer>().sprite = sprite;
+        this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     /// <summary>
