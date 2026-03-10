@@ -52,7 +52,6 @@ public abstract class TowerTile : Tile
                 nearest = e;
             }
         }
-
         return nearest;
     }
 }
