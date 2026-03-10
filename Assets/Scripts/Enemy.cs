@@ -131,14 +131,35 @@ public class Enemy : MonoBehaviour
     {
         // Update enemy's health to take correct amount of damage
         // If the damage kills enemy, then give player money reward, despawn enemy, and return it to object pool
-        AudioSource.PlayClipAtPoint(damageSound, transform.position);
+        gameObject.GetComponent<AudioSource>().PlayOneShot(damageSound);
         this.health -= dmg;
         if (this.health <= 0)
         {
             uiManager.ChangeMoney(moneyReward);
             Despawn();
+            return;
         }
 
+        // Change enemy sprite to indicate damage
+        StartCoroutine(HurtEnemySprite());
+
+    }
+
+    /// <summary>
+    /// Private helper for TakeDamage to change enemy sprite to show damage has been taken
+    /// </summary>
+    private IEnumerator HurtEnemySprite()
+    {
+        float t = 0.0f;
+        float duration = 0.1f;
+        gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            gameObject.GetComponent<SpriteRenderer>().color = Color32.Lerp(Color.red, Color.white, t / duration);
+            yield return null;
+        }
     }
 
     /// <summary>

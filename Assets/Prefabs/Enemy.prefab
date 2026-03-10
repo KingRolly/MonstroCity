@@ -168,7 +168,6 @@ MonoBehaviour:
   speed: 0
   damage: 0
   moneyReward: 0
-  audioSource: {fileID: 7808691667117077837}
   damageSound: {fileID: 8300000, guid: 917ee0d3e936a3845b880c92cb8e624c, type: 3}
   enemyPath: []
 --- !u!82 &7808691667117077837
@@ -183,14 +182,14 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 917ee0d3e936a3845b880c92cb8e624c, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -242,7 +241,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.5
       inSlope: 0
       outSlope: 0
       tangentMode: 0
