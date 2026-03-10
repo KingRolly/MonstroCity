@@ -12,18 +12,27 @@ using UnityEngine.Tilemaps;
 public class PhaseManager : MonoBehaviour
 {
     #region Fields
-    [Header("References")]
+    [Header("Manager References")]
     [SerializeField] private UIManager uiManager;
     [SerializeField] private EnemyManager enemyManager;
+
+    [Header("Phase Indicator References")]
     [SerializeField] private TextMeshProUGUI phaseIndicatorText;
     [SerializeField] private Image phaseIcon;
     [SerializeField] private Sprite daytimeIcon;
     [SerializeField] private Sprite nightIcon;
+
+    [Header("Day Indicator References")]
     [SerializeField] private TextMeshProUGUI dayCounterText;
+
+    [Header("Ready Button References")]
     [SerializeField] private Button readyButton;
     [SerializeField] private TextMeshProUGUI readyText;
+
+    [Header("Graphics References")]
     [SerializeField] private Tilemap bgTilemap;
     [SerializeField] private Tilemap pathTilemap;
+    [SerializeField] private Material spriteMaterial;
 
     [Header("Phase Information")]
     [SerializeField] private string currentPhase;
@@ -109,37 +118,35 @@ public class PhaseManager : MonoBehaviour
         currentPhase = state;
         phaseIndicatorText.text = state;
 
-        // Update indicator icon and graphics
+        // Initialize variables for colour tinting
         Color32 currentBgColour = bgTilemap.color;
         Color32 currentPathColour = pathTilemap.color;
+        Color32 currentSpriteMaterialColour = spriteMaterial.color;
+        Color32 toColour;
         float t = 0.0f;
         float time = 0.2f;
 
+        // Assign graphics according to given phase
         if (state == "Daytime")
         {
             phaseIcon.sprite = daytimeIcon;
-
-            // Interpolate between colours on tilemap
-            while (t < time)
-            {
-                t += Time.deltaTime;
-                bgTilemap.color = Color32.Lerp(currentBgColour, DAY_TIME_COLOUR, t / time);
-                pathTilemap.color = Color32.Lerp(currentPathColour, DAY_TIME_COLOUR, t / time);
-                yield return null;
-            }
+            toColour = DAY_TIME_COLOUR;
+            
         }
         else
         {
             phaseIcon.sprite = nightIcon;
+            toColour = NIGHT_TIME_COLOUR;
+        }
 
-            // Interpolate between colours on tilemap
-            while (t < time)
-            {
-                t += Time.deltaTime;
-                bgTilemap.color = Color32.Lerp(currentBgColour, NIGHT_TIME_COLOUR, t / time);
-                pathTilemap.color = Color32.Lerp(currentPathColour, NIGHT_TIME_COLOUR, t / time);
-                yield return null;
-            }
+        // Interpolate between colours to add tinting
+        while (t < time)
+        {
+            t += Time.deltaTime;
+            //bgTilemap.color = Color32.Lerp(currentBgColour, toColour, t / time);
+            //pathTilemap.color = Color32.Lerp(currentPathColour, toColour, t / time);
+            spriteMaterial.color = Color32.Lerp(currentSpriteMaterialColour, toColour, t / time);
+            yield return null;
         }
     }
 
