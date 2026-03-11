@@ -40,18 +40,18 @@ public class PathTile : Tile
 
     private void Awake()
     {
-        setSpriteType(spriteType.Vertical);
+        SetSpriteType(spriteType.Vertical);
     }
 
     protected override void Start()
     {
         base.Start();
-        setPlaceable(false);
+        SetPlaceable(false);
         enemySpeed = 0;
         enemyDamage = 0;
     }
 
-    public override void setSpriteType(spriteType type)
+    public override void SetSpriteType(spriteType type)
     {
         switch (type){
             case spriteType.Horizontal:

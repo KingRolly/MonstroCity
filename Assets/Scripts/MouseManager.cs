@@ -72,7 +72,7 @@ public class MouseManager : MonoBehaviour
 
         #region Attempt to place something
         // Check that player is in editing mode
-        if (gridManager.getEditing()) 
+        if (gridManager.GetEditing()) 
         {
 
             // Check if player is placing a tower
@@ -81,11 +81,11 @@ public class MouseManager : MonoBehaviour
             {
                 if (Input.GetMouseButton(0))
                 { // Left click places
-                    gridManager.placePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+                    gridManager.PlacePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
                 }
                 else if (Input.GetMouseButton(1))
                 { // Right click deletes
-                    gridManager.deletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+                    gridManager.DeletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
                 }
             }
 
@@ -94,7 +94,7 @@ public class MouseManager : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0) && gridManager.IsInBounds(worldPos))
                 {
-                    if (gridManager.placeTower(Vector2Int.RoundToInt(selectPos), selectedTowerIcon.GetTowerData()))
+                    if (gridManager.PlaceTower(Vector2Int.RoundToInt(selectPos), selectedTowerIcon.GetTowerData()))
                     { // Call GridManager to place the tower, update money, unselect tower icon
                         Debug.Log($"{selectedTowerIcon.GetTowerName()} purchased for {selectedTowerIcon.GetPrice()} goblins");
                         uiManager.ChangeMoney(-selectedTowerIcon.GetPrice());
@@ -116,11 +116,11 @@ public class MouseManager : MonoBehaviour
 
 
         // Click while hovering to "lock" or "unlock" position
-        if (Input.GetMouseButtonDown(0) && !gridManager.getEditing() && gridManager.IsInBounds(worldPos))
+        if (Input.GetMouseButtonDown(0) && !gridManager.GetEditing() && gridManager.IsInBounds(worldPos))
         {
             if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y)))
             {
-                setLock(!locked);
+                SetLock(!locked);
             }
             else
             {
@@ -130,16 +130,20 @@ public class MouseManager : MonoBehaviour
         }
     }
 
-    public void setLock(bool val)
+    public void SetLock(bool val)
     {
         locked = val;
+        if (!locked)
+        {
+            SetSelectedTowerIcon(null);
+        }
     }
 
-    public bool getLock() {
+    public bool GetLock() {
         return locked;
     }
 
-    public Vector2 getPos() {
+    public Vector2 GetPos() {
         return selectPos;
     }
 

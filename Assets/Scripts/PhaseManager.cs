@@ -15,6 +15,7 @@ public class PhaseManager : MonoBehaviour
     [Header("Manager References")]
     [SerializeField] private UIManager uiManager;
     [SerializeField] private EnemyManager enemyManager;
+    [SerializeField] private GridManager gridManager;
 
     [Header("Phase Indicator References")]
     [SerializeField] private TextMeshProUGUI phaseIndicatorText;
@@ -63,14 +64,20 @@ public class PhaseManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Called when ready button is clicked and spawns in enemies for the current level
+    /// Called when ready button is clicked. Spawns in enemies for the current level and sets editing to false.
     /// </summary>
     public void BeginLevel()
     {
-        // TODO: Disable path placement and any other things that are supposed to be only available at the start of a level
-
-        // Switch to daytime
-        StartDay();
+        if (gridManager.IsPathValid())
+        {
+            // Turn off editing and switch to day
+            gridManager.ToggleEditing();
+            StartDay();
+        } else
+        {
+            // TODO: Indicate that path is invalid somehow
+            Debug.Log("Path invalid!");
+        }
     }
 
     /// <summary>
@@ -105,6 +112,7 @@ public class PhaseManager : MonoBehaviour
 
         // Update counters
         StartCoroutine(SetPhase("Night"));
+        gridManager.ToggleEditing();
         layoutIndex++;
     }
 

@@ -20,7 +20,7 @@ public abstract class TowerTile : Tile
 
     protected override void Start()
     {
-        setPlaceable(false);
+        SetPlaceable(false);
         Debug.Log(data.towerName);
         StartCoroutine(AttackCycle());
     }
