@@ -54,4 +54,34 @@ public abstract class TowerTile : Tile
         }
         return nearest;
     }
+
+    /// <summary>
+    /// Finds and returns the enemy in range of the tower that is furthest along the path
+    /// </summary>
+    /// <returns></returns>
+    public GameObject FindEnemyClosestToExit()
+    {
+        // TODO: Loop through list of enemies in range of tower and keep track of enemy with highest distanceTravelled
+        //       Can call this instead of FindNearestEnemy to replace close targeting with first targeting for tower
+        return null; //stub
+    }
+
+    /// <summary>
+    /// Adds enemy to list of enemies in range of the tower
+    /// </summary>
+    public void AddInRangeEnemy(GameObject enemy)
+    {
+        // TODO: Implement a new child game object under tower that detects enemies within the towers range
+        //       Child object calls this to make tower keep track of enemies in range (using OnTriggerEnter2D)
+    }
+
+    /// <summary>
+    /// Removes enemy from list of enemies in range of the tower
+    /// </summary>
+    public void RemoveInRangeEnemy(GameObject enemy)
+    {
+        // TODO: Implement a new child game object under tower that detects enemies within the towers range
+        //       Child object calls this to make tower remove an enemy no longer in range of the tower (using OnTriggerExit2D)
+        //       Search for the enemy to remove by comparing their GameObject.GetInstanceID()
+    }
 }

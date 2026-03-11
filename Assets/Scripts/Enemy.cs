@@ -17,6 +17,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
     [SerializeField] private int moneyReward; // amount of money given to player when killed 
+    [SerializeField] private float distanceTravelled; // distance enemy has travelled along the path so far
 
     private EnemyManager enemyManager;
     private UIManager uiManager;
@@ -61,6 +62,7 @@ public class Enemy : MonoBehaviour
     {
         // Read the enemyPath list and move enemy towards to the next path coordinate
         transform.position = Vector2.MoveTowards(transform.position, enemyPath[pathIndex], speed * Time.deltaTime);
+        distanceTravelled += speed * Time.deltaTime;
     }
 
     // Used to set info of enemy
@@ -105,6 +107,7 @@ public class Enemy : MonoBehaviour
             Vector3 startingPosition = new Vector3(enemyPath[0].x, enemyPath[0].y, transform.position.z);
             transform.position = startingPosition;
             pathIndex = 0;
+            distanceTravelled = 0;
         }
     }
 

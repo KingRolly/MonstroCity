@@ -110,6 +110,7 @@ public class PhaseManager : MonoBehaviour
 
     /// <summary>
     /// Set current phase
+    /// <br/> REQUIRES: state is "Daytime" or "Night"
     /// </summary>
     /// <param name="state"></param>
     public IEnumerator SetPhase(string state)
@@ -125,7 +126,7 @@ public class PhaseManager : MonoBehaviour
         Color32 currentSpriteMaterialColour = spriteMaterial.color;
         Color32 toColour;
         float t = 0.0f;
-        float time = 1.0f;
+        float duration = 1.0f; // duration of colour tinting fade
 
         // Assign graphics according to given phase
         if (state == "Daytime")
@@ -141,12 +142,12 @@ public class PhaseManager : MonoBehaviour
         }
 
         // Interpolate between colours to add tinting
-        while (t < time)
+        while (t < duration)
         {
             t += Time.deltaTime;
             //bgTilemap.color = Color32.Lerp(currentBgColour, toColour, t / time);
             //pathTilemap.color = Color32.Lerp(currentPathColour, toColour, t / time);
-            spriteMaterial.color = Color32.Lerp(currentSpriteMaterialColour, toColour, t / time);
+            spriteMaterial.color = Color32.Lerp(currentSpriteMaterialColour, toColour, t / duration);
             yield return null;
         }
     }
