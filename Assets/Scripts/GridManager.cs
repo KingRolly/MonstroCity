@@ -322,7 +322,7 @@ public class GridManager : MonoBehaviour
     public void ToggleEditing()
     {
         editing = !editing;
-        mouseManager.SetLock(false);
+        mouseManager.SetSelectedTowerIcon(null);
     }
 
     public bool GetEditing() {

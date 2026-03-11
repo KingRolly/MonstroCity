@@ -114,29 +114,8 @@ public class MouseManager : MonoBehaviour
         }
         #endregion
 
-
-        // Click while hovering to "lock" or "unlock" position
-        if (Input.GetMouseButtonDown(0) && !gridManager.GetEditing() && gridManager.IsInBounds(worldPos))
-        {
-            if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y)))
-            {
-                SetLock(!locked);
-            }
-            else
-            {
-                selectPos = new Vector2Int((int)Mathf.Round(worldPos.x), (int)Mathf.Round(worldPos.y));
-            }
-            //Debug.Log(selectPos);
-        }
-    }
-
-    public void SetLock(bool val)
-    {
-        locked = val;
-        if (!locked)
-        {
-            SetSelectedTowerIcon(null);
-        }
+        // Update selected pos
+        selectPos = new Vector2Int((int)Mathf.Round(worldPos.x), (int)Mathf.Round(worldPos.y));
     }
 
     public bool GetLock() {

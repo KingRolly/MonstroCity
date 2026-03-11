@@ -108,15 +108,20 @@ public class TowerIcon : MonoBehaviour
     /// </summary>
     public void BuyTower()
     {
-        if (mouseManager.GetSelectedTowerIcon() != this && !isEmpty) // Check that player isn't already holding this tower and tower isn't empty
+        if (mouseManager.GetSelectedTowerIcon() != this && !isEmpty) // Check that player isn't already holding this tower & tower isn't empty
         { 
-            if (uiManager.GetMoney() - data.price >= 0) // check if player can afford tower
+            if (gridManager.GetEditing())
             {
-                mouseManager.SetSelectedTowerIcon(this); // Set the held tower to this tower
-            }
-            else
+                if (uiManager.GetMoney() - data.price >= 0) // check if player can afford tower
+                {
+                    mouseManager.SetSelectedTowerIcon(this); // Set the held tower to this tower
+                } else
+                {
+                    Debug.Log("Not enough goblins!");
+                }
+            } else
             {
-                Debug.Log("Not enough goblins!");
+                Debug.Log("Can't purchase tower (it's daytime)");
             }
         }
     }
