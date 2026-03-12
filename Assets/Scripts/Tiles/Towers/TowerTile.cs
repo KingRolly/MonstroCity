@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -11,6 +12,7 @@ public abstract class TowerTile : Tile
     [SerializeField] public TowerData data;
     [SerializeField] public EnemyManager enemyManager;
     [SerializeField] public PhaseManager phaseManager;
+    [SerializeField] private GameObject rangeIndicator;
 
     void Awake()
     {
@@ -83,5 +85,34 @@ public abstract class TowerTile : Tile
         // TODO: Implement a new child game object under tower that detects enemies within the towers range
         //       Child object calls this to make tower remove an enemy no longer in range of the tower (using OnTriggerExit2D)
         //       Search for the enemy to remove by comparing their GameObject.GetInstanceID()
+    }
+
+    private void OnMouseEnter()
+    {
+        ShowRange();
+    }
+
+    private void OnMouseExit()
+    {
+        HideRange();
+    }
+
+    /// <summary>
+    /// Shows range indicator for tower
+    /// </summary>
+    private void ShowRange()
+    {
+        // Set range indicator to tower's range and show
+        rangeIndicator.transform.localScale = new Vector3 (2 * data.attackRange, 2 * data.attackRange, 1); 
+        // It's 2 times the attack range because the range is the radius of the circle, and scale sets the diameter
+        rangeIndicator.SetActive(true);
+    }
+
+    /// <summary>
+    /// Hides range indicator for tower
+    /// </summary>
+    private void HideRange()
+    {
+        rangeIndicator.SetActive(false);
     }
 }
