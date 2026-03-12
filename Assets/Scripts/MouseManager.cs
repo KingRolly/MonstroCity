@@ -13,6 +13,7 @@ public class MouseManager : MonoBehaviour
     [SerializeField] Sprite hover;
     [SerializeField] Sprite select;
     [SerializeField] Sprite hold;
+    [SerializeField] GameObject rangePreview;
     [SerializeField] TowerIcon selectedTowerIcon = null;
     [SerializeField] GridManager gridManager;
     [SerializeField] UIManager uiManager;
@@ -58,6 +59,10 @@ public class MouseManager : MonoBehaviour
             heldTowerRenderer = heldTower.GetComponent<SpriteRenderer>();
             heldTowerRenderer.sprite = selectedTowerIcon.GetSprite();
             heldTowerRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+
+            // Show preview for tower range
+            rangePreview.transform.localScale = new Vector3(selectedTowerIcon.GetAtkRange() * 2, selectedTowerIcon.GetAtkRange() * 2, 1);
+            // It's 2 times the attack range because the range is the radius of the circle, and scale sets the diameter
         }
         #endregion
 
