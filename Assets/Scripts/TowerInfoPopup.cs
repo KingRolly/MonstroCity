@@ -19,7 +19,7 @@ public class TowerInfoPopup : MonoBehaviour
     [SerializeField] private float attackRange;
 
     // private readonly float Y_POSITION = 600;
-    private readonly float Y_OFFSET = 175;
+    private readonly float Y_OFFSET = 230;
 
     // Start is called before the first frame update
     void Start()
