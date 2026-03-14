@@ -19,7 +19,7 @@ public class TowerInfoPopup : MonoBehaviour
     [SerializeField] private float attackRange;
 
     // private readonly float Y_POSITION = 600;
-    private readonly float Y_OFFSET = 230;
+    private readonly float Y_OFFSET = 60;
 
     // Start is called before the first frame update
     void Start()
@@ -40,8 +40,8 @@ public class TowerInfoPopup : MonoBehaviour
         dmgText.text = "DMG " + dmg.ToString();
         atkSpeedText.text = "SPD " + spd.ToString() + "s";
         atkRangeText.text = "Range " + range.ToString();
-        Vector2 newPos = new Vector2(xPos, yPos - Y_OFFSET);
-        gameObject.transform.position = newPos;
+        Vector2 newPos = new Vector2(xPos, -285);
+        gameObject.transform.localPosition = newPos;
         gameObject.SetActive(true);
     }
 

@@ -90,7 +90,7 @@ public class TowerIcon : MonoBehaviour
         // Enable tower info popup and update its stats to reflect currently hovered tower
         if (!isEmpty) // Check this isn't an empty tower icon
         {
-            towerInfoPopup.DisplayPopup(data.damage, data.attackSpeed, data.attackRange, gameObject.transform.position.x, gameObject.transform.position.y);
+            towerInfoPopup.DisplayPopup(data.damage, data.attackSpeed, data.attackRange, gameObject.transform.localPosition.x, gameObject.transform.localPosition.y);
         }
         //Debug.Log("Diplay " + data.towerName + " Tower's info popup");
     }
