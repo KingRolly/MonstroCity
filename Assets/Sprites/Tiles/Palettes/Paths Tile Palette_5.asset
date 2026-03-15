@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
   m_Name: Paths Tile Palette_5
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -527237264, guid: bffa4554b6abd8845a11638d3514d92c, type: 3}
+  m_Sprite: {fileID: 748316797, guid: ce31ff472bf9fd747ac812eba3651cdc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
