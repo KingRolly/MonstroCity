@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine.Events;
 
 /// <summary>
 /// Manager for the overall game state
@@ -10,19 +12,32 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [field: SerializeField] public bool isPaused { get; private set; }
+    public delegate void OnPause();
+    public static OnPause onPause;
+    public delegate void OnResume();
+    public static OnResume onResume;
 
     [Header("References")]
     [SerializeField] private GameObject pauseMenu;
+
+    [Header("Pausable Components")]
+    [SerializeField] private GameObject indicator;
 
     /// <summary>
     /// Pause game
     /// </summary>
     public void PauseGame()
     {
-        // Pause game by freezing everything that uses time.Deltatime and disable player input
-        isPaused = true;
-        Time.timeScale = 0;
         pauseMenu.SetActive(true);
+        isPaused = true;
+        onPause?.Invoke();
+
+        // Freeze time to stop time based actions
+        Time.timeScale = 0;
+
+        // Disable game objects and components who's functionality doesn't depend on time
+        indicator.SetActive(false);
+        AudioListener.pause = true;
     }
 
     /// <summary>
@@ -30,10 +45,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void ResumeGame()
     {
-        // Reset time scale and re-enable player input
-        isPaused = false;
-        Time.timeScale = 1;
         pauseMenu.SetActive(false);
+        isPaused = false;
+        onResume?.Invoke();
+
+        // Reset time scale and re-enable everything
+        Time.timeScale = 1;
+        indicator.SetActive(true);
+        AudioListener.pause = false;
     }
 
     /// <summary>

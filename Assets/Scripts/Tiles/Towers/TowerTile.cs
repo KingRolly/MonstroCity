@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 /// <summary>
 /// Represents a simple tower that has no unique behaviors
@@ -14,6 +15,20 @@ public abstract class TowerTile : Tile
     [SerializeField] public PhaseManager phaseManager;
     [SerializeField] private GameObject rangeIndicator;
 
+    private bool isPaused;
+
+    private void OnEnable()
+    {
+        GameManager.onPause += PauseTower;
+        GameManager.onResume += UnPauseTower;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.onPause -= PauseTower;
+        GameManager.onResume -= UnPauseTower;
+    }
+
     void Awake()
     {
         phaseManager = FindObjectOfType<PhaseManager>();
@@ -22,6 +37,7 @@ public abstract class TowerTile : Tile
 
     protected override void Start()
     {
+        isPaused = false;
         SetPlaceable(false);
         Debug.Log(data.towerName);
         StartCoroutine(AttackCycle());
@@ -89,7 +105,7 @@ public abstract class TowerTile : Tile
 
     private void OnMouseEnter()
     {
-        ShowRange();
+        if (!isPaused) { ShowRange(); }
     }
 
     private void OnMouseExit()
@@ -114,5 +130,15 @@ public abstract class TowerTile : Tile
     private void HideRange()
     {
         rangeIndicator.SetActive(false);
+    }
+
+    private void PauseTower()
+    {
+        isPaused = true;
+    }
+
+    private void UnPauseTower()
+    {
+        isPaused = false;
     }
 }
