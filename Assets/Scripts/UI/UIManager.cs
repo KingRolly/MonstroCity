@@ -20,6 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private GridManager gridManager;
     [SerializeField] private MouseManager mouseManager;
+    [SerializeField] private GameManager gameManager;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
 
     [Header("UI Information")]
@@ -92,6 +93,14 @@ public class UIManager : MonoBehaviour
     {
         health += amt;
         healthCounter.text = health.ToString();
+
+        // Check if player has lost
+        if (health <= 0)
+        {
+            health = 0;
+            healthCounter.text = health.ToString();
+            gameManager.GameOver();
+        }
     }
 
     #region Basic Getters and Setters

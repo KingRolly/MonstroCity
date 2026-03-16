@@ -37,7 +37,7 @@ public class PhaseManager : MonoBehaviour
 
     [Header("Phase Information")]
     [SerializeField] private string currentPhase;
-    [SerializeField] private int dayCounter;
+    [field: SerializeField] public int dayCounter { get; private set; }
     [SerializeField] private int layoutIndex;
     // A list of wave layouts where each wave layout represents a day, combined they make up all days for a level
     [SerializeField] private List<EnemyWaveLayout> currentLevelEnemyWaveLayouts;

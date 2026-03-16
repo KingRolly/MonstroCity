@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using TMPro;
 
 /// <summary>
 /// Manager for the overall game state
@@ -19,6 +20,14 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private TextMeshProUGUI daySurvivalCounter;
+
+    [Header("Manager References")]
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private PhaseManager phaseManager;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private MouseManager mouseManager;
 
     [Header("Pausable Components")]
     [SerializeField] private GameObject indicator;
@@ -78,7 +87,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void RestartLevel()
     {
-        // TODO: Reset states, values, and scene
         ResumeGame();
         SceneManager.LoadScene("Level");
     }
@@ -88,8 +96,34 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void QuitLevel()
     {
-        // TODO: Reset everything for when player comes back to level, then quit to main menu
         ResumeGame();
         SceneManager.LoadScene("Menu");
+    }
+
+    /// <summary>
+    /// Trigger a game over for the current level
+    /// </summary>
+    public void GameOver()
+    {
+        isPaused = true;
+        onPause?.Invoke();
+
+        // Freeze time to stop time based actions
+        Time.timeScale = 0;
+
+        // Disable game objects and components who's functionality doesn't depend on time
+        indicator.SetActive(false);
+        AudioListener.pause = true;
+
+        // Display game over screen
+        gameOverScreen.SetActive(true);
+        if (phaseManager.dayCounter == 1)
+        {
+            daySurvivalCounter.text = $"You survived 1 day";
+        }
+        else
+        {
+            daySurvivalCounter.text = $"You survived {phaseManager.dayCounter} days";
+        }
     }
 }
