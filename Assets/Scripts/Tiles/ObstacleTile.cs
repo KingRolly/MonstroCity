@@ -8,7 +8,7 @@ public class ObstacleTile : Tile
     protected override void Start()
     {
         base.Start();
-        setPlaceable(false);
+        SetPlaceable(false);
     }
 
     // Update is called once per frame
@@ -21,6 +21,6 @@ public class ObstacleTile : Tile
     // the sprite to a cleared sprite and subtract some amount of money or something
     // once we actually have obstacles we want to put in)
     public void clearObstacle() {
-        setPlaceable(false);
+        SetPlaceable(false);
     }
 }

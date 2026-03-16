@@ -14,13 +14,13 @@ public class BackgroundTile : Tile
     [SerializeField] Sprite dirt;
     private void Awake()
     {
-        setPlaceable(true);
+        SetPlaceable(true);
     }
 
     protected override void Start()
     {
         base.Start();
-        setPlaceable(true);
+        SetPlaceable(true);
     }
 
     // Update is called once per frame

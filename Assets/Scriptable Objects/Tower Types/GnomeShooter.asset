@@ -16,6 +16,6 @@ MonoBehaviour:
   towerName: Gnome Shooter
   sprite: {fileID: 21300000, guid: 2350e16451800d14f8528fe1f34a11ee, type: 3}
   price: 10
-  damage: 2
-  attackSpeed: 1
-  attackRange: 10
+  damage: 5
+  attackSpeed: 1.5
+  attackRange: 3.5

@@ -197,7 +197,7 @@ public class EnemyManager : MonoBehaviour
             // Set up enemy stats and pathfinding
             enemyToSpawn.GetComponent<Enemy>().SetInfo(enemyType, health, speed, damage, money ,sprite);
             enemyToSpawn.GetComponent<Enemy>().AssignReferences(this, uiManager);
-            enemyToSpawn.GetComponent<Enemy>().SetPath(gridManager.getPath());
+            enemyToSpawn.GetComponent<Enemy>().SetPath(gridManager.GetPath());
 
             // Keep track of spawned enemy
             aliveEnemies.Add(enemyToSpawn);

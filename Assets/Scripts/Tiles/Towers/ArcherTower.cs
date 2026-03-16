@@ -5,15 +5,19 @@ using UnityEngine;
 
 public class ArcherTower : TowerTile
 {
-    public override IEnumerator DoAttack()
+    public override IEnumerator AttackCycle()
     {
-        yield return new WaitUntil(() => enemyManager.GetAliveEnemiesCount() > 0);
-        yield return new WaitUntil(() => phaseManager.GetCurrentPhase() == "Daytime");
-        while (enemyManager.GetAliveEnemiesCount() > 0)
+        while (true)
         {
-            yield return new WaitForSeconds(data.attackSpeed);
-            Debug.Log("hi");
-            FindNearestEnemy().GetComponent<Enemy>().TakeDamage((int) data.damage);
+            yield return new WaitUntil(() => enemyManager.GetAliveEnemiesCount() > 0);
+            while (enemyManager.GetAliveEnemiesCount() > 0)
+            {
+                yield return new WaitForSeconds(data.attackSpeed);
+                if (FindNearestEnemy(data.attackRange) != null)
+                {
+                    FindNearestEnemy(data.attackRange).GetComponent<Enemy>().TakeDamage((int) data.damage);
+                }
+            }
         }
     }
 }

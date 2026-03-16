@@ -13,6 +13,7 @@ public class MouseManager : MonoBehaviour
     [SerializeField] Sprite hover;
     [SerializeField] Sprite select;
     [SerializeField] Sprite hold;
+    [SerializeField] GameObject rangePreview;
     [SerializeField] TowerIcon selectedTowerIcon = null;
     [SerializeField] GridManager gridManager;
     [SerializeField] UIManager uiManager;
@@ -58,6 +59,10 @@ public class MouseManager : MonoBehaviour
             heldTowerRenderer = heldTower.GetComponent<SpriteRenderer>();
             heldTowerRenderer.sprite = selectedTowerIcon.GetSprite();
             heldTowerRenderer.color = new Color(1f, 1f, 1f, 0.5f);
+
+            // Show preview for tower range
+            rangePreview.transform.localScale = new Vector3(selectedTowerIcon.GetAtkRange() * 2, selectedTowerIcon.GetAtkRange() * 2, 1);
+            // It's 2 times the attack range because the range is the radius of the circle, and scale sets the diameter
         }
         #endregion
 
@@ -72,7 +77,7 @@ public class MouseManager : MonoBehaviour
 
         #region Attempt to place something
         // Check that player is in editing mode
-        if (gridManager.getEditing()) 
+        if (gridManager.GetEditing()) 
         {
 
             // Check if player is placing a tower
@@ -81,11 +86,11 @@ public class MouseManager : MonoBehaviour
             {
                 if (Input.GetMouseButton(0))
                 { // Left click places
-                    gridManager.placePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+                    gridManager.PlacePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
                 }
                 else if (Input.GetMouseButton(1))
                 { // Right click deletes
-                    gridManager.deletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+                    gridManager.DeletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
                 }
             }
 
@@ -94,7 +99,7 @@ public class MouseManager : MonoBehaviour
             {
                 if (Input.GetMouseButtonDown(0) && gridManager.IsInBounds(worldPos))
                 {
-                    if (gridManager.placeTower(Vector2Int.RoundToInt(selectPos), selectedTowerIcon.GetTowerData()))
+                    if (gridManager.PlaceTower(Vector2Int.RoundToInt(selectPos), selectedTowerIcon.GetTowerData()))
                     { // Call GridManager to place the tower, update money, unselect tower icon
                         Debug.Log($"{selectedTowerIcon.GetTowerName()} purchased for {selectedTowerIcon.GetPrice()} goblins");
                         uiManager.ChangeMoney(-selectedTowerIcon.GetPrice());
@@ -114,32 +119,15 @@ public class MouseManager : MonoBehaviour
         }
         #endregion
 
-
-        // Click while hovering to "lock" or "unlock" position
-        if (Input.GetMouseButtonDown(0) && !gridManager.getEditing() && gridManager.IsInBounds(worldPos))
-        {
-            if (selectPos == new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y)))
-            {
-                setLock(!locked);
-            }
-            else
-            {
-                selectPos = new Vector2Int((int)Mathf.Round(worldPos.x), (int)Mathf.Round(worldPos.y));
-            }
-            //Debug.Log(selectPos);
-        }
+        // Update selected pos
+        selectPos = new Vector2Int((int)Mathf.Round(worldPos.x), (int)Mathf.Round(worldPos.y));
     }
 
-    public void setLock(bool val)
-    {
-        locked = val;
-    }
-
-    public bool getLock() {
+    public bool GetLock() {
         return locked;
     }
 
-    public Vector2 getPos() {
+    public Vector2 GetPos() {
         return selectPos;
     }
 

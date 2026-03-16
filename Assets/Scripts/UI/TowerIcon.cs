@@ -90,7 +90,7 @@ public class TowerIcon : MonoBehaviour
         // Enable tower info popup and update its stats to reflect currently hovered tower
         if (!isEmpty) // Check this isn't an empty tower icon
         {
-            towerInfoPopup.DisplayPopup(data.damage, data.attackSpeed, data.attackRange, gameObject.transform.position.x, gameObject.transform.position.y);
+            towerInfoPopup.DisplayPopup(data.damage, data.attackSpeed, data.attackRange, gameObject.transform.localPosition.x, gameObject.transform.localPosition.y);
         }
         //Debug.Log("Diplay " + data.towerName + " Tower's info popup");
     }
@@ -108,15 +108,20 @@ public class TowerIcon : MonoBehaviour
     /// </summary>
     public void BuyTower()
     {
-        if (mouseManager.GetSelectedTowerIcon() != this && !isEmpty) // Check that player isn't already holding this tower and tower isn't empty
+        if (mouseManager.GetSelectedTowerIcon() != this && !isEmpty) // Check that player isn't already holding this tower & tower isn't empty
         { 
-            if (uiManager.GetMoney() - data.price >= 0) // check if player can afford tower
+            if (gridManager.GetEditing())
             {
-                mouseManager.SetSelectedTowerIcon(this); // Set the held tower to this tower
-            }
-            else
+                if (uiManager.GetMoney() - data.price >= 0) // check if player can afford tower
+                {
+                    mouseManager.SetSelectedTowerIcon(this); // Set the held tower to this tower
+                } else
+                {
+                    Debug.Log("Not enough goblins!");
+                }
+            } else
             {
-                Debug.Log("Not enough goblins!");
+                Debug.Log("Can't purchase tower (it's daytime)");
             }
         }
     }

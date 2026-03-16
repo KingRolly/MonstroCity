@@ -37,27 +37,27 @@ public class Tile : MonoBehaviour
         }
     }
 
-    public float getX()
+    public float GetX()
     {
         return posX;
     }
 
-    public float getY()
+    public float GetY()
     {
         return posY;
     }
 
-    public bool getPlaceable()
+    public bool GetPlaceable()
     {
         return placeable;
     }
 
-    public void setPlaceable(bool val)
+    public void SetPlaceable(bool val)
     {
         placeable = val;
     }
 
-    public virtual void setSpriteType(PathTile.spriteType sprite) {
+    public virtual void SetSpriteType(PathTile.spriteType sprite) {
         //this is kind of a hack job but it's okay probably
     }
 }

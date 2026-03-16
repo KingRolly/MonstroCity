@@ -17,9 +17,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
     [SerializeField] private int moneyReward; // amount of money given to player when killed 
+    [SerializeField] private float distanceTravelled; // distance enemy has travelled along the path so far
 
     private EnemyManager enemyManager;
     private UIManager uiManager;
+    [SerializeField] AudioClip damageSound;
 
     [SerializeField] private List<Vector2Int> enemyPath;
     private int pathIndex;
@@ -28,7 +30,7 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+    
     }
 
     // Update is called once per frame
@@ -60,6 +62,7 @@ public class Enemy : MonoBehaviour
     {
         // Read the enemyPath list and move enemy towards to the next path coordinate
         transform.position = Vector2.MoveTowards(transform.position, enemyPath[pathIndex], speed * Time.deltaTime);
+        distanceTravelled += speed * Time.deltaTime;
     }
 
     // Used to set info of enemy
@@ -73,6 +76,7 @@ public class Enemy : MonoBehaviour
         enemySprite = sprite;
         moneyReward = money;
         this.GetComponent<SpriteRenderer>().sprite = sprite;
+        this.GetComponent<SpriteRenderer>().color = Color.white;
     }
 
     /// <summary>
@@ -103,6 +107,7 @@ public class Enemy : MonoBehaviour
             Vector3 startingPosition = new Vector3(enemyPath[0].x, enemyPath[0].y, transform.position.z);
             transform.position = startingPosition;
             pathIndex = 0;
+            distanceTravelled = 0;
         }
     }
 
@@ -129,14 +134,36 @@ public class Enemy : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         // Update enemy's health to take correct amount of damage
-        // If the damage kills enemy, then give player money reward, despawn enemy, and return it to object pool 
+        // If the damage kills enemy, then give player money reward, despawn enemy, and return it to object pool
+        gameObject.GetComponent<AudioSource>().PlayOneShot(damageSound);
         this.health -= dmg;
         if (this.health <= 0)
         {
             uiManager.ChangeMoney(moneyReward);
             Despawn();
-        }    
+            return;
+        }
 
+        // Change enemy sprite to indicate damage
+        StartCoroutine(HurtEnemySprite());
+
+    }
+
+    /// <summary>
+    /// Private helper for TakeDamage to change enemy sprite to show damage has been taken
+    /// </summary>
+    private IEnumerator HurtEnemySprite()
+    {
+        float t = 0.0f;
+        float duration = 0.1f;
+        gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+
+        while (t < duration)
+        {
+            t += Time.deltaTime;
+            gameObject.GetComponent<SpriteRenderer>().color = Color32.Lerp(Color.red, Color.white, t / duration);
+            yield return null;
+        }
     }
 
     /// <summary>
