@@ -16,6 +16,7 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private UIManager uiManager;
     [SerializeField] private EnemyManager enemyManager;
     [SerializeField] private GridManager gridManager;
+    [SerializeField] private GameManager gameManager;
 
     [Header("Phase Indicator References")]
     [SerializeField] private TextMeshProUGUI phaseIndicatorText;
@@ -35,9 +36,12 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private Tilemap pathTilemap;
     [SerializeField] private Material spriteMaterial;
 
+    [field: Header("Level Information")]
+    [field: SerializeField] public int dayCounter { get; private set; }
+    [field: SerializeField] public int totalDaysInLevel { get; private set; }
+
     [Header("Phase Information")]
     [SerializeField] private string currentPhase;
-    [field: SerializeField] public int dayCounter { get; private set; }
     [SerializeField] private int layoutIndex;
     // A list of wave layouts where each wave layout represents a day, combined they make up all days for a level
     [SerializeField] private List<EnemyWaveLayout> currentLevelEnemyWaveLayouts;
@@ -106,6 +110,12 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     public void EndDay()
     {
+        // Check if this was the last day for the level
+        if (dayCounter == totalDaysInLevel)
+        {
+            gameManager.TriggerLevelCompletion();
+        }
+
         // Update graphics
         readyButton.interactable = true;
         readyText.color = Color.red;
@@ -167,7 +177,7 @@ public class PhaseManager : MonoBehaviour
     public void SetDayCounter(int num)
     {
         dayCounter = num;
-        dayCounterText.text = "Day " + num.ToString();
+        dayCounterText.text = $"{num.ToString()}/{totalDaysInLevel.ToString()} ";
     }
 
     /// <summary>
@@ -176,7 +186,7 @@ public class PhaseManager : MonoBehaviour
     private void IncrementDayCounter()
     {
         dayCounter++;
-        dayCounterText.text = "Day " + dayCounter.ToString();
+        dayCounterText.text = $"{dayCounter.ToString()}/{totalDaysInLevel.ToString()} ";
     }
 
     public string GetCurrentPhase()

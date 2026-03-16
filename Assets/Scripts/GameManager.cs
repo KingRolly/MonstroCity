@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private GameObject gameOverScreen;
     [SerializeField] private TextMeshProUGUI daySurvivalCounter;
+    [SerializeField] private GameObject victoryScreen;
 
     [Header("Manager References")]
     [SerializeField] private UIManager uiManager;
@@ -33,20 +34,42 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject indicator;
 
     /// <summary>
+    /// Triggers a victory/completion for the current level
+    /// </summary>
+    public void TriggerLevelCompletion()
+    {
+        FreezeGameWorld();
+
+        // Display victory screen
+        victoryScreen.SetActive(true);
+    }
+
+    /// <summary>
+    /// Trigger a game over for the current level
+    /// </summary>
+    public void TriggerGameOver()
+    {
+        FreezeGameWorld();
+
+        // Display game over screen
+        gameOverScreen.SetActive(true);
+        if (phaseManager.dayCounter == 1)
+        {
+            daySurvivalCounter.text = $"You survived 1 day";
+        }
+        else
+        {
+            daySurvivalCounter.text = $"You survived {phaseManager.dayCounter} days";
+        }
+    }
+
+    /// <summary>
     /// Pause game
     /// </summary>
     public void PauseGame()
     {
         pauseMenu.SetActive(true);
-        isPaused = true;
-        onPause?.Invoke();
-
-        // Freeze time to stop time based actions
-        Time.timeScale = 0;
-
-        // Disable game objects and components who's functionality doesn't depend on time
-        indicator.SetActive(false);
-        AudioListener.pause = true;
+        FreezeGameWorld();
     }
 
     /// <summary>
@@ -55,13 +78,7 @@ public class GameManager : MonoBehaviour
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
-        isPaused = false;
-        onResume?.Invoke();
-
-        // Reset time scale and re-enable everything
-        Time.timeScale = 1;
-        indicator.SetActive(true);
-        AudioListener.pause = false;
+        UnFreezeGameWorld();
     }
 
     /// <summary>
@@ -87,8 +104,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void RestartLevel()
     {
-        ResumeGame();
         SceneManager.LoadScene("Level");
+        ResumeGame();
     }
 
     /// <summary>
@@ -96,14 +113,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void QuitLevel()
     {
-        ResumeGame();
         SceneManager.LoadScene("Menu");
+        ResumeGame();
     }
 
     /// <summary>
-    /// Trigger a game over for the current level
+    /// Private helper to freeze the game world and prevent player input
     /// </summary>
-    public void GameOver()
+    private void FreezeGameWorld()
     {
         isPaused = true;
         onPause?.Invoke();
@@ -114,16 +131,19 @@ public class GameManager : MonoBehaviour
         // Disable game objects and components who's functionality doesn't depend on time
         indicator.SetActive(false);
         AudioListener.pause = true;
+    }
 
-        // Display game over screen
-        gameOverScreen.SetActive(true);
-        if (phaseManager.dayCounter == 1)
-        {
-            daySurvivalCounter.text = $"You survived 1 day";
-        }
-        else
-        {
-            daySurvivalCounter.text = $"You survived {phaseManager.dayCounter} days";
-        }
+    /// <summary>
+    /// Private helper to unfreeze the game world and re-enable player input
+    /// </summary>
+    private void UnFreezeGameWorld()
+    {
+        isPaused = false;
+        onResume?.Invoke();
+
+        // Reset time scale and re-enable everything
+        Time.timeScale = 1;
+        indicator.SetActive(true);
+        AudioListener.pause = false;
     }
 }

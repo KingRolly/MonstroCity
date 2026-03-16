@@ -100,7 +100,7 @@ public class UIManager : MonoBehaviour
         {
             health = 0;
             healthCounter.text = health.ToString();
-            gameManager.GameOver();
+            gameManager.TriggerGameOver();
         }
     }
 
