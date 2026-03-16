@@ -43,8 +43,8 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private List<EnemyWaveLayout> currentLevelEnemyWaveLayouts;
     
 
-    private readonly Color32 NIGHT_TIME_COLOUR = new Color32(100, 100, 200, 255); // muted purplish tint
-    private readonly Color32 DAY_TIME_COLOUR = new Color32(255, 255, 255, 255); // no tint whatsoever
+    [SerializeField] private Color32 NIGHT_TIME_COLOUR; // muted purplish tint
+    [SerializeField] private Color32 DAY_TIME_COLOUR; // no tint whatsoever
 
     #endregion
 
