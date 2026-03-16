@@ -5,10 +5,11 @@ using TMPro;
 using Unity.VisualScripting;
 using System;
 
-// Class description:
-// Manager for setting up and changing anything UI related
-// Note: Used to be MoneyManager, but decided a general purpose UIManager should oversee all UI management
-// - Nicholas Liang (Feb. 9th, 2026)
+/// <summary>
+/// Manager for setting up and changing anything UI related
+/// Note: Used to be MoneyManager, but decided a general purpose UIManager should oversee all UI management
+/// <br/> - Nicholas Liang (Feb. 9th, 2026)
+/// </summary>
 public class UIManager : MonoBehaviour
 {
     [Header("References")]
