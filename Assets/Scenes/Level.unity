@@ -663,15 +663,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecba43321e0c5e64bac0f85d21beaee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiManager: {fileID: 135745661}
+  gridManager: {fileID: 203767970}
+  mouseManager: {fileID: 2019142844}
+  gameManager: {fileID: 1093377025}
   goblinCounter: {fileID: 80726277}
   healthCounter: {fileID: 327170976}
   topBar: {fileID: 858860974}
   towersPanel: {fileID: 690193628}
   towerIconPrefab: {fileID: 5518434622953607693, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
-  uiManager: {fileID: 135745661}
-  gridManager: {fileID: 203767970}
-  mouseManager: {fileID: 2019142844}
-  gameManager: {fileID: 1093377025}
   towerInfoPopup: {fileID: 960855604}
   money: 123
   health: 123
@@ -4876,6 +4876,7 @@ MonoBehaviour:
   bgTilemap: {fileID: 2028905759}
   pathTilemap: {fileID: 2074792824}
   spriteMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  materialReference: {fileID: 2019142841}
   <dayCounter>k__BackingField: 0
   <totalDaysInLevel>k__BackingField: 3
   currentPhase: night

@@ -32,9 +32,8 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI readyText;
 
     [Header("Graphics References")]
-    [SerializeField] private Tilemap bgTilemap;
-    [SerializeField] private Tilemap pathTilemap;
     [SerializeField] private Material spriteMaterial;
+    [SerializeField] private GameObject materialReference;
 
     [field: Header("Level Information")]
     [field: SerializeField] public int dayCounter { get; private set; }
@@ -95,7 +94,7 @@ public class PhaseManager : MonoBehaviour
         uiManager.HideTowerPanel();
 
         // Update counters
-        StartCoroutine(SetPhase("Daytime"));
+        SetPhase("Daytime");
         IncrementDayCounter();
 
         // Spawn enemies
@@ -122,7 +121,7 @@ public class PhaseManager : MonoBehaviour
         readyText.color = Color.red;
 
         // Update counters
-        StartCoroutine(SetPhase("Night"));
+        SetPhase("Night");
         gridManager.ToggleEditing();
         layoutIndex++;
         uiManager.ShowTowerPanel();
@@ -133,20 +132,15 @@ public class PhaseManager : MonoBehaviour
     /// <br/> REQUIRES: state is "Daytime" or "Night"
     /// </summary>
     /// <param name="state"></param>
-    public IEnumerator SetPhase(string state)
+    public void SetPhase(string state)
     {
-        
         // Update phase indicator text
         currentPhase = state;
         phaseIndicatorText.text = state;
 
         // Initialize variables for colour tinting
-        Color32 currentBgColour = bgTilemap.color;
-        Color32 currentPathColour = pathTilemap.color;
         Color32 currentSpriteMaterialColour = spriteMaterial.color;
         Color32 toColour;
-        float t = 0.0f;
-        float duration = 1.0f; // duration of colour tinting fade
 
         // Assign graphics according to given phase
         if (state == "Daytime")
@@ -161,15 +155,14 @@ public class PhaseManager : MonoBehaviour
             toColour = NIGHT_TIME_COLOUR;
         }
 
+        float duration = 1.0f; // duration of colour tinting fade
         // Interpolate between colours to add tinting
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            //bgTilemap.color = Color32.Lerp(currentBgColour, toColour, t / time);
-            //pathTilemap.color = Color32.Lerp(currentPathColour, toColour, t / time);
-            spriteMaterial.color = Color32.Lerp(currentSpriteMaterialColour, toColour, t / duration);
-            yield return null;
-        }
+        // Have to do it this way because you can't explicitly do .LeanColor on a material's colour tint
+        LeanTween.value(gameObject, 0f, 1f, duration).setEaseInOutSine()
+            .setOnUpdate((float val) => {
+                // Lerp between colors based on tween value
+                spriteMaterial.color = Color.Lerp(currentSpriteMaterialColour, toColour, val);
+            });
     }
 
     /// <summary>
