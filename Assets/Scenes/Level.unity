@@ -3854,6 +3854,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8c29a4d359ae0a24c93f64eb8a5c4240, type: 2}
   - {fileID: 11400000, guid: e9429dd0b51182a4698c100f395f7d3f, type: 2}
   - {fileID: 11400000, guid: 58294c5afc9c1044c9fa9e9064d16c2d, type: 2}
+  NIGHT_TIME_COLOUR:
+    serializedVersion: 2
+    rgba: 4290339170
+  DAY_TIME_COLOUR:
+    serializedVersion: 2
+    rgba: 4294967295
 --- !u!4 &1198051989
 Transform:
   m_ObjectHideFlags: 0
