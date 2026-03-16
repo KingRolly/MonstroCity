@@ -12,16 +12,18 @@ using System;
 /// </summary>
 public class UIManager : MonoBehaviour
 {
+    [Header("Manahger References")]
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private MouseManager mouseManager;
+    [SerializeField] private GameManager gameManager;
+
     [Header("References")]
     [SerializeField] private TextMeshProUGUI goblinCounter;
     [SerializeField] private TextMeshProUGUI healthCounter;
     [SerializeField] private GameObject topBar;
     [SerializeField] private GameObject towersPanel;
     [SerializeField] private GameObject towerIconPrefab;
-    [SerializeField] private UIManager uiManager;
-    [SerializeField] private GridManager gridManager;
-    [SerializeField] private MouseManager mouseManager;
-    [SerializeField] private GameManager gameManager;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
 
     [Header("UI Information")]
@@ -32,11 +34,14 @@ public class UIManager : MonoBehaviour
     private List<GameObject> towersList;
     private readonly int MAX_TOWER_ICONS = 8;
 
+    [Header("Constants")]
+    [SerializeField] private readonly int TOWER_PANEL_Y_OFFSET = 225;
+
     // Start is called before the first frame update
     void Start()
     {
         goblinCounter.text = money.ToString();
-        setupTopBarTowersUI();
+        SetupTopBarTowersUI();
     }
 
     // Update is called once per frame
@@ -47,7 +52,7 @@ public class UIManager : MonoBehaviour
 
     // Method for setting up all the purchasable tower UI in the top bar
     // Should be called upon start for setup
-    private void setupTopBarTowersUI()
+    private void SetupTopBarTowersUI()
     {
         // Setup top bar by instantiating TowerUIs, setting their stats, and assign references they need
         // Initialize towersList and add instantiated towerUIs to towersList to keep track of them for later use
@@ -74,6 +79,26 @@ public class UIManager : MonoBehaviour
             emptyIcon.GetComponent<TowerIcon>().MakeEmpty();
             towersList.Add(emptyIcon);
         }
+    }
+
+    /// <summary>
+    /// Hide the tower panel
+    /// </summary>
+    public void HideTowerPanel()
+    {
+        float duration = 0.5f;
+        towersPanel.transform.LeanMoveLocalY(TOWER_PANEL_Y_OFFSET, duration).setEaseInCubic();
+        towerInfoPopup.enabled = false;
+    }
+
+    /// <summary>
+    /// Show the tower panel
+    /// </summary>
+    public void ShowTowerPanel()
+    {
+        float duration = 0.5f;
+        towersPanel.transform.LeanMoveLocalY(0, duration).setEaseOutCubic();
+        towerInfoPopup.enabled = true;
     }
 
     /// <summary>

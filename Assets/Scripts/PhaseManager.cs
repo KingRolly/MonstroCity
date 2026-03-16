@@ -92,6 +92,7 @@ public class PhaseManager : MonoBehaviour
         // Update graphics
         readyButton.interactable = false;
         readyText.color = readyButton.colors.disabledColor;
+        uiManager.HideTowerPanel();
 
         // Update counters
         StartCoroutine(SetPhase("Daytime"));
@@ -124,6 +125,7 @@ public class PhaseManager : MonoBehaviour
         StartCoroutine(SetPhase("Night"));
         gridManager.ToggleEditing();
         layoutIndex++;
+        uiManager.ShowTowerPanel();
     }
 
     /// <summary>
