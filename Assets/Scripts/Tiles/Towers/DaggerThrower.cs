@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using UnityEngine;
 
-public class ArcherTower : TowerTile
+public class DaggerThrower : TowerTile
 {
     public override IEnumerator AttackCycle()
     {
