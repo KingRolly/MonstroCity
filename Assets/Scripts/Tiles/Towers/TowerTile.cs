@@ -13,6 +13,7 @@ public abstract class TowerTile : Tile
     [SerializeField] public TowerData data;
     [SerializeField] public EnemyManager enemyManager;
     [SerializeField] public PhaseManager phaseManager;
+    [SerializeField] public UIManager uiManager;
     [SerializeField] private GameObject rangeIndicator;
 
     private bool isPaused;
@@ -33,6 +34,7 @@ public abstract class TowerTile : Tile
     {
         phaseManager = FindObjectOfType<PhaseManager>();
         enemyManager = FindObjectOfType<EnemyManager>();
+        uiManager = FindObjectOfType<UIManager>();
     }
 
     protected override void Start()
@@ -111,6 +113,13 @@ public abstract class TowerTile : Tile
     private void OnMouseExit()
     {
         HideRange();
+    }
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            uiManager.DisplayTowerStatsPanel(this);
+        }
     }
 
     /// <summary>

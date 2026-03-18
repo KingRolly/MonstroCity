@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Unity.VisualScripting;
 using System;
+using UnityEngine.UI;
 
 /// <summary>
 /// Manager for setting up and changing anything UI related
@@ -12,7 +13,7 @@ using System;
 /// </summary>
 public class UIManager : MonoBehaviour
 {
-    [Header("Manahger References")]
+    [Header("Manager References")]
     [SerializeField] private UIManager uiManager;
     [SerializeField] private GridManager gridManager;
     [SerializeField] private MouseManager mouseManager;
@@ -26,16 +27,25 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject towerIconPrefab;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
 
+    [Header("Tower Stats Panel References")]
+    [SerializeField] private GameObject towerStatsPanel;
+    [SerializeField] private Image towerArt;
+    [SerializeField] private TextMeshProUGUI towerName;
+    [SerializeField] private TextMeshProUGUI dmgText;
+    [SerializeField] private TextMeshProUGUI atkSpdText;
+    [SerializeField] private TextMeshProUGUI rangeText;
+
     [Header("UI Information")]
     [SerializeField] private int money;
     [SerializeField] private int health;
     [SerializeField] private TowerData archerData;
     [SerializeField] private TowerData gnomeData;
     private List<GameObject> towersList;
-    private readonly int MAX_TOWER_ICONS = 8;
 
     [Header("Constants")]
-    [SerializeField] private readonly int TOWER_PANEL_Y_OFFSET = 225;
+    private readonly int TOWER_PANEL_Y_OFFSET = 225;
+    private readonly int TOWER_STATS_PANEL_X_OFFSET = 260;
+    private readonly int MAX_TOWER_ICONS = 8;
 
     // Start is called before the first frame update
     void Start()
@@ -99,6 +109,31 @@ public class UIManager : MonoBehaviour
         float duration = 0.5f;
         towersPanel.transform.LeanMoveLocalY(0, duration).setEaseOutCubic();
         towerInfoPopup.enabled = true;
+    }
+
+    /// <summary>
+    /// Display the stats of given tower
+    /// </summary>
+    public void DisplayTowerStatsPanel(TowerTile tower)
+    {
+        // Set stats
+        towerArt.sprite = tower.data.sprite;
+        towerName.text = tower.data.towerName;
+        dmgText.text = "DMG " + tower.data.damage.ToString();
+        atkSpdText.text = "SPD " + tower.data.attackSpeed.ToString() + "s";
+        rangeText.text = "Range " + tower.data.attackRange.ToString();
+
+        // Slide tower stats panel out
+        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(0, 0.1f).setEaseInCubic();
+    }
+
+    /// <summary>
+    /// Hide tower stats panel
+    /// </summary>
+    public void HideTowerStatsPanel()
+    {
+        // Slide tower stats panel off screen
+        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(-TOWER_STATS_PANEL_X_OFFSET, 0.1f).setEaseOutCubic();
     }
 
     /// <summary>
