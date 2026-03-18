@@ -12,6 +12,9 @@ using UnityEngine.Tilemaps;
 public class PhaseManager : MonoBehaviour
 {
     #region Fields
+    [Header("References")]
+    [SerializeField] private AudioClip readyButtonSound;
+
     [Header("Manager References")]
     [SerializeField] private UIManager uiManager;
     [SerializeField] private EnemyManager enemyManager;
@@ -73,6 +76,7 @@ public class PhaseManager : MonoBehaviour
     {
         if (gridManager.IsPathValid())
         {
+            AudioManager.instance.PlaySound(readyButtonSound, transform, 0.7f);
             // Turn off editing and switch to day
             gridManager.ToggleEditing();
             StartDay();

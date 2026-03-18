@@ -102,7 +102,10 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 7a6324922fa70d049b0fd3e234cf5ba2, type: 2}
   enemyManager: {fileID: 0}
   phaseManager: {fileID: 0}
+  uiManager: {fileID: 0}
   rangeIndicator: {fileID: 7414474929220151399}
+  placeSound: {fileID: 8300000, guid: 1d0b9cd8460f51246a78faeeaed2fe54, type: 3}
+  sellSound: {fileID: 0}
   projectileSpeed: 6
   gnomePrefab: {fileID: 6279944220403339002, guid: 395d652d02b347a4faef3a666abcfd4d, type: 3}
 --- !u!61 &2369454315964645581

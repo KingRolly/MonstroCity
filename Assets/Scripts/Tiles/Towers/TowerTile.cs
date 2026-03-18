@@ -15,6 +15,8 @@ public abstract class TowerTile : Tile
     [SerializeField] public PhaseManager phaseManager;
     [SerializeField] public UIManager uiManager;
     [SerializeField] private GameObject rangeIndicator;
+    [SerializeField] private AudioClip placeSound;
+    [SerializeField] private AudioClip sellSound;
 
     private bool isPaused;
 
@@ -22,6 +24,7 @@ public abstract class TowerTile : Tile
     {
         GameManager.onPause += PauseTower;
         GameManager.onResume += UnPauseTower;
+        AudioManager.instance.PlaySound(placeSound, this.transform, 0.5f);
     }
 
     private void OnDisable()

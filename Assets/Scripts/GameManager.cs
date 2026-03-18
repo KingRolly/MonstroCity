@@ -130,7 +130,6 @@ public class GameManager : MonoBehaviour
 
         // Disable game objects and components who's functionality doesn't depend on time
         indicator.SetActive(false);
-        AudioListener.pause = true;
     }
 
     /// <summary>
@@ -144,6 +143,5 @@ public class GameManager : MonoBehaviour
         // Reset time scale and re-enable everything
         Time.timeScale = 1;
         indicator.SetActive(true);
-        AudioListener.pause = false;
     }
 }

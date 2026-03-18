@@ -186,7 +186,10 @@ MonoBehaviour:
   data: {fileID: 11400000, guid: 7680f4a057da7f0488ae45dbe94b4761, type: 2}
   enemyManager: {fileID: 0}
   phaseManager: {fileID: 0}
+  uiManager: {fileID: 0}
   rangeIndicator: {fileID: 2500820713686278507}
+  placeSound: {fileID: 8300000, guid: 1d0b9cd8460f51246a78faeeaed2fe54, type: 3}
+  sellSound: {fileID: 0}
 --- !u!61 &-5063574777754069749
 BoxCollider2D:
   m_ObjectHideFlags: 0

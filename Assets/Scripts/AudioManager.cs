@@ -12,6 +12,8 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private AudioSource audioPlayer;
+    [SerializeField] private AudioClip buttonClickSFX;
+    [SerializeField] private AudioClip buttonHoverSFX;
 
     // Uses singleton design pattern
     private void Awake()
@@ -39,6 +41,24 @@ public class AudioManager : MonoBehaviour
         // Destroy clip after finished playing
         float clipLength = audioSource.clip.length;
         Destroy(audioSource.gameObject, clipLength);
+    }
+
+    /// <summary>
+    /// Play button click sound
+    /// </summary>
+    public void PlayButtonClickSound()
+    {
+        // Spawn game object to play sound and assign audio clip accordingly
+        PlaySound(buttonClickSFX, this.transform, 1f);
+    }
+
+    /// <summary>
+    /// Play button hover sound
+    /// </summary>
+    public void PlayButtonHoverSound()
+    {
+        // Spawn game object to play sound and assign audio clip accordingly
+        PlaySound(buttonHoverSFX, this.transform, 1f);
     }
 
     /// <summary>
