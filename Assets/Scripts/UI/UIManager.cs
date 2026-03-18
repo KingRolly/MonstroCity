@@ -124,7 +124,7 @@ public class UIManager : MonoBehaviour
         rangeText.text = "Range " + tower.data.attackRange.ToString();
 
         // Slide tower stats panel out
-        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(0, 0.1f).setEaseInCubic();
+        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(0, 0.1f).setEaseOutCubic();
     }
 
     /// <summary>
@@ -133,7 +133,7 @@ public class UIManager : MonoBehaviour
     public void HideTowerStatsPanel()
     {
         // Slide tower stats panel off screen
-        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(-TOWER_STATS_PANEL_X_OFFSET, 0.1f).setEaseOutCubic();
+        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(-TOWER_STATS_PANEL_X_OFFSET, 0.1f).setEaseInCubic();
     }
 
     /// <summary>
