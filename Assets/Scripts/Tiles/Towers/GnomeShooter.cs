@@ -1,9 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Data.Common;
-using UnityEditorInternal.Profiling.Memory.Experimental.FileFormat;
 using UnityEngine;
-using UnityEngine.U2D;
 
 public class GnomeShooter : TowerTile
 {
