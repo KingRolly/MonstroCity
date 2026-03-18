@@ -24,7 +24,7 @@ public abstract class TowerTile : Tile
     {
         GameManager.onPause += PauseTower;
         GameManager.onResume += UnPauseTower;
-        AudioManager.instance.PlaySound(placeSound, this.transform, 0.5f);
+        AudioManager.instance.PlaySound(placeSound, this.transform, 1f);
     }
 
     private void OnDisable()

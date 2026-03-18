@@ -2153,7 +2153,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -2359,6 +2359,7 @@ MonoBehaviour:
   audioPlayer: {fileID: 470278575}
   buttonClickSFX: {fileID: 8300000, guid: 7e216ff2601cc09489664e439fcfa3d3, type: 3}
   buttonHoverSFX: {fileID: 8300000, guid: 39b079e1078dcb2458d7ce274ca93c83, type: 3}
+  bgm: {fileID: 8300000, guid: 6b5966e466167134a81032044f94736e, type: 3}
 --- !u!4 &488594360
 Transform:
   m_ObjectHideFlags: 0

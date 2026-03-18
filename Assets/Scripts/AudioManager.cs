@@ -14,6 +14,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource audioPlayer;
     [SerializeField] private AudioClip buttonClickSFX;
     [SerializeField] private AudioClip buttonHoverSFX;
+    [SerializeField] private AudioClip bgm;
 
     // Uses singleton design pattern
     private void Awake()
@@ -22,6 +23,11 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
         }
+    }
+
+    private void Start()
+    {
+        PlaySound(bgm, transform, 0.2f);
     }
 
     /// <summary>
@@ -49,7 +55,7 @@ public class AudioManager : MonoBehaviour
     public void PlayButtonClickSound()
     {
         // Spawn game object to play sound and assign audio clip accordingly
-        PlaySound(buttonClickSFX, this.transform, 1f);
+        PlaySound(buttonClickSFX, transform, 1f);
     }
 
     /// <summary>
