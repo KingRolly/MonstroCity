@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DaggerThrower
   m_EditorClassIdentifier: 
   towerType: {fileID: 2073946862857539422, guid: f706f98a1a2cd53418c3c275bb8c5090, type: 3}
-  towerName: Dagger Thrower
+  towerName: Knife Thrower
   sprite: {fileID: 21300000, guid: 08b56cae5d44c714e8186c5b15c1dfe6, type: 3}
   price: 2
   damage: 9
