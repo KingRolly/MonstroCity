@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -1594749829888634545}
   - component: {fileID: 7617555495130713071}
   m_Layer: 0
-  m_Name: GnomeProjectile
+  m_Name: Gnome
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

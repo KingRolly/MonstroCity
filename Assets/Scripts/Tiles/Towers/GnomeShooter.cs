@@ -31,7 +31,7 @@ public class GnomeShooter : TowerTile
         for (int i = 0; i < 8; i++)
         {
             GameObject proj = Instantiate(gnomePrefab, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
-            proj.GetComponent<GnomeProjectile>().SetProjectileInfo(projectileSpeed, data.damage, data.attackRange, i*45);
+            proj.GetComponent<Projectile>().SetProjectileInfo(projectileSpeed, data.damage, data.attackRange, i*45);
         }
     }
 }

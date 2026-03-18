@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 2073946862857539422}
   - component: {fileID: -5063574777754069749}
   m_Layer: 0
-  m_Name: ArcherTower
+  m_Name: DaggerThrower
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -190,6 +190,8 @@ MonoBehaviour:
   rangeIndicator: {fileID: 2500820713686278507}
   placeSound: {fileID: 8300000, guid: 1d0b9cd8460f51246a78faeeaed2fe54, type: 3}
   sellSound: {fileID: 0}
+  projectileSpeed: 10
+  daggerPrefab: {fileID: 6279944220403339002, guid: a5242b36cb207274b8b220b46530972d, type: 3}
 --- !u!61 &-5063574777754069749
 BoxCollider2D:
   m_ObjectHideFlags: 0

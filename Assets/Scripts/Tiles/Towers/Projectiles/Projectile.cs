@@ -10,7 +10,7 @@ using UnityEngine.UIElements;
 /// GnomeShooter projectile <br/>
 /// - Jagger Shergill (Mar. 15th, 2026)
 /// </summary>
-public class GnomeProjectile : MonoBehaviour
+public class Projectile : MonoBehaviour
 {
     private float speed; // speed of projectile
     private float damage; // amount of damage projectile deals
