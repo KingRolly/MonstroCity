@@ -79,7 +79,7 @@ public class GridManager : MonoBehaviour
     {
         //Place path tile
         if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].GetPlaceable()) {
-            AudioManager.instance.PlaySound(placePathSound, transform, 1f);
+            AudioManager.instance.PlaySoundFX(placePathSound, transform, 1f);
 
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(pathTile, new Vector2(position.x, position.y), Quaternion.identity);

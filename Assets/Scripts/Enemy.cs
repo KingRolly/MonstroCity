@@ -135,7 +135,7 @@ public class Enemy : MonoBehaviour
     {
         // Update enemy's health to take correct amount of damage
         // If the damage kills enemy, then give player money reward, despawn enemy, and return it to object pool
-        AudioManager.instance.PlaySound(damageSound, transform, 0.5f);
+        AudioManager.instance.PlaySoundFX(damageSound, transform, 0.5f);
         this.health -= dmg;
         if (this.health <= 0)
         {

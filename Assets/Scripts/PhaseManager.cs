@@ -76,7 +76,7 @@ public class PhaseManager : MonoBehaviour
     {
         if (gridManager.IsPathValid())
         {
-            AudioManager.instance.PlaySound(readyButtonSound, transform, 0.7f);
+            AudioManager.instance.PlaySoundFX(readyButtonSound, transform, 1f);
             // Turn off editing and switch to day
             gridManager.ToggleEditing();
             StartDay();
@@ -119,16 +119,18 @@ public class PhaseManager : MonoBehaviour
         {
             gameManager.TriggerLevelCompletion();
         }
+        else // Run end of day sequence as usual
+        {
+            // Update graphics
+            readyButton.interactable = true;
+            readyText.color = Color.red;
 
-        // Update graphics
-        readyButton.interactable = true;
-        readyText.color = Color.red;
-
-        // Update counters
-        SetPhase("Night");
-        gridManager.ToggleEditing();
-        layoutIndex++;
-        uiManager.ShowTowerPanel();
+            // Update counters
+            SetPhase("Night");
+            gridManager.ToggleEditing();
+            layoutIndex++;
+            uiManager.ShowTowerPanel();
+        }
     }
 
     /// <summary>

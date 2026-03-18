@@ -30,6 +30,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Tower Stats Panel References")]
     [SerializeField] private GameObject towerStatsPanel;
+    [SerializeField] private TowerTile currentlySelectedTower;
     [SerializeField] private Image towerArt;
     [SerializeField] private TextMeshProUGUI towerName;
     [SerializeField] private TextMeshProUGUI dmgText;
@@ -97,7 +98,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void HideTowerPanel()
     {
-        AudioManager.instance.PlaySound(towersPanelSound, transform, 0.3f);
+        AudioManager.instance.PlaySoundFX(towersPanelSound, transform, 0.3f);
         float duration = 0.5f;
         towersPanel.transform.LeanMoveLocalY(TOWER_PANEL_Y_OFFSET, duration).setEaseInCubic();
         towerInfoPopup.enabled = false;
@@ -108,7 +109,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ShowTowerPanel()
     {
-        AudioManager.instance.PlaySound(towersPanelSound, transform, 0.3f);
+        AudioManager.instance.PlaySoundFX(towersPanelSound, transform, 0.3f);
         float duration = 0.5f;
         towersPanel.transform.LeanMoveLocalY(0, duration).setEaseOutCubic();
         towerInfoPopup.enabled = true;
@@ -119,15 +120,39 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void DisplayTowerStatsPanel(TowerTile tower)
     {
-        // Set stats
+        // Stop outlining previously selected tower if it exists
+        if (currentlySelectedTower != null) currentlySelectedTower.HideSelectionOutline();
+
+        // Update currently selected tower
+        currentlySelectedTower = tower;
+        currentlySelectedTower.ShowSelectionOutline();
+
+        float slideOutDuration = 0.05f;
+        float slideInDuration = 0.1f;
+
+        // Slide tower stats panel off-screen
+        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(-TOWER_STATS_PANEL_X_OFFSET, slideOutDuration)
+            .setEaseInCubic()
+            // Then seamlessly switch stats once off-screen
+            .setOnComplete(() => UpdateTowerStatsPanel(currentlySelectedTower));
+
+        // Before sliding tower panel back out with new stats
+        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(0, slideInDuration)
+            .setEaseOutCubic()
+            .setDelay(2* slideOutDuration); // Delay until slide out animation is done (with a bit of a pause)
+    }
+
+    /// <summary>
+    /// Private helper for updating the tower stats panel
+    /// </summary>
+    /// <param name="tower">Tower to update stats to</param>
+    private void UpdateTowerStatsPanel(TowerTile tower)
+    {
         towerArt.sprite = tower.data.sprite;
         towerName.text = tower.data.towerName;
         dmgText.text = "DMG " + tower.data.damage.ToString();
         atkSpdText.text = "SPD " + tower.data.attackSpeed.ToString() + "s";
         rangeText.text = "Range " + tower.data.attackRange.ToString();
-
-        // Slide tower stats panel out
-        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(0, 0.1f).setEaseOutCubic();
     }
 
     /// <summary>
@@ -137,6 +162,9 @@ public class UIManager : MonoBehaviour
     {
         // Slide tower stats panel off screen
         towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(-TOWER_STATS_PANEL_X_OFFSET, 0.1f).setEaseInCubic();
+
+        // Stop outlining selected tower
+        currentlySelectedTower.HideSelectionOutline();
     }
 
     /// <summary>
