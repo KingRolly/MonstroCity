@@ -12,12 +12,10 @@ public class GnomeShooter : TowerTile
             yield return new WaitUntil(() => enemyManager.GetAliveEnemiesCount() > 0);
             while (enemyManager.GetAliveEnemiesCount() > 0)
             {
+                yield return new WaitUntil(() => FindNearestEnemy(data.attackRange) != null);
+                //Spawn eight gnome projectiles which will damage enemies
+                SpawnGnomes();
                 yield return new WaitForSeconds(data.attackSpeed);
-                if (FindNearestEnemy(data.attackRange) != null)
-                {
-                    //Spawn eight gnome projectiles which will damage enemies
-                    SpawnGnomes();
-                }
             }
         }
     }
