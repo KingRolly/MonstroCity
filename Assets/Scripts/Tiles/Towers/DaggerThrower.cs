@@ -13,14 +13,18 @@ public class DaggerThrower : TowerTile
     {
         while (true)
         {
-            yield return new WaitUntil(() => enemyManager.GetAliveEnemiesCount() > 0);
-            while (enemyManager.GetAliveEnemiesCount() > 0)
+            yield return new WaitUntil(() => enemyManager.GetAliveEnemiesCount() > 0); // wait until enemies have spawned
+            while (enemyManager.GetAliveEnemiesCount() > 0) // keep running attack loop until all enemies are dead
             {
+                // wait until an enemy is in range to initiate attack
                 yield return new WaitUntil(() => FindNearestEnemy(data.attackRange) != null);
+
+                // Throw a dagger towards the enemy with given angle
                 Vector2 difference = FindNearestEnemy(data.attackRange).transform.position - transform.position;
                 float direction = Vector2.SignedAngle(Vector2.right, difference);
-                // Throw a dagger towards the enemy with given angle
                 ThrowDagger(direction);
+
+                // Attack cooldown
                 yield return new WaitForSeconds(data.attackSpeed);
             }
         }

@@ -195,6 +195,7 @@ MonoBehaviour:
   sellSound: {fileID: 0}
   projectileSpeed: 6
   gnomePrefab: {fileID: 6279944220403339002, guid: 395d652d02b347a4faef3a666abcfd4d, type: 3}
+  attackSFX: {fileID: 8300000, guid: dd749dba4955f9140b3d2a84539322e5, type: 3}
 --- !u!61 &2369454315964645581
 BoxCollider2D:
   m_ObjectHideFlags: 0

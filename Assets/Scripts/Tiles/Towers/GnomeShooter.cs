@@ -3,25 +3,34 @@ using UnityEngine;
 
 public class GnomeShooter : TowerTile
 {
+    [Header("Gnome Shooter Info")]
     [SerializeField] private int projectileSpeed;
     [SerializeField] private GameObject gnomePrefab;
+
+    [Header("Gnome Shooter SFX")]
+    [SerializeField] private AudioClip attackSFX;
     public override IEnumerator AttackCycle()
     {
         while (true)
         {
-            yield return new WaitUntil(() => enemyManager.GetAliveEnemiesCount() > 0);
-            while (enemyManager.GetAliveEnemiesCount() > 0)
+            yield return new WaitUntil(() => enemyManager.GetAliveEnemiesCount() > 0); // wait until enemies have spawned
+            while (enemyManager.GetAliveEnemiesCount() > 0) // keep running attack loop until all enemies are dead
             {
-                yield return new WaitUntil(() => FindNearestEnemy(data.attackRange) != null);
+                // wait until an enemy is in range to initiate attack
+                yield return new WaitUntil(() => FindNearestEnemy(data.attackRange) != null); 
+
                 //Spawn eight gnome projectiles which will damage enemies
                 SpawnGnomes();
-                yield return new WaitForSeconds(data.attackSpeed);
+
+                // Attack cooldown
+                yield return new WaitForSeconds(data.attackSpeed); 
             }
         }
     }
 
     private void SpawnGnomes()
     {
+        AudioManager.instance.PlaySoundFX(attackSFX, transform, 1f);
         for (int i = 0; i < 8; i++)
         {
             GameObject proj = Instantiate(gnomePrefab, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);
