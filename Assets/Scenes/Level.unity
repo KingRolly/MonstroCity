@@ -828,6 +828,7 @@ MonoBehaviour:
   rangeText: {fileID: 1030493598}
   money: 123
   health: 123
+  pathPrice: 3
   archerData: {fileID: 11400000, guid: 7680f4a057da7f0488ae45dbe94b4761, type: 2}
   gnomeData: {fileID: 11400000, guid: 7a6324922fa70d049b0fd3e234cf5ba2, type: 2}
 --- !u!4 &135745662

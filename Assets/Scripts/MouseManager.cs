@@ -82,11 +82,18 @@ public class MouseManager : MonoBehaviour
             {
                 if (Input.GetMouseButton(0))
                 { // Left click places
-                    gridManager.PlacePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+                    if (uiManager.GetMoney() >= uiManager.GetPathPrice() && 
+                        gridManager.PlacePath(new Vector2Int((int)selectPos.x, (int)selectPos.y)))
+                    {
+                        uiManager.ChangeMoney(-uiManager.GetPathPrice());
+                    }
                 }
                 else if (Input.GetMouseButton(1))
                 { // Right click deletes
-                    gridManager.DeletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y));
+                    if (gridManager.DeletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y)))
+                    {
+                        uiManager.ChangeMoney(uiManager.GetPathPrice());
+                    }
                 }
             }
 

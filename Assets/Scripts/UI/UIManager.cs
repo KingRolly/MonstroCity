@@ -37,6 +37,7 @@ public class UIManager : MonoBehaviour
     [Header("UI Information")]
     [SerializeField] private int money;
     [SerializeField] private int health;
+    [SerializeField] private int pathPrice;
     [SerializeField] private TowerData archerData;
     [SerializeField] private TowerData gnomeData;
     private List<GameObject> towersList;
@@ -207,6 +208,10 @@ public class UIManager : MonoBehaviour
     public int GetMoney()
     {
         return money;
+    }
+    public int GetPathPrice()
+    {
+        return pathPrice;
     }
     public void SetMoney(int amt)
     {

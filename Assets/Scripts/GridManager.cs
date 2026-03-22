@@ -73,7 +73,7 @@ public class GridManager : MonoBehaviour
      and then updates the placeablePositions list.     
      */
 
-    public void PlacePath(Vector2Int position)
+    public bool PlacePath(Vector2Int position)
     {
         //Place path tile
         if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].GetPlaceable()) {
@@ -105,13 +105,15 @@ public class GridManager : MonoBehaviour
                     UpdatePlaceablePositions(path[path.Count - 1]);
                 }
             }
+            return true;
         }
+        return false;
     }
 
-    public void DeletePath(Vector2Int position)
+    public bool DeletePath(Vector2Int position)
     {
         if (position == endPathPosition) {
-            return;
+            return false;
         }
 
         //Delete path tile at the head of current path (excluding end tile)
@@ -137,7 +139,9 @@ public class GridManager : MonoBehaviour
             {
                 UpdatePlaceablePositions(path[path.Count - 1], position);
             }
+            return true;
         }
+        return false;
     }
 
     public bool PlaceTower(Vector2Int position, TowerData data)
