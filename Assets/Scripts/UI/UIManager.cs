@@ -153,6 +153,17 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Sells a tower, called by tower stats panel sell button
+    /// </summary>
+    public void SellTower()
+    {
+        if (gridManager.DestroyTower(new Vector2Int((int) currentlySelectedTower.GetX(), (int)currentlySelectedTower.GetY()))){
+            ChangeMoney(currentlySelectedTower.data.price);
+            HideTowerStatsPanel();
+        }
+    }
+
+    /// <summary>
     /// Hide tower stats panel
     /// </summary>
     public void HideTowerStatsPanel()

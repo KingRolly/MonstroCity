@@ -46,6 +46,7 @@ public abstract class TowerTile : Tile
 
     protected override void Start()
     {
+        base.Start();
         isPaused = false;
         SetPlaceable(false);
         Debug.Log(data.towerName);

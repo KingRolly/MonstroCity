@@ -820,6 +820,7 @@ MonoBehaviour:
   towerInfoPopup: {fileID: 960855604}
   towersPanelSound: {fileID: 8300000, guid: d666cf3d4b5a3dc4685377c23a25ddc6, type: 3}
   towerStatsPanel: {fileID: 672529279}
+  currentlySelectedTower: {fileID: 0}
   towerArt: {fileID: 1090165604}
   towerName: {fileID: 1354279863}
   dmgText: {fileID: 1530982285}
@@ -1140,6 +1141,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2b6f0b59d2fb94782110225b12804c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  path: []
+  placeablePositions: []
+  placeableIndicators: []
   placeableIndicator: {fileID: 7085749667101040808, guid: 7ee11a5c36dd5f441adce60e2905f5ad, type: 3}
   backgroundTile: {fileID: 2502489344522406862, guid: 68e35283ab2a7094aad84b446b6b03c8, type: 3}
   pathTile: {fileID: 5409159205120673324, guid: 5ee82fc0b6e07144cbfd34a577caf78f, type: 3}
@@ -7545,6 +7549,18 @@ MonoBehaviour:
       - m_Target: {fileID: 488594359}
         m_TargetAssemblyTypeName: AudioManager, Assembly-CSharp
         m_MethodName: PlayButtonClickSound
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 135745661}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SellTower
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

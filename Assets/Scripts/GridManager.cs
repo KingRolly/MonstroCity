@@ -5,10 +5,10 @@ public class GridManager : MonoBehaviour
 {
     public static int width = 16;
     public static int height = 9;
-    public static Tile[,] grid = new Tile[width, height];
-    public static List<Vector2Int> path = new List<Vector2Int>();
-    public static List<Vector2Int> placeablePositions = new List<Vector2Int>();
-    public static List<GameObject> placeableIndicators = new List<GameObject>();
+    public Tile[,] grid;
+    public List<Vector2Int> path;
+    public List<Vector2Int> placeablePositions;
+    public List<GameObject> placeableIndicators;
     public GameObject placeableIndicator;
     public BackgroundTile backgroundTile;
     public PathTile pathTile;
@@ -23,6 +23,11 @@ public class GridManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        grid = new Tile[width, height];
+        path = new List<Vector2Int>();
+        placeablePositions = new List<Vector2Int>();
+        placeableIndicators = new List<GameObject>();
+
         PlaceTiles(width, height);
         editing = true;
     }
@@ -161,6 +166,30 @@ public class GridManager : MonoBehaviour
             Debug.Log("Couldn't place tower :( (Is something else there?)");
             return false;
         }
+    }
+
+    public bool DestroyTower(Vector2Int position)
+    {
+        if (IsInBounds(position))
+        {
+            Destroy(grid[position.x, position.y].gameObject);
+            //Default instantiate a background tile for now, in the future can make a deep copy of initial
+            //grid array at the start of the level in order to instantiate what was previously there
+            grid[position.x, position.y] = Instantiate(backgroundTile, new Vector2(position.x, position.y), Quaternion.identity);
+
+            if (!IsPathValid())
+            {
+                //Update placeable grid areas in case it was next to the path head
+                placeablePositions.Clear();
+                DeletePlaceableIndicators();
+                if (path.Count != 0)
+                {
+                    UpdatePlaceablePositions(path[path.Count - 1]);
+                }
+            }
+            return true;
+        }
+        return false;
     }
 
     public bool IsInBounds(Vector2Int position)
