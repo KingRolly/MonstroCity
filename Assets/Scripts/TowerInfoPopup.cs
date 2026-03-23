@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -19,7 +17,7 @@ public class TowerInfoPopup : MonoBehaviour
     [SerializeField] private float attackRange;
 
     // private readonly float Y_POSITION = 600;
-    private readonly float Y_OFFSET = 60;
+    private readonly float Y_OFFSET = -285;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +38,7 @@ public class TowerInfoPopup : MonoBehaviour
         dmgText.text = "DMG " + dmg.ToString();
         atkSpeedText.text = "SPD " + spd.ToString() + "s";
         atkRangeText.text = "Range " + range.ToString();
-        Vector2 newPos = new Vector2(xPos, -285);
+        Vector2 newPos = new Vector2(xPos, Y_OFFSET);
         gameObject.transform.localPosition = newPos;
         gameObject.SetActive(true);
     }

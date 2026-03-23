@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
-using UnityEngine.Tilemaps;
 
 /// <summary>
 /// Manages day and night cycle within a level
@@ -12,10 +10,14 @@ using UnityEngine.Tilemaps;
 public class PhaseManager : MonoBehaviour
 {
     #region Fields
+    [Header("References")]
+    [SerializeField] private AudioClip readyButtonSound;
+
     [Header("Manager References")]
     [SerializeField] private UIManager uiManager;
     [SerializeField] private EnemyManager enemyManager;
     [SerializeField] private GridManager gridManager;
+    [SerializeField] private GameManager gameManager;
 
     [Header("Phase Indicator References")]
     [SerializeField] private TextMeshProUGUI phaseIndicatorText;
@@ -31,13 +33,15 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI readyText;
 
     [Header("Graphics References")]
-    [SerializeField] private Tilemap bgTilemap;
-    [SerializeField] private Tilemap pathTilemap;
     [SerializeField] private Material spriteMaterial;
+    [SerializeField] private GameObject materialReference;
+
+    [field: Header("Level Information")]
+    [field: SerializeField] public int dayCounter { get; private set; }
+    [field: SerializeField] public int totalDaysInLevel { get; private set; }
 
     [Header("Phase Information")]
     [SerializeField] private string currentPhase;
-    [SerializeField] private int dayCounter;
     [SerializeField] private int layoutIndex;
     // A list of wave layouts where each wave layout represents a day, combined they make up all days for a level
     [SerializeField] private List<EnemyWaveLayout> currentLevelEnemyWaveLayouts;
@@ -70,6 +74,7 @@ public class PhaseManager : MonoBehaviour
     {
         if (gridManager.IsPathValid())
         {
+            AudioManager.instance.PlaySoundFX(readyButtonSound, transform, 1f);
             // Turn off editing and switch to day
             gridManager.ToggleEditing();
             StartDay();
@@ -88,9 +93,10 @@ public class PhaseManager : MonoBehaviour
         // Update graphics
         readyButton.interactable = false;
         readyText.color = readyButton.colors.disabledColor;
+        uiManager.HideTowerPanel();
 
         // Update counters
-        StartCoroutine(SetPhase("Daytime"));
+        SetPhase("Daytime");
         IncrementDayCounter();
 
         // Spawn enemies
@@ -106,14 +112,23 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     public void EndDay()
     {
-        // Update graphics
-        readyButton.interactable = true;
-        readyText.color = Color.red;
+        // Check if this was the last day for the level
+        if (dayCounter == totalDaysInLevel)
+        {
+            gameManager.TriggerLevelCompletion();
+        }
+        else // Run end of day sequence as usual
+        {
+            // Update graphics
+            readyButton.interactable = true;
+            readyText.color = Color.red;
 
-        // Update counters
-        StartCoroutine(SetPhase("Night"));
-        gridManager.ToggleEditing();
-        layoutIndex++;
+            // Update counters
+            SetPhase("Night");
+            gridManager.ToggleEditing();
+            layoutIndex++;
+            uiManager.ShowTowerPanel();
+        }
     }
 
     /// <summary>
@@ -121,20 +136,15 @@ public class PhaseManager : MonoBehaviour
     /// <br/> REQUIRES: state is "Daytime" or "Night"
     /// </summary>
     /// <param name="state"></param>
-    public IEnumerator SetPhase(string state)
+    public void SetPhase(string state)
     {
-        
         // Update phase indicator text
         currentPhase = state;
         phaseIndicatorText.text = state;
 
         // Initialize variables for colour tinting
-        Color32 currentBgColour = bgTilemap.color;
-        Color32 currentPathColour = pathTilemap.color;
         Color32 currentSpriteMaterialColour = spriteMaterial.color;
         Color32 toColour;
-        float t = 0.0f;
-        float duration = 1.0f; // duration of colour tinting fade
 
         // Assign graphics according to given phase
         if (state == "Daytime")
@@ -149,15 +159,14 @@ public class PhaseManager : MonoBehaviour
             toColour = NIGHT_TIME_COLOUR;
         }
 
+        float duration = 1.0f; // duration of colour tinting fade
         // Interpolate between colours to add tinting
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            //bgTilemap.color = Color32.Lerp(currentBgColour, toColour, t / time);
-            //pathTilemap.color = Color32.Lerp(currentPathColour, toColour, t / time);
-            spriteMaterial.color = Color32.Lerp(currentSpriteMaterialColour, toColour, t / duration);
-            yield return null;
-        }
+        // Have to do it this way because you can't explicitly do .LeanColor on a material's colour tint
+        LeanTween.value(gameObject, 0f, 1f, duration).setEaseInOutSine()
+            .setOnUpdate((float val) => {
+                // Lerp between colors based on tween value
+                spriteMaterial.color = Color.Lerp(currentSpriteMaterialColour, toColour, val);
+            });
     }
 
     /// <summary>
@@ -167,7 +176,7 @@ public class PhaseManager : MonoBehaviour
     public void SetDayCounter(int num)
     {
         dayCounter = num;
-        dayCounterText.text = "Day " + num.ToString();
+        dayCounterText.text = $"{num.ToString()}/{totalDaysInLevel.ToString()} ";
     }
 
     /// <summary>
@@ -176,7 +185,7 @@ public class PhaseManager : MonoBehaviour
     private void IncrementDayCounter()
     {
         dayCounter++;
-        dayCounterText.text = "Day " + dayCounter.ToString();
+        dayCounterText.text = $"{dayCounter.ToString()}/{totalDaysInLevel.ToString()} ";
     }
 
     public string GetCurrentPhase()

@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEngine.Events;
+using TMPro;
 
 /// <summary>
 /// Manager for the overall game state
@@ -19,9 +16,48 @@ public class GameManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject gameOverScreen;
+    [SerializeField] private TextMeshProUGUI daySurvivalCounter;
+    [SerializeField] private GameObject victoryScreen;
+
+    [Header("Manager References")]
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private PhaseManager phaseManager;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private MouseManager mouseManager;
 
     [Header("Pausable Components")]
     [SerializeField] private GameObject indicator;
+
+    /// <summary>
+    /// Triggers a victory/completion for the current level
+    /// </summary>
+    public void TriggerLevelCompletion()
+    {
+        FreezeGameWorld();
+
+        // Display victory screen
+        victoryScreen.SetActive(true);
+    }
+
+    /// <summary>
+    /// Trigger a game over for the current level
+    /// </summary>
+    public void TriggerGameOver()
+    {
+        FreezeGameWorld();
+
+        // Display game over screen
+        gameOverScreen.SetActive(true);
+        if (phaseManager.dayCounter == 1)
+        {
+            daySurvivalCounter.text = $"You survived 1 day";
+        }
+        else
+        {
+            daySurvivalCounter.text = $"You survived {phaseManager.dayCounter} days";
+        }
+    }
 
     /// <summary>
     /// Pause game
@@ -29,15 +65,7 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         pauseMenu.SetActive(true);
-        isPaused = true;
-        onPause?.Invoke();
-
-        // Freeze time to stop time based actions
-        Time.timeScale = 0;
-
-        // Disable game objects and components who's functionality doesn't depend on time
-        indicator.SetActive(false);
-        AudioListener.pause = true;
+        FreezeGameWorld();
     }
 
     /// <summary>
@@ -46,13 +74,7 @@ public class GameManager : MonoBehaviour
     public void ResumeGame()
     {
         pauseMenu.SetActive(false);
-        isPaused = false;
-        onResume?.Invoke();
-
-        // Reset time scale and re-enable everything
-        Time.timeScale = 1;
-        indicator.SetActive(true);
-        AudioListener.pause = false;
+        UnFreezeGameWorld();
     }
 
     /// <summary>
@@ -78,9 +100,8 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void RestartLevel()
     {
-        // TODO: Reset states, values, and scene
-        ResumeGame();
         SceneManager.LoadScene("Level");
+        ResumeGame();
     }
 
     /// <summary>
@@ -88,8 +109,35 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void QuitLevel()
     {
-        // TODO: Reset everything for when player comes back to level, then quit to main menu
-        ResumeGame();
         SceneManager.LoadScene("Menu");
+        ResumeGame();
+    }
+
+    /// <summary>
+    /// Private helper to freeze the game world and prevent player input
+    /// </summary>
+    private void FreezeGameWorld()
+    {
+        isPaused = true;
+        onPause?.Invoke();
+
+        // Freeze time to stop time based actions
+        Time.timeScale = 0;
+
+        // Disable game objects and components who's functionality doesn't depend on time
+        indicator.SetActive(false);
+    }
+
+    /// <summary>
+    /// Private helper to unfreeze the game world and re-enable player input
+    /// </summary>
+    private void UnFreezeGameWorld()
+    {
+        isPaused = false;
+        onResume?.Invoke();
+
+        // Reset time scale and re-enable everything
+        Time.timeScale = 1;
+        indicator.SetActive(true);
     }
 }

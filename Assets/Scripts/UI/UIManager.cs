@@ -1,40 +1,60 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-using Unity.VisualScripting;
-using System;
+using UnityEngine.UI;
 
-// Class description:
-// Manager for setting up and changing anything UI related
-// Note: Used to be MoneyManager, but decided a general purpose UIManager should oversee all UI management
-// - Nicholas Liang (Feb. 9th, 2026)
+/// <summary>
+/// Manager for setting up and changing anything UI related
+/// Note: Used to be MoneyManager, but decided a general purpose UIManager should oversee all UI management
+/// <br/> - Nicholas Liang (Feb. 9th, 2026)
+/// </summary>
 public class UIManager : MonoBehaviour
 {
+    [Header("Manager References")]
+    [SerializeField] private UIManager uiManager;
+    [SerializeField] private GridManager gridManager;
+    [SerializeField] private MouseManager mouseManager;
+    [SerializeField] private GameManager gameManager;
+
     [Header("References")]
     [SerializeField] private TextMeshProUGUI goblinCounter;
+    [SerializeField] private GameObject moneyChangeTextPrefab;
     [SerializeField] private TextMeshProUGUI healthCounter;
     [SerializeField] private GameObject topBar;
     [SerializeField] private GameObject towersPanel;
     [SerializeField] private GameObject towerIconPrefab;
-    [SerializeField] private UIManager uiManager;
-    [SerializeField] private GridManager gridManager;
-    [SerializeField] private MouseManager mouseManager;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
+    [SerializeField] private AudioClip towersPanelSound;
+    [SerializeField] private AudioClip sellSound;
+
+    [Header("Tower Stats Panel References")]
+    [SerializeField] private GameObject towerStatsPanel;
+    [SerializeField] private TowerTile currentlySelectedTower;
+    [SerializeField] private Image towerArt;
+    [SerializeField] private TextMeshProUGUI towerName;
+    [SerializeField] private TextMeshProUGUI dmgText;
+    [SerializeField] private TextMeshProUGUI atkSpdText;
+    [SerializeField] private TextMeshProUGUI rangeText;
 
     [Header("UI Information")]
     [SerializeField] private int money;
     [SerializeField] private int health;
+    [SerializeField] private int pathPrice;
     [SerializeField] private TowerData archerData;
     [SerializeField] private TowerData gnomeData;
     private List<GameObject> towersList;
+
+    [Header("Constants")]
+    private readonly int TOWER_PANEL_Y_OFFSET = 225;
+    private readonly int TOWER_STATS_PANEL_X_OFFSET = 260;
     private readonly int MAX_TOWER_ICONS = 8;
+    private readonly Vector2 MONEY_CHANGE_ORIGINAL_POS = new Vector2(-34, 0);
 
     // Start is called before the first frame update
     void Start()
     {
         goblinCounter.text = money.ToString();
-        setupTopBarTowersUI();
+        SetupTopBarTowersUI();
     }
 
     // Update is called once per frame
@@ -45,7 +65,7 @@ public class UIManager : MonoBehaviour
 
     // Method for setting up all the purchasable tower UI in the top bar
     // Should be called upon start for setup
-    private void setupTopBarTowersUI()
+    private void SetupTopBarTowersUI()
     {
         // Setup top bar by instantiating TowerUIs, setting their stats, and assign references they need
         // Initialize towersList and add instantiated towerUIs to towersList to keep track of them for later use
@@ -75,6 +95,92 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Hide the tower panel
+    /// </summary>
+    public void HideTowerPanel()
+    {
+        AudioManager.instance.PlaySoundFX(towersPanelSound, transform, 0.3f);
+        float duration = 0.5f;
+        towersPanel.transform.LeanMoveLocalY(TOWER_PANEL_Y_OFFSET, duration).setEaseInCubic();
+        towerInfoPopup.enabled = false;
+    }
+
+    /// <summary>
+    /// Show the tower panel
+    /// </summary>
+    public void ShowTowerPanel()
+    {
+        AudioManager.instance.PlaySoundFX(towersPanelSound, transform, 0.6f);
+        float duration = 0.5f;
+        towersPanel.transform.LeanMoveLocalY(0, duration).setEaseOutCubic();
+        towerInfoPopup.enabled = true;
+    }
+
+    /// <summary>
+    /// Display the stats of given tower
+    /// </summary>
+    public void DisplayTowerStatsPanel(TowerTile tower)
+    {
+        // Stop outlining previously selected tower if it exists
+        if (currentlySelectedTower != null) currentlySelectedTower.HideSelectionOutline();
+
+        // Update currently selected tower
+        currentlySelectedTower = tower;
+        currentlySelectedTower.ShowSelectionOutline();
+
+        float slideOutDuration = 0.05f;
+        float slideInDuration = 0.1f;
+
+        // Slide tower stats panel off-screen
+        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(-TOWER_STATS_PANEL_X_OFFSET, slideOutDuration)
+            .setEaseInCubic()
+            // Then seamlessly switch stats once off-screen
+            .setOnComplete(() => UpdateTowerStatsPanel(currentlySelectedTower));
+
+        // Before sliding tower panel back out with new stats
+        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(0, slideInDuration)
+            .setEaseOutCubic()
+            .setDelay(2* slideOutDuration); // Delay until slide out animation is done (with a bit of a pause)
+    }
+
+    /// <summary>
+    /// Private helper for updating the tower stats panel
+    /// </summary>
+    /// <param name="tower">Tower to update stats to</param>
+    private void UpdateTowerStatsPanel(TowerTile tower)
+    {
+        towerArt.sprite = tower.data.sprite;
+        towerName.text = tower.data.towerName;
+        dmgText.text = "DMG " + tower.data.damage.ToString();
+        atkSpdText.text = "SPD " + tower.data.attackSpeed.ToString() + "s";
+        rangeText.text = "Range " + tower.data.attackRange.ToString();
+    }
+
+    /// <summary>
+    /// Sells a tower, called by tower stats panel sell button
+    /// </summary>
+    public void SellTower()
+    {
+        if (gridManager.DestroyTower(new Vector2Int((int) currentlySelectedTower.GetX(), (int)currentlySelectedTower.GetY()))){
+            AudioManager.instance.PlaySoundFX(sellSound, transform, 1f);
+            ChangeMoney(currentlySelectedTower.data.price);
+            HideTowerStatsPanel();
+        }
+    }
+
+    /// <summary>
+    /// Hide tower stats panel
+    /// </summary>
+    public void HideTowerStatsPanel()
+    {
+        // Slide tower stats panel off screen
+        towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(-TOWER_STATS_PANEL_X_OFFSET, 0.1f).setEaseInCubic();
+
+        // Stop outlining selected tower
+        currentlySelectedTower.HideSelectionOutline();
+    }
+
+    /// <summary>
     /// Change player money (can be positive or negative)
     /// </summary>
     /// <param name="amt">Amount of money to change by</param>
@@ -82,6 +188,25 @@ public class UIManager : MonoBehaviour
     {
         money += amt;
         goblinCounter.text = money.ToString();
+        
+        // Create money change text
+        GameObject moneyChangeText = Instantiate(moneyChangeTextPrefab, goblinCounter.gameObject.transform);
+        if (amt >= 0)
+        {
+            moneyChangeText.GetComponent<TextMeshProUGUI>().color = Color.green;
+            moneyChangeText.GetComponent<TextMeshProUGUI>().text = $"+{amt}";
+        }
+        else
+        {
+            moneyChangeText.GetComponent<TextMeshProUGUI>().color = Color.red;
+            moneyChangeText.GetComponent<TextMeshProUGUI>().text = $"{amt}";
+        }
+
+        // Animate money change text
+        moneyChangeText.transform.localPosition = MONEY_CHANGE_ORIGINAL_POS;
+        moneyChangeText.transform.LeanMoveLocalY(MONEY_CHANGE_ORIGINAL_POS.y - 70, 0.5f)
+            .setEaseOutExpo()
+            .setOnComplete(() => Destroy(moneyChangeText));
     }
 
     /// <summary>
@@ -92,12 +217,24 @@ public class UIManager : MonoBehaviour
     {
         health += amt;
         healthCounter.text = health.ToString();
+
+        // Check if player has lost
+        if (health <= 0)
+        {
+            health = 0;
+            healthCounter.text = health.ToString();
+            gameManager.TriggerGameOver();
+        }
     }
 
     #region Basic Getters and Setters
     public int GetMoney()
     {
         return money;
+    }
+    public int GetPathPrice()
+    {
+        return pathPrice;
     }
     public void SetMoney(int amt)
     {

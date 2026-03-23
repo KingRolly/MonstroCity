@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PeasantStats
   m_EditorClassIdentifier: 
   enemyType: Peasant
-  sprite: {fileID: 21300000, guid: ad9aa52ab45d09c4b98c3586ea0f0d62, type: 3}
+  sprite: {fileID: 21300000, guid: 0bacdde497af018439fa06fbe5e0a59f, type: 3}
   health: 10
   speed: 3
   damage: 5

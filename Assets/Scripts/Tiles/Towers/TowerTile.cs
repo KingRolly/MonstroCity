@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Events;
 
 /// <summary>
 /// Represents a simple tower that has no unique behaviors
@@ -10,10 +7,19 @@ using UnityEngine.Events;
 /// </summary>
 public abstract class TowerTile : Tile
 {   
+    [Header("Tower Info")]
     [SerializeField] public TowerData data;
+
+    [Header("References")]
     [SerializeField] public EnemyManager enemyManager;
     [SerializeField] public PhaseManager phaseManager;
+    [SerializeField] public UIManager uiManager;
     [SerializeField] private GameObject rangeIndicator;
+    [SerializeField] private GameObject selectionOutline;
+
+    [Header("Tower SFX")]
+    [SerializeField] private AudioClip selectTower;
+    [SerializeField] private AudioClip placeSound;
 
     private bool isPaused;
 
@@ -21,6 +27,7 @@ public abstract class TowerTile : Tile
     {
         GameManager.onPause += PauseTower;
         GameManager.onResume += UnPauseTower;
+        AudioManager.instance.PlaySoundFX(placeSound, this.transform, 1f);
     }
 
     private void OnDisable()
@@ -33,10 +40,12 @@ public abstract class TowerTile : Tile
     {
         phaseManager = FindObjectOfType<PhaseManager>();
         enemyManager = FindObjectOfType<EnemyManager>();
+        uiManager = FindObjectOfType<UIManager>();
     }
 
     protected override void Start()
     {
+        base.Start();
         isPaused = false;
         SetPlaceable(false);
         Debug.Log(data.towerName);
@@ -111,6 +120,31 @@ public abstract class TowerTile : Tile
     private void OnMouseExit()
     {
         HideRange();
+    }
+
+    private void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            AudioManager.instance.PlaySoundFX(selectTower, transform, 0.8f);
+            uiManager.DisplayTowerStatsPanel(this);
+        }
+    }
+
+    /// <summary>
+    /// Display selection outline
+    /// </summary>
+    public void ShowSelectionOutline()
+    {
+        selectionOutline.SetActive(true);
+    }
+
+    /// <summary>
+    /// Hide selection outline
+    /// </summary>
+    public void HideSelectionOutline()
+    {
+        selectionOutline.SetActive(false);
     }
 
     /// <summary>
