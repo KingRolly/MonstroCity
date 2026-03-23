@@ -18,6 +18,7 @@ public class UIManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private TextMeshProUGUI goblinCounter;
+    [SerializeField] private GameObject moneyChangeTextPrefab;
     [SerializeField] private TextMeshProUGUI healthCounter;
     [SerializeField] private GameObject topBar;
     [SerializeField] private GameObject towersPanel;
@@ -47,6 +48,7 @@ public class UIManager : MonoBehaviour
     private readonly int TOWER_PANEL_Y_OFFSET = 225;
     private readonly int TOWER_STATS_PANEL_X_OFFSET = 260;
     private readonly int MAX_TOWER_ICONS = 8;
+    private readonly Vector2 MONEY_CHANGE_ORIGINAL_POS = new Vector2(-34, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -186,6 +188,25 @@ public class UIManager : MonoBehaviour
     {
         money += amt;
         goblinCounter.text = money.ToString();
+        
+        // Create money change text
+        GameObject moneyChangeText = Instantiate(moneyChangeTextPrefab, goblinCounter.gameObject.transform);
+        if (amt >= 0)
+        {
+            moneyChangeText.GetComponent<TextMeshProUGUI>().color = Color.green;
+            moneyChangeText.GetComponent<TextMeshProUGUI>().text = $"+{amt}";
+        }
+        else
+        {
+            moneyChangeText.GetComponent<TextMeshProUGUI>().color = Color.red;
+            moneyChangeText.GetComponent<TextMeshProUGUI>().text = $"{amt}";
+        }
+
+        // Animate money change text
+        moneyChangeText.transform.localPosition = MONEY_CHANGE_ORIGINAL_POS;
+        moneyChangeText.transform.LeanMoveLocalY(MONEY_CHANGE_ORIGINAL_POS.y - 70, 0.5f)
+            .setEaseOutExpo()
+            .setOnComplete(() => Destroy(moneyChangeText));
     }
 
     /// <summary>

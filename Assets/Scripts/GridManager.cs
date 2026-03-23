@@ -18,8 +18,6 @@ public class GridManager : MonoBehaviour
     public Vector2Int endPathPosition;
     public PhaseManager phaseManager;
 
-    [SerializeField] private AudioClip placePathSound;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -77,7 +75,6 @@ public class GridManager : MonoBehaviour
     {
         //Place path tile
         if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].GetPlaceable()) {
-            AudioManager.instance.PlaySoundFX(placePathSound, transform, 1f);
 
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(pathTile, new Vector2(position.x, position.y), Quaternion.identity);

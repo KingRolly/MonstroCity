@@ -30,7 +30,7 @@ public class GnomeShooter : TowerTile
 
     private void SpawnGnomes()
     {
-        AudioManager.instance.PlaySoundFX(attackSFX, transform, 1f);
+        AudioManager.instance.PlaySoundFX(attackSFX, transform, 0.7f);
         for (int i = 0; i < 8; i++)
         {
             GameObject proj = Instantiate(gnomePrefab, new Vector2(transform.position.x, transform.position.y), Quaternion.identity);

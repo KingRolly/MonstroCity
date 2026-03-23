@@ -14,6 +14,10 @@ public class MouseManager : MonoBehaviour
     [SerializeField] GridManager gridManager;
     [SerializeField] UIManager uiManager;
 
+    [Header("SFX")]
+    [SerializeField] private AudioClip placePathSound;
+    [SerializeField] private AudioClip removePathSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -85,6 +89,7 @@ public class MouseManager : MonoBehaviour
                     if (uiManager.GetMoney() >= uiManager.GetPathPrice() && 
                         gridManager.PlacePath(new Vector2Int((int)selectPos.x, (int)selectPos.y)))
                     {
+                        AudioManager.instance.PlaySoundFX(placePathSound, transform, 1f);
                         uiManager.ChangeMoney(-uiManager.GetPathPrice());
                     }
                 }
@@ -92,6 +97,7 @@ public class MouseManager : MonoBehaviour
                 { // Right click deletes
                     if (gridManager.DeletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y)))
                     {
+                        AudioManager.instance.PlaySoundFX(removePathSound, transform, 0.3f);
                         uiManager.ChangeMoney(uiManager.GetPathPrice());
                     }
                 }

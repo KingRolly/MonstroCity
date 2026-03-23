@@ -26,7 +26,7 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        PlayBackgroundMusic(bgm, transform, 0.2f);
+        PlayBackgroundMusic(bgm, transform, 0.1f);
     }
 
     /// <summary>

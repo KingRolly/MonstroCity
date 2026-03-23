@@ -813,6 +813,7 @@ MonoBehaviour:
   mouseManager: {fileID: 2019142844}
   gameManager: {fileID: 1093377025}
   goblinCounter: {fileID: 80726277}
+  moneyChangeTextPrefab: {fileID: 6332966790645016878, guid: 755f8a30ad832944ca8104ad209770ea, type: 3}
   healthCounter: {fileID: 327170976}
   topBar: {fileID: 858860974}
   towersPanel: {fileID: 690193628}
@@ -1154,7 +1155,6 @@ MonoBehaviour:
   startPathPosition: {x: 0, y: 0}
   endPathPosition: {x: 15, y: 8}
   phaseManager: {fileID: 0}
-  placePathSound: {fileID: 8300000, guid: a5d0f04d78466fa4a964e0caa1001350, type: 3}
 --- !u!1 &206352416
 GameObject:
   m_ObjectHideFlags: 0
@@ -12690,6 +12690,8 @@ MonoBehaviour:
   selectedTowerIcon: {fileID: 0}
   gridManager: {fileID: 203767970}
   uiManager: {fileID: 135745661}
+  placePathSound: {fileID: 8300000, guid: a5d0f04d78466fa4a964e0caa1001350, type: 3}
+  removePathSound: {fileID: 8300000, guid: c60340a0cff831046904bef6f8c1cd6d, type: 3}
 --- !u!1 &2028905756
 GameObject:
   m_ObjectHideFlags: 0
