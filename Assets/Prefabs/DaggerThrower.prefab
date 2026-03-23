@@ -72,7 +72,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 0, g: 0, b: 0, a: 0.5882353}
   m_FlipX: 0
@@ -160,7 +160,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 08b56cae5d44c714e8186c5b15c1dfe6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -192,7 +192,6 @@ MonoBehaviour:
   selectionOutline: {fileID: 9034918037345451074}
   selectTower: {fileID: 8300000, guid: 45e7001637e2ace419053e3cf2fc1935, type: 3}
   placeSound: {fileID: 8300000, guid: 1d0b9cd8460f51246a78faeeaed2fe54, type: 3}
-  sellSound: {fileID: 0}
   projectileSpeed: 20
   daggerPrefab: {fileID: 6279944220403339002, guid: a5242b36cb207274b8b220b46530972d, type: 3}
   attackSFX: {fileID: 8300000, guid: a32bc1af4fd299c41aea220bbf7777dd, type: 3}
@@ -313,7 +312,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: 469c3a063c2dfe549b3191a85c0fea43, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
