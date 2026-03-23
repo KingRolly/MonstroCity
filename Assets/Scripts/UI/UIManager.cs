@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject towerIconPrefab;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
     [SerializeField] private AudioClip towersPanelSound;
+    [SerializeField] private AudioClip sellSound;
 
     [Header("Tower Stats Panel References")]
     [SerializeField] private GameObject towerStatsPanel;
@@ -107,7 +108,7 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ShowTowerPanel()
     {
-        AudioManager.instance.PlaySoundFX(towersPanelSound, transform, 0.3f);
+        AudioManager.instance.PlaySoundFX(towersPanelSound, transform, 0.6f);
         float duration = 0.5f;
         towersPanel.transform.LeanMoveLocalY(0, duration).setEaseOutCubic();
         towerInfoPopup.enabled = true;
@@ -159,6 +160,7 @@ public class UIManager : MonoBehaviour
     public void SellTower()
     {
         if (gridManager.DestroyTower(new Vector2Int((int) currentlySelectedTower.GetX(), (int)currentlySelectedTower.GetY()))){
+            AudioManager.instance.PlaySoundFX(sellSound, transform, 1f);
             ChangeMoney(currentlySelectedTower.data.price);
             HideTowerStatsPanel();
         }

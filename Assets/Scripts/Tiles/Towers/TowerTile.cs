@@ -20,7 +20,6 @@ public abstract class TowerTile : Tile
     [Header("Tower SFX")]
     [SerializeField] private AudioClip selectTower;
     [SerializeField] private AudioClip placeSound;
-    [SerializeField] private AudioClip sellSound;
 
     private bool isPaused;
 
