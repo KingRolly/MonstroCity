@@ -71,6 +71,7 @@ public class UIManager : MonoBehaviour
         // Initialize towersList and add instantiated towerUIs to towersList to keep track of them for later use
         towersList = new List<GameObject>();
 
+        // TODO: Refactor this to work with a list of tower data instead of 2 hard coded references
         // Placeholder towers for now
         // Archer: 2 price, 1 dmg, 0.1s spd, 8 range
         GameObject archer = Instantiate(towerIconPrefab, towersPanel.transform);

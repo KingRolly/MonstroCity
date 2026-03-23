@@ -55,7 +55,7 @@ public class TowerIcon : MonoBehaviour
         this.data = null;
         this.isEmpty = true;
         priceText.text = "";
-        nameText.text = "Empty";
+        nameText.text = "";
         icon.SetActive(false);
         goblinIcon.SetActive(false);
         // Removes button functionality from this tower icon, then greys it out
