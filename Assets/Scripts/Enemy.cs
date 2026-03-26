@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     [Header("Info")]
     [SerializeField] private string enemyType;
     [SerializeField] private Sprite enemySprite;
+    [SerializeField] private SpriteRenderer enemySpriteRenderer;
     [SerializeField] private int health;
     [SerializeField] private float speed;
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
@@ -30,7 +31,14 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    
+        // TODO: Enemy's walking animation 
+        float duration = 0.1f;
+        float rotationAmt = 10f;
+        //this.transform.LeanMoveLocalY(0.5f, duration).setEaseOutSine().setLoopPingPong();
+        //this.transform.LeanRotateZ(rotationAmt, duration)
+        //    .setEaseOutSine()
+        //    .setOnComplete(() => rotationAmt = -rotationAmt)
+        //    .setLoopPingPong();
     }
 
     // Update is called once per frame
@@ -75,8 +83,8 @@ public class Enemy : MonoBehaviour
         damage = dmg;
         enemySprite = sprite;
         moneyReward = money;
-        this.GetComponent<SpriteRenderer>().sprite = sprite;
-        this.GetComponent<SpriteRenderer>().color = Color.white;
+        enemySpriteRenderer.sprite = sprite;
+        enemySpriteRenderer.color = Color.white;
     }
 
     /// <summary>
@@ -156,12 +164,12 @@ public class Enemy : MonoBehaviour
     {
         float t = 0.0f;
         float duration = 0.1f;
-        gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+        enemySpriteRenderer.color = Color.red;
 
         while (t < duration)
         {
             t += Time.deltaTime;
-            gameObject.GetComponent<SpriteRenderer>().color = Color32.Lerp(Color.red, Color.white, t / duration);
+            enemySpriteRenderer.color = Color32.Lerp(Color.red, Color.white, t / duration);
             yield return null;
         }
     }

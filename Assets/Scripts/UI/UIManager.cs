@@ -17,6 +17,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameManager gameManager;
 
     [Header("References")]
+    [SerializeField] private GameObject uiCanvas;
     [SerializeField] private TextMeshProUGUI goblinCounter;
     [SerializeField] private GameObject moneyChangeTextPrefab;
     [SerializeField] private TextMeshProUGUI healthCounter;
@@ -24,6 +25,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject towersPanel;
     [SerializeField] private GameObject towerIconPrefab;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
+    [SerializeField] private GameObject announcementMessagePrefab;
+
+    [Header("SFX")]
     [SerializeField] private AudioClip towersPanelSound;
     [SerializeField] private AudioClip sellSound;
 
@@ -158,6 +162,33 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Briefly display a message in the middle of the screen as an announcement to the player
+    /// </summary>
+    public void DisplayGameAnnouncement(string message)
+    {
+        // Create message popup with given string
+        GameObject announcement = Instantiate(announcementMessagePrefab, uiCanvas.transform);
+        announcement.transform.SetSiblingIndex(0);
+        TextMeshProUGUI messageText = announcement.GetComponent<TextMeshProUGUI>();
+        CanvasGroup announcementCG = announcement.GetComponent<CanvasGroup>();
+
+        messageText.text = message;
+        
+        // Animation
+        float duration = 2f;
+        // Fade in
+        announcementCG.LeanAlpha(1, duration / 2)
+            .setEaseOutSine();
+        // Slide up a bit
+        announcement.transform.LeanMoveLocalY(30, duration)
+            .setEaseOutExpo()
+            .setOnComplete
+            // Fade out
+            (() => announcementCG.LeanAlpha(0, duration / 2).setEaseInSine()
+            .setOnComplete(() => Destroy(announcement)));
+    }
+
+    /// <summary>
     /// Sells a tower, called by tower stats panel sell button
     /// </summary>
     public void SellTower()
@@ -204,10 +235,20 @@ public class UIManager : MonoBehaviour
         }
 
         // Animate money change text
+        CanvasGroup moneyChangeCG = moneyChangeText.GetComponent<CanvasGroup>();
+
+        float duration = 0.5f;
         moneyChangeText.transform.localPosition = MONEY_CHANGE_ORIGINAL_POS;
+        // Fade in
+        moneyChangeCG.LeanAlpha(1, duration / 2)
+            .setEaseOutSine();
+        // Slide down
         moneyChangeText.transform.LeanMoveLocalY(MONEY_CHANGE_ORIGINAL_POS.y - 70, 0.5f)
             .setEaseOutExpo()
-            .setOnComplete(() => Destroy(moneyChangeText));
+            .setOnComplete
+            // Fade out
+            (() => moneyChangeCG.LeanAlpha(0, duration / 2).setEaseInSine()
+            .setOnComplete(() => Destroy(moneyChangeText)));
     }
 
     /// <summary>

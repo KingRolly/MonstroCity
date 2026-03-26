@@ -812,6 +812,7 @@ MonoBehaviour:
   gridManager: {fileID: 203767970}
   mouseManager: {fileID: 2019142844}
   gameManager: {fileID: 1093377025}
+  uiCanvas: {fileID: 1533537157}
   goblinCounter: {fileID: 80726277}
   moneyChangeTextPrefab: {fileID: 6332966790645016878, guid: 755f8a30ad832944ca8104ad209770ea, type: 3}
   healthCounter: {fileID: 327170976}
@@ -819,6 +820,7 @@ MonoBehaviour:
   towersPanel: {fileID: 690193628}
   towerIconPrefab: {fileID: 5518434622953607693, guid: 66d00d391104f0f48b69aad489a319f1, type: 3}
   towerInfoPopup: {fileID: 960855604}
+  announcementMessagePrefab: {fileID: 8422289194077428082, guid: 77f6ceb59cef2c54d892d761574d4eb9, type: 3}
   towersPanelSound: {fileID: 8300000, guid: d666cf3d4b5a3dc4685377c23a25ddc6, type: 3}
   sellSound: {fileID: 8300000, guid: 0efbe9f2bf7597c418b9751118a716a5, type: 3}
   towerStatsPanel: {fileID: 672529279}
@@ -8946,6 +8948,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   readyButtonSound: {fileID: 8300000, guid: 8738a54ce27ad234ba31d0a5e1d7ef9e, type: 3}
+  pathInvalidSound1: {fileID: 8300000, guid: ca4a44447c8732e4b9316ff5f5614063, type: 3}
+  pathInvalidSound2: {fileID: 8300000, guid: 74279c323acb5564b95f4981cb1eaadd, type: 3}
   uiManager: {fileID: 135745661}
   enemyManager: {fileID: 684380037}
   gridManager: {fileID: 203767970}
