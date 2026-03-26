@@ -268,13 +268,13 @@ public class GridManager : MonoBehaviour
             //Base this off of the previous path location
             PathDirection direction = GetDirection(path[0], path[1]);
 
-            //DONT NEED TO ALTER THE STARTING TILE 
-            //grid[path[0].x, path[0].y].setSpriteType(
-            //    (direction == PathDirection.Right || direction == PathDirection.Left) ?
-            //    PathTile.spriteType.Horizontal : PathTile.spriteType.Vertical
-            //    );
+            // Change start tile sprite
+            grid[path[0].x, path[0].y].SetSpriteType(
+                (direction == PathDirection.Right || direction == PathDirection.Left) ?
+                PathTile.spriteType.Horizontal : PathTile.spriteType.DownLeft
+                );
 
-
+            // Change second tile sprite
             grid[path[1].x, path[1].y].SetSpriteType(
                 direction == PathDirection.Right ?
                 PathTile.spriteType.RightEnd : direction == PathDirection.Left ?
@@ -292,6 +292,7 @@ public class GridManager : MonoBehaviour
 
             if (connectingToEndTile && path.Count >= 4)
             {
+                // Update middle tile sprite
                 PathDirection dirToMid =
                     GetDirection(path[path.Count - 4], path[path.Count - 3]);
 
@@ -299,9 +300,17 @@ public class GridManager : MonoBehaviour
                     GetDirection(path[path.Count - 3], path[path.Count - 2]);
 
                 UpdateMiddleTile(path.Count - 3, dirToMid, dirFromMid);
+
+                // Update end tile sprite
+                grid[width - 1, height - 1].SetSpriteType(
+                    directionToHead == PathDirection.Up ? PathTile.spriteType.Vertical : PathTile.spriteType.DownLeft);
             }
             if (!connectingToEndTile)
             {
+                // Revert end of path to default sprite if the path isn't connected to it anymore
+                grid[width - 1, height - 1].SetSpriteType(
+                    PathTile.spriteType.DownEnd);
+
                 // Update head of path
                 grid[path[path.Count - 1].x, path[path.Count - 1].y].SetSpriteType(
                     directionToHead == PathDirection.Up ? PathTile.spriteType.UpEnd :
