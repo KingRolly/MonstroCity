@@ -22,7 +22,10 @@ public class Enemy : MonoBehaviour
 
     private EnemyManager enemyManager;
     private UIManager uiManager;
+
+    [Header("SFX")]
     [SerializeField] AudioClip damageSound;
+    [SerializeField] AudioClip hurtPlayerSound;
 
     [SerializeField] private List<Vector2Int> enemyPath;
     private int pathIndex;
@@ -126,6 +129,7 @@ public class Enemy : MonoBehaviour
     {
         // Update health in UIManager
         uiManager.ChangeHealth(-damage);
+        AudioManager.instance.PlaySoundFX(hurtPlayerSound, transform, 0.5f);
     }
 
     /// <summary>
