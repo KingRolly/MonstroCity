@@ -168,17 +168,22 @@ public class UIManager : MonoBehaviour
     {
         // Create message popup with given string
         GameObject announcement = Instantiate(announcementMessagePrefab, uiCanvas.transform);
+        announcement.transform.SetSiblingIndex(0);
         TextMeshProUGUI messageText = announcement.GetComponent<TextMeshProUGUI>();
         CanvasGroup announcementCG = announcement.GetComponent<CanvasGroup>();
 
         messageText.text = message;
         
+        // Animation
         float duration = 2f;
+        // Fade in
         announcementCG.LeanAlpha(1, duration / 2)
             .setEaseOutSine();
+        // Slide up a bit
         announcement.transform.LeanMoveLocalY(30, duration)
             .setEaseOutExpo()
             .setOnComplete
+            // Fade out
             (() => announcementCG.LeanAlpha(0, duration / 2).setEaseInSine()
             .setOnComplete(() => Destroy(announcement)));
     }
@@ -234,11 +239,14 @@ public class UIManager : MonoBehaviour
 
         float duration = 0.5f;
         moneyChangeText.transform.localPosition = MONEY_CHANGE_ORIGINAL_POS;
+        // Fade in
         moneyChangeCG.LeanAlpha(1, duration / 2)
             .setEaseOutSine();
+        // Slide down
         moneyChangeText.transform.LeanMoveLocalY(MONEY_CHANGE_ORIGINAL_POS.y - 70, 0.5f)
             .setEaseOutExpo()
             .setOnComplete
+            // Fade out
             (() => moneyChangeCG.LeanAlpha(0, duration / 2).setEaseInSine()
             .setOnComplete(() => Destroy(moneyChangeText)));
     }
