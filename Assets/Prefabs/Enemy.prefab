@@ -134,6 +134,8 @@ MonoBehaviour:
   damage: 0
   moneyReward: 0
   distanceTravelled: 0
+  spawnPos: {x: -4, y: 0}
+  exitPos: {x: 15, y: 12}
   damageSound: {fileID: 8300000, guid: 917ee0d3e936a3845b880c92cb8e624c, type: 3}
   enemyPath: []
 --- !u!70 &6323067530713429088

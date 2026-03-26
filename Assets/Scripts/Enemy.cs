@@ -31,14 +31,6 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // TODO: Enemy's walking animation 
-        float duration = 0.1f;
-        float rotationAmt = 10f;
-        //this.transform.LeanMoveLocalY(0.5f, duration).setEaseOutSine().setLoopPingPong();
-        //this.transform.LeanRotateZ(rotationAmt, duration)
-        //    .setEaseOutSine()
-        //    .setOnComplete(() => rotationAmt = -rotationAmt)
-        //    .setLoopPingPong();
     }
 
     // Update is called once per frame
@@ -102,6 +94,8 @@ public class Enemy : MonoBehaviour
     // Assign path for enemy to take
     public void SetPath(List<Vector2Int> path)
     {
+        
+        // Assign path
         enemyPath = path;
 
         // Check for enemyPath not being assigned for some reason
@@ -112,8 +106,7 @@ public class Enemy : MonoBehaviour
         else
         {
             // Set starting position of enemy
-            Vector3 startingPosition = new Vector3(enemyPath[0].x, enemyPath[0].y, transform.position.z);
-            transform.position = startingPosition;
+            transform.position = new Vector3(path[0].x, path[0].y, 0);
             pathIndex = 0;
             distanceTravelled = 0;
         }
