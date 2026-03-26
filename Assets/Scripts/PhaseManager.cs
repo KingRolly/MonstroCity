@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Manages day and night cycle within a level
@@ -31,6 +32,7 @@ public class PhaseManager : MonoBehaviour
     [Header("Ready Button References")]
     [SerializeField] private Button readyButton;
     [SerializeField] private TextMeshProUGUI readyText;
+    [SerializeField] private EventTrigger readyButtonSFXTrigger;
 
     [Header("Graphics References")]
     [SerializeField] private Material spriteMaterial;
@@ -94,6 +96,7 @@ public class PhaseManager : MonoBehaviour
         // Update graphics
         readyButton.interactable = false;
         readyText.color = readyButton.colors.disabledColor;
+        readyButtonSFXTrigger.enabled = false;
         uiManager.HideTowerPanel();
 
         // Update counters
@@ -122,7 +125,8 @@ public class PhaseManager : MonoBehaviour
         {
             // Update graphics
             readyButton.interactable = true;
-            readyText.color = Color.red;
+            readyButtonSFXTrigger.enabled = true;
+            readyText.color = Color.white;
 
             // Update counters
             SetPhase("Night");

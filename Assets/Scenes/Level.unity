@@ -8968,6 +8968,7 @@ MonoBehaviour:
   dayCounterText: {fileID: 921328596}
   readyButton: {fileID: 1699129146}
   readyText: {fileID: 386922952}
+  readyButtonSFXTrigger: {fileID: 1699129149}
   spriteMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   materialReference: {fileID: 2019142841}
   <dayCounter>k__BackingField: 0
@@ -11018,8 +11019,8 @@ MonoBehaviour:
   m_Transition: 1
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.745283, g: 0.745283, b: 0.745283, a: 1}
-    m_PressedColor: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 1}
+    m_HighlightedColor: {r: 0.6556604, g: 0.6556604, b: 0.6556604, a: 1}
+    m_PressedColor: {r: 0.5896226, g: 0.5896226, b: 0.5896226, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
     m_ColorMultiplier: 1
