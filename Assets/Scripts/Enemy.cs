@@ -31,7 +31,14 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-    
+        // TODO: Enemy's walking animation 
+        float duration = 0.1f;
+        float rotationAmt = 10f;
+        //this.transform.LeanMoveLocalY(0.5f, duration).setEaseOutSine().setLoopPingPong();
+        //this.transform.LeanRotateZ(rotationAmt, duration)
+        //    .setEaseOutSine()
+        //    .setOnComplete(() => rotationAmt = -rotationAmt)
+        //    .setLoopPingPong();
     }
 
     // Update is called once per frame
