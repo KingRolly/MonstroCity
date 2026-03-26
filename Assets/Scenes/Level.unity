@@ -823,6 +823,8 @@ MonoBehaviour:
   announcementMessagePrefab: {fileID: 8422289194077428082, guid: 77f6ceb59cef2c54d892d761574d4eb9, type: 3}
   towersPanelSound: {fileID: 8300000, guid: d666cf3d4b5a3dc4685377c23a25ddc6, type: 3}
   sellSound: {fileID: 8300000, guid: 0efbe9f2bf7597c418b9751118a716a5, type: 3}
+  invalidSound1: {fileID: 8300000, guid: ca4a44447c8732e4b9316ff5f5614063, type: 3}
+  invalidSound2: {fileID: 8300000, guid: 74279c323acb5564b95f4981cb1eaadd, type: 3}
   towerStatsPanel: {fileID: 672529279}
   currentlySelectedTower: {fileID: 0}
   towerArt: {fileID: 1090165604}
@@ -8948,8 +8950,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   readyButtonSound: {fileID: 8300000, guid: 8738a54ce27ad234ba31d0a5e1d7ef9e, type: 3}
-  pathInvalidSound1: {fileID: 8300000, guid: ca4a44447c8732e4b9316ff5f5614063, type: 3}
-  pathInvalidSound2: {fileID: 8300000, guid: 74279c323acb5564b95f4981cb1eaadd, type: 3}
   uiManager: {fileID: 135745661}
   enemyManager: {fileID: 684380037}
   gridManager: {fileID: 203767970}
@@ -8973,7 +8973,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 58294c5afc9c1044c9fa9e9064d16c2d, type: 2}
   NIGHT_TIME_COLOUR:
     serializedVersion: 2
-    rgba: 4290339170
+    rgba: 4290345338
   DAY_TIME_COLOUR:
     serializedVersion: 2
     rgba: 4294967295

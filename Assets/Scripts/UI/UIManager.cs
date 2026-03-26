@@ -30,6 +30,8 @@ public class UIManager : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioClip towersPanelSound;
     [SerializeField] private AudioClip sellSound;
+    [SerializeField] private AudioClip invalidSound1;
+    [SerializeField] private AudioClip invalidSound2;
 
     [Header("Tower Stats Panel References")]
     [SerializeField] private GameObject towerStatsPanel;
@@ -47,8 +49,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TowerData archerData;
     [SerializeField] private TowerData gnomeData;
     private List<GameObject> towersList;
+    private int announcementsNum = 0;
 
     [Header("Constants")]
+    private readonly int MAX_ANNOUNCEMENTS = 3;
     private readonly int TOWER_PANEL_Y_OFFSET = 225;
     private readonly int TOWER_STATS_PANEL_X_OFFSET = 260;
     private readonly int MAX_TOWER_ICONS = 8;
@@ -166,6 +170,17 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void DisplayGameAnnouncement(string message)
     {
+
+        if (announcementsNum >= MAX_ANNOUNCEMENTS) // Check if max number of announcements has been exceeded
+        {
+            return;
+        }
+        announcementsNum++;
+
+        // Play error sound
+        AudioManager.instance.PlaySoundFX(invalidSound1, transform, 0.4f);
+        AudioManager.instance.PlaySoundFX(invalidSound2, transform, 0.4f);
+
         // Create message popup with given string
         GameObject announcement = Instantiate(announcementMessagePrefab, uiCanvas.transform);
         announcement.transform.SetSiblingIndex(0);
@@ -185,7 +200,16 @@ public class UIManager : MonoBehaviour
             .setOnComplete
             // Fade out
             (() => announcementCG.LeanAlpha(0, duration / 2).setEaseInSine()
-            .setOnComplete(() => Destroy(announcement)));
+            .setOnComplete(() => OnGameAnnouncementComplete(announcement)));
+    }
+
+    /// <summary>
+    /// Private helper that is evoked to handle completion of displaying an announcement
+    /// </summary>
+    private void OnGameAnnouncementComplete(GameObject announcement)
+    {
+        announcementsNum--;
+        Destroy(announcement);
     }
 
     /// <summary>

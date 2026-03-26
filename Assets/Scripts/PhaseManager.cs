@@ -12,8 +12,6 @@ public class PhaseManager : MonoBehaviour
     #region Fields
     [Header("References")]
     [SerializeField] private AudioClip readyButtonSound;
-    [SerializeField] private AudioClip pathInvalidSound1;
-    [SerializeField] private AudioClip pathInvalidSound2;
 
     [Header("Manager References")]
     [SerializeField] private UIManager uiManager;
@@ -82,9 +80,7 @@ public class PhaseManager : MonoBehaviour
             StartDay();
         } else
         {
-            // TODO: Indicate that path is invalid somehow
-            AudioManager.instance.PlaySoundFX(pathInvalidSound1, transform, 0.5f);
-            AudioManager.instance.PlaySoundFX(pathInvalidSound2, transform, 0.5f);
+            // Indicate that path is invalid
             uiManager.DisplayGameAnnouncement("Path must be finished before starting the next day");
             Debug.Log("Path invalid!");
         }

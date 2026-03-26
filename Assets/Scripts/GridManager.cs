@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GridManager : MonoBehaviour
 {
@@ -74,8 +75,8 @@ public class GridManager : MonoBehaviour
     public bool PlacePath(Vector2Int position)
     {
         //Place path tile
-        if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].GetPlaceable()) {
-
+        if (IsPosPlaceable(position)) // Check position is valid
+        {
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(pathTile, new Vector2(position.x, position.y), Quaternion.identity);
             path.Add(position);
@@ -105,6 +106,16 @@ public class GridManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Check if the given position is a placeable tile
+    /// </summary>
+    /// <param name="position">position to check</param>
+    /// <returns>true if tile at given position is placeable, false otherwise</returns>
+    public bool IsPosPlaceable(Vector2Int position)
+    {
+        return (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].GetPlaceable());
     }
 
     public bool DeletePath(Vector2Int position)
