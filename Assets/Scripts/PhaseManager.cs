@@ -83,7 +83,7 @@ public class PhaseManager : MonoBehaviour
         } else
         {
             // Indicate that path is invalid
-            uiManager.DisplayGameAnnouncement("Path must be finished before starting the next day");
+            uiManager.DisplayGameAnnouncement("Path must be complete before starting the day!");
             Debug.Log("Path invalid!");
         }
     }
