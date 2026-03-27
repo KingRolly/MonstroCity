@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class PathTile : Tile
 {
-    private float enemySpeed;
-    private float enemyDamage;
     [SerializeField] Sprite horizontal;
     [SerializeField] Sprite vertical;
     [SerializeField] Sprite downLeft;
@@ -42,8 +40,6 @@ public class PathTile : Tile
     {
         base.Start();
         SetPlaceable(false);
-        enemySpeed = 0;
-        enemyDamage = 0;
     }
 
     public override void SetSpriteType(spriteType type)

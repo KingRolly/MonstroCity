@@ -13,13 +13,16 @@ public class Enemy : MonoBehaviour
     [Header("Info")]
     [SerializeField] private string enemyType;
     [SerializeField] private Sprite enemySprite;
-    [SerializeField] private SpriteRenderer enemySpriteRenderer;
     [SerializeField] private int health;
     [SerializeField] private float speed;
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
     [SerializeField] private int moneyReward; // amount of money given to player when killed 
     [SerializeField] private float distanceTravelled; // distance enemy has travelled along the path so far
+
+    [Header("References")]
+    [SerializeField] private SpriteRenderer enemySpriteRenderer;
     [SerializeField] private GameObject spriteAndHitboxObject;
+    [SerializeField] private ParticleSystem footstepParticles;
 
     private EnemyManager enemyManager;
     private UIManager uiManager;
@@ -38,7 +41,28 @@ public class Enemy : MonoBehaviour
         // Enemy walking animation
         float duration = 0.15f;
         float bounceHeight = spriteAndHitboxObject.transform.position.y + 0.15f;
-        spriteAndHitboxObject.transform.LeanMoveLocalY(bounceHeight, duration).setEaseOutSine().setLoopPingPong();
+        float rotationAmount = 5f;
+
+        // Bouncing
+        spriteAndHitboxObject.transform.LeanMoveLocalY(bounceHeight, duration)
+            .setEaseOutSine()
+            .setLoopPingPong();
+
+        // Rotation
+        LeanTween.rotateZ(gameObject, rotationAmount, duration*2)
+        .setFrom(-rotationAmount)
+        .setEaseInOutSine()
+        .setLoopPingPong()
+        .setOnComplete(() => ActivateFootStepParticles()) // Create footstep particles
+        .setOnCompleteOnRepeat(true);
+    }
+
+    /// <summary>
+    /// Private helper to create footstep particles
+    /// </summary>
+    private void ActivateFootStepParticles()
+    {
+        Instantiate(footstepParticles, transform.position, Quaternion.identity);
     }
 
     // Update is called once per frame

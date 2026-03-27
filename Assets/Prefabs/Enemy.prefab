@@ -223,13 +223,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyType: 
   enemySprite: {fileID: 0}
-  enemySpriteRenderer: {fileID: 5491664165233630704}
   health: 0
   speed: 0
   damage: 0
   moneyReward: 0
   distanceTravelled: 0
+  enemySpriteRenderer: {fileID: 5491664165233630704}
   spriteAndHitboxObject: {fileID: 3508185829282527081}
+  footstepParticles: {fileID: 3004061139532617213, guid: ee811a38c34f7b44c9cf7863650d8fcc, type: 3}
   damageSound: {fileID: 8300000, guid: 917ee0d3e936a3845b880c92cb8e624c, type: 3}
   hurtPlayerSound: {fileID: 8300000, guid: 74279c323acb5564b95f4981cb1eaadd, type: 3}
   enemyPath: []
