@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
     [SerializeField] private int moneyReward; // amount of money given to player when killed 
     [SerializeField] private float distanceTravelled; // distance enemy has travelled along the path so far
+    [SerializeField] private Vector3 originalPos;
 
     [Header("References")]
     [SerializeField] private SpriteRenderer enemySpriteRenderer;
@@ -35,12 +36,21 @@ public class Enemy : MonoBehaviour
     private int pathIndex;
     public IObjectPool<GameObject> enemyObjectPool;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnDisable()
     {
+        LeanTween.cancel(gameObject);
+        LeanTween.cancel(spriteAndHitboxObject);
+    }
+
+    private void OnEnable()
+    {
+        // Reset sprite animation
+        spriteAndHitboxObject.transform.rotation = Quaternion.identity;
+        spriteAndHitboxObject.transform.localPosition = originalPos;
+
         // Enemy walking animation
         float duration = 0.15f;
-        float bounceHeight = spriteAndHitboxObject.transform.position.y + 0.15f;
+        float bounceHeight = spriteAndHitboxObject.transform.localPosition.y + 0.15f;
         float rotationAmount = 5f;
 
         // Bouncing
@@ -49,7 +59,7 @@ public class Enemy : MonoBehaviour
             .setLoopPingPong();
 
         // Rotation
-        LeanTween.rotateZ(gameObject, rotationAmount, duration*2)
+        LeanTween.rotateZ(spriteAndHitboxObject, rotationAmount, duration * 2)
         .setFrom(-rotationAmount)
         .setEaseInOutSine()
         .setLoopPingPong()

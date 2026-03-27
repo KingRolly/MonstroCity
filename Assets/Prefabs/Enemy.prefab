@@ -228,6 +228,7 @@ MonoBehaviour:
   damage: 0
   moneyReward: 0
   distanceTravelled: 0
+  originalPos: {x: 0, y: 0.293, z: 0}
   enemySpriteRenderer: {fileID: 5491664165233630704}
   spriteAndHitboxObject: {fileID: 3508185829282527081}
   footstepParticles: {fileID: 3004061139532617213, guid: ee811a38c34f7b44c9cf7863650d8fcc, type: 3}
