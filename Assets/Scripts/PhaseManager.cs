@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 /// <summary>
 /// Manages day and night cycle within a level
@@ -12,8 +13,6 @@ public class PhaseManager : MonoBehaviour
     #region Fields
     [Header("References")]
     [SerializeField] private AudioClip readyButtonSound;
-    [SerializeField] private AudioClip pathInvalidSound1;
-    [SerializeField] private AudioClip pathInvalidSound2;
 
     [Header("Manager References")]
     [SerializeField] private UIManager uiManager;
@@ -33,6 +32,7 @@ public class PhaseManager : MonoBehaviour
     [Header("Ready Button References")]
     [SerializeField] private Button readyButton;
     [SerializeField] private TextMeshProUGUI readyText;
+    [SerializeField] private EventTrigger readyButtonSFXTrigger;
 
     [Header("Graphics References")]
     [SerializeField] private Material spriteMaterial;
@@ -82,9 +82,7 @@ public class PhaseManager : MonoBehaviour
             StartDay();
         } else
         {
-            // TODO: Indicate that path is invalid somehow
-            AudioManager.instance.PlaySoundFX(pathInvalidSound1, transform, 0.5f);
-            AudioManager.instance.PlaySoundFX(pathInvalidSound2, transform, 0.5f);
+            // Indicate that path is invalid
             uiManager.DisplayGameAnnouncement("Path must be finished before starting the next day");
             Debug.Log("Path invalid!");
         }
@@ -98,6 +96,7 @@ public class PhaseManager : MonoBehaviour
         // Update graphics
         readyButton.interactable = false;
         readyText.color = readyButton.colors.disabledColor;
+        readyButtonSFXTrigger.enabled = false;
         uiManager.HideTowerPanel();
 
         // Update counters
@@ -126,7 +125,8 @@ public class PhaseManager : MonoBehaviour
         {
             // Update graphics
             readyButton.interactable = true;
-            readyText.color = Color.red;
+            readyButtonSFXTrigger.enabled = true;
+            readyText.color = Color.white;
 
             // Update counters
             SetPhase("Night");

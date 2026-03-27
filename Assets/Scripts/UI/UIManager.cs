@@ -19,8 +19,9 @@ public class UIManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject uiCanvas;
     [SerializeField] private TextMeshProUGUI goblinCounter;
-    [SerializeField] private GameObject moneyChangeTextPrefab;
     [SerializeField] private TextMeshProUGUI healthCounter;
+    [SerializeField] private GameObject moneyChangeTextPrefab;
+    [SerializeField] private GameObject healthChangeTextPrefab;
     [SerializeField] private GameObject topBar;
     [SerializeField] private GameObject towersPanel;
     [SerializeField] private GameObject towerIconPrefab;
@@ -30,6 +31,8 @@ public class UIManager : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioClip towersPanelSound;
     [SerializeField] private AudioClip sellSound;
+    [SerializeField] private AudioClip invalidSound1;
+    [SerializeField] private AudioClip invalidSound2;
 
     [Header("Tower Stats Panel References")]
     [SerializeField] private GameObject towerStatsPanel;
@@ -47,12 +50,15 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TowerData archerData;
     [SerializeField] private TowerData gnomeData;
     private List<GameObject> towersList;
+    private int announcementsNum = 0;
 
     [Header("Constants")]
+    private readonly int MAX_ANNOUNCEMENTS = 3;
     private readonly int TOWER_PANEL_Y_OFFSET = 225;
     private readonly int TOWER_STATS_PANEL_X_OFFSET = 260;
     private readonly int MAX_TOWER_ICONS = 8;
     private readonly Vector2 MONEY_CHANGE_ORIGINAL_POS = new Vector2(-34, 0);
+    private readonly Vector2 HEALTH_CHANGE_ORIGINAL_POS = new Vector2(0, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -166,6 +172,17 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void DisplayGameAnnouncement(string message)
     {
+
+        if (announcementsNum >= MAX_ANNOUNCEMENTS) // Check if max number of announcements has been exceeded
+        {
+            return;
+        }
+        announcementsNum++;
+
+        // Play error sound
+        AudioManager.instance.PlaySoundFX(invalidSound1, transform, 0.4f);
+        AudioManager.instance.PlaySoundFX(invalidSound2, transform, 0.4f);
+
         // Create message popup with given string
         GameObject announcement = Instantiate(announcementMessagePrefab, uiCanvas.transform);
         announcement.transform.SetSiblingIndex(0);
@@ -185,7 +202,16 @@ public class UIManager : MonoBehaviour
             .setOnComplete
             // Fade out
             (() => announcementCG.LeanAlpha(0, duration / 2).setEaseInSine()
-            .setOnComplete(() => Destroy(announcement)));
+            .setOnComplete(() => OnGameAnnouncementComplete(announcement)));
+    }
+
+    /// <summary>
+    /// Private helper that is evoked to handle completion of displaying an announcement
+    /// </summary>
+    private void OnGameAnnouncementComplete(GameObject announcement)
+    {
+        announcementsNum--;
+        Destroy(announcement);
     }
 
     /// <summary>
@@ -267,6 +293,26 @@ public class UIManager : MonoBehaviour
             healthCounter.text = health.ToString();
             gameManager.TriggerGameOver();
         }
+
+        // Create health change text
+        GameObject healthChangeText = Instantiate(healthChangeTextPrefab, healthCounter.gameObject.transform);
+        healthChangeText.GetComponent<TextMeshProUGUI>().text = $"{amt}";
+
+        // Animate health change text
+        CanvasGroup healthChangeCG = healthChangeText.GetComponent<CanvasGroup>();
+
+        float duration = 0.5f;
+        healthChangeText.transform.localPosition = HEALTH_CHANGE_ORIGINAL_POS;
+        // Fade in
+        healthChangeCG.LeanAlpha(1, duration / 2)
+            .setEaseOutSine();
+        // Slide down
+        healthChangeText.transform.LeanMoveLocalY(HEALTH_CHANGE_ORIGINAL_POS.y - 70, 0.5f)
+            .setEaseOutExpo()
+            .setOnComplete
+            // Fade out
+            (() => healthChangeCG.LeanAlpha(0, duration / 2).setEaseInSine()
+            .setOnComplete(() => Destroy(healthChangeText)));
     }
 
     #region Basic Getters and Setters

@@ -116,6 +116,7 @@ public class TowerIcon : MonoBehaviour
                     mouseManager.SetSelectedTowerIcon(this); // Set the held tower to this tower
                 } else
                 {
+                    uiManager.DisplayGameAnnouncement("Not enough goblins!");
                     Debug.Log("Not enough goblins!");
                 }
             } else
