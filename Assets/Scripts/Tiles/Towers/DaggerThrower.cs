@@ -22,7 +22,8 @@ public class DaggerThrower : TowerTile
                 // Throw a dagger towards the enemy with given angle
                 if (FindNearestEnemy(data.attackRange) != null) // Preventing a NullReferenceException that shouldn't be happening anyway...
                 {
-                    Vector2 difference = FindNearestEnemy(data.attackRange).transform.position - transform.position;
+                    Vector2 difference = FindNearestEnemy(data.attackRange).GetComponent<Enemy>()
+                        .GetSpriteAndHitboxObject().transform.position - transform.position;
                     float direction = Vector2.SignedAngle(Vector2.right, difference);
                     ThrowDagger(direction);
                 }

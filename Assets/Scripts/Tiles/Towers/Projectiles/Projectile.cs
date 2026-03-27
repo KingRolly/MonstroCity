@@ -53,7 +53,7 @@ public class Projectile : MonoBehaviour
         if (collider.transform.CompareTag("Enemy"))
         {
             //Damage enemy
-            collider.gameObject.GetComponent<Enemy>().TakeDamage((int) damage);
+            collider.gameObject.transform.parent.gameObject.GetComponent<Enemy>().TakeDamage((int) damage);
 
             //Optional, destroy projectile on collision (we want pierce though I think)
             // Destroy(gameObject);

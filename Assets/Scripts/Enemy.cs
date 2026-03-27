@@ -19,6 +19,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
     [SerializeField] private int moneyReward; // amount of money given to player when killed 
     [SerializeField] private float distanceTravelled; // distance enemy has travelled along the path so far
+    [SerializeField] private GameObject spriteAndHitboxObject;
 
     private EnemyManager enemyManager;
     private UIManager uiManager;
@@ -34,6 +35,10 @@ public class Enemy : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Enemy walking animation
+        float duration = 0.15f;
+        float bounceHeight = spriteAndHitboxObject.transform.position.y + 0.15f;
+        spriteAndHitboxObject.transform.LeanMoveLocalY(bounceHeight, duration).setEaseOutSine().setLoopPingPong();
     }
 
     // Update is called once per frame
@@ -178,6 +183,15 @@ public class Enemy : MonoBehaviour
     {
         // Call enemy manager's despawn function to depsawn this enemy
         enemyManager.DespawnEnemy(this.gameObject);
+    }
+
+    /// <summary>
+    /// Get the child object of this enemy
+    /// </summary>
+    /// <returns>A game object containing the sprite and hitbox of enemy</returns>
+    public GameObject GetSpriteAndHitboxObject()
+    {
+        return spriteAndHitboxObject;
     }
 
     #region Basic Getters

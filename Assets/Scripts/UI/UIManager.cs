@@ -307,7 +307,7 @@ public class UIManager : MonoBehaviour
         healthChangeCG.LeanAlpha(1, duration / 2)
             .setEaseOutSine();
         // Slide down
-        healthChangeText.transform.LeanMoveLocalY(HEALTH_CHANGE_ORIGINAL_POS.y - 70, 0.5f)
+        healthChangeText.transform.LeanMoveLocalY(HEALTH_CHANGE_ORIGINAL_POS.y - 55, 0.5f)
             .setEaseOutExpo()
             .setOnComplete
             // Fade out
