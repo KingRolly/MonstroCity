@@ -86,7 +86,22 @@ public class Enemy : MonoBehaviour
             // Check if enemy has reached the next path coordinate
             if (transform.position == new Vector3(enemyPath[pathIndex].x, enemyPath[pathIndex].y, transform.position.z))
             {
+                // Advance to next path waypoint
                 pathIndex++;
+
+
+                if (pathIndex < enemyPath.Count) // Guard for indexing to out of bounds
+                {
+                    // Check which direction enemy needs to face next and update sprite accordingly
+                    if (enemyPath[pathIndex].x > transform.localPosition.x) // Face right
+                    {
+                        enemySpriteRenderer.flipX = true;
+                    }
+                    else if (enemyPath[pathIndex].x < transform.localPosition.x) // Face left
+                    {
+                        enemySpriteRenderer.flipX = false;
+                    }
+                }
             }
         }
         // Enemy reached end of path
