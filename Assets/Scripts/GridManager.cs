@@ -12,12 +12,26 @@ public class GridManager : MonoBehaviour
     public List<GameObject> placeableIndicators;
     public GameObject placeableIndicator;
     public BackgroundTile backgroundTile;
+    public ObstacleTile obstacleTile;
     public PathTile pathTile;
     public bool editing;
     public MouseManager mouseManager;
     public Vector2Int startPathPosition;
     public Vector2Int endPathPosition;
     public PhaseManager phaseManager;
+
+    //defines the initial layout of tiles, 0 for background tile, 1 for obstacle tile
+    public int[,] initialLayout = {
+        {1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0},
+        {1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+        {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+        {1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1},
+        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +55,14 @@ public class GridManager : MonoBehaviour
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 // Creates prefab at correct pos and adds to grid Array
-                grid[i, j] = Instantiate(backgroundTile, new Vector2(i, j), Quaternion.identity);
+                if (initialLayout[height - j - 1, i] == 1)
+                {
+                    grid[i, j] = Instantiate(obstacleTile, new Vector2(i, j), Quaternion.identity);
+                }
+                else
+                {
+                    grid[i, j] = Instantiate(backgroundTile, new Vector2(i, j), Quaternion.identity);
+                }
                 // Initializes tile info
                 //Tile tileData = grid[i, j].GetComponent<Tile>();
                 //tileData.Initialize("something");

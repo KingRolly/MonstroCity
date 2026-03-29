@@ -1154,6 +1154,7 @@ MonoBehaviour:
   placeableIndicators: []
   placeableIndicator: {fileID: 7085749667101040808, guid: 7ee11a5c36dd5f441adce60e2905f5ad, type: 3}
   backgroundTile: {fileID: 2502489344522406862, guid: 68e35283ab2a7094aad84b446b6b03c8, type: 3}
+  obstacleTile: {fileID: -4744215399501900159, guid: 93ad36cd7a08c044584b2e4749c99435, type: 3}
   pathTile: {fileID: 5409159205120673324, guid: 5ee82fc0b6e07144cbfd34a577caf78f, type: 3}
   editing: 0
   mouseManager: {fileID: 2019142844}
