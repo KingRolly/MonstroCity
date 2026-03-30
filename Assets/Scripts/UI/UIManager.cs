@@ -26,6 +26,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject towersPanel;
     [SerializeField] private GameObject towerIconPrefab;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
+    [SerializeField] private GameObject pathButtonPrompts;
+    [SerializeField] private TextMeshProUGUI pathPriceText;
     [SerializeField] private GameObject announcementMessagePrefab;
 
     [Header("SFX")]
@@ -56,6 +58,7 @@ public class UIManager : MonoBehaviour
     private readonly int MAX_ANNOUNCEMENTS = 10;
     private readonly int TOWER_PANEL_Y_OFFSET = 225;
     private readonly int TOWER_STATS_PANEL_X_OFFSET = 260;
+    private readonly int PATH_BUTTON_PROMPTS_X_OFFSET = 300;
     private readonly int MAX_TOWER_ICONS = 8;
     private readonly Vector2 MONEY_CHANGE_ORIGINAL_POS = new Vector2(-34, 0);
     private readonly Vector2 HEALTH_CHANGE_ORIGINAL_POS = new Vector2(0, 0);
@@ -64,6 +67,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         goblinCounter.text = money.ToString();
+        pathPriceText.text = pathPrice.ToString();
         SetupTopBarTowersUI();
     }
 
@@ -103,6 +107,24 @@ public class UIManager : MonoBehaviour
             emptyIcon.GetComponent<TowerIcon>().MakeEmpty();
             towersList.Add(emptyIcon);
         }
+    }
+
+    /// <summary>
+    /// Show the path button prompts
+    /// </summary>
+    public void HidePathButtonPrompts()
+    {
+        float duration = 0.5f;
+        pathButtonPrompts.transform.LeanMoveX(-PATH_BUTTON_PROMPTS_X_OFFSET, duration).setEaseInCubic();
+    }
+
+    /// <summary>
+    /// Show the path button prompts
+    /// </summary>
+    public void ShowPathButtonPrompts()
+    {
+        float duration = 0.5f;
+        pathButtonPrompts.transform.LeanMoveX(50, duration).setEaseOutCubic();
     }
 
     /// <summary>

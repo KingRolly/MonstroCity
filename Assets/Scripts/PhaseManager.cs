@@ -98,6 +98,7 @@ public class PhaseManager : MonoBehaviour
         readyText.color = readyButton.colors.disabledColor;
         readyButtonSFXTrigger.enabled = false;
         uiManager.HideTowerPanel();
+        uiManager.HidePathButtonPrompts();
 
         // Update counters
         SetPhase("Daytime");
@@ -133,6 +134,7 @@ public class PhaseManager : MonoBehaviour
             gridManager.ToggleEditing();
             layoutIndex++;
             uiManager.ShowTowerPanel();
+            uiManager.ShowPathButtonPrompts();
         }
     }
 
