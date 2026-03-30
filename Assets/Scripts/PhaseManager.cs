@@ -57,6 +57,7 @@ public class PhaseManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        totalDaysInLevel = currentLevelEnemyWaveLayouts.Count;
         spriteMaterial.color = NIGHT_TIME_COLOUR;
         SetPhase("Night");
         SetDayCounter(0);
