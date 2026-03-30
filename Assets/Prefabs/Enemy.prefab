@@ -232,6 +232,10 @@ MonoBehaviour:
   enemySpriteRenderer: {fileID: 5491664165233630704}
   spriteAndHitboxObject: {fileID: 3508185829282527081}
   footstepParticles: {fileID: 3004061139532617213, guid: ee811a38c34f7b44c9cf7863650d8fcc, type: 3}
-  damageSound: {fileID: 8300000, guid: 917ee0d3e936a3845b880c92cb8e624c, type: 3}
+  damageSounds:
+  - {fileID: 8300000, guid: 9936e00d48da63d46a7b02b8912bc2cd, type: 3}
+  - {fileID: 8300000, guid: a6a3b514dcfe12d469c99a43fc0e7211, type: 3}
+  - {fileID: 8300000, guid: addf0baf8f9ad324daa133bfa3c9e4ac, type: 3}
+  - {fileID: 8300000, guid: aacdf3ef2693c064890693f856df48d1, type: 3}
   hurtPlayerSound: {fileID: 8300000, guid: 74279c323acb5564b95f4981cb1eaadd, type: 3}
   enemyPath: []

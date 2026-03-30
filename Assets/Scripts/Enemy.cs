@@ -29,7 +29,7 @@ public class Enemy : MonoBehaviour
     private UIManager uiManager;
 
     [Header("SFX")]
-    [SerializeField] AudioClip damageSound;
+    [SerializeField] AudioClip[] damageSounds;
     [SerializeField] AudioClip hurtPlayerSound;
 
     [SerializeField] private List<Vector2Int> enemyPath;
@@ -194,7 +194,7 @@ public class Enemy : MonoBehaviour
     {
         // Update enemy's health to take correct amount of damage
         // If the damage kills enemy, then give player money reward, despawn enemy, and return it to object pool
-        AudioManager.instance.PlaySoundFX(damageSound, transform, 0.2f);
+        AudioManager.instance.PlayRandomSoundFX(damageSounds, transform, 0.2f);
         this.health -= dmg;
         if (this.health <= 0)
         {
