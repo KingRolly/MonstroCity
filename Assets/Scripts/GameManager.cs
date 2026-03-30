@@ -34,10 +34,14 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void TriggerLevelCompletion()
     {
+        Debug.Log("You win!");
         FreezeGameWorld();
 
         // Display victory screen
-        victoryScreen.SetActive(true);
+        if (!uiManager.GetGameOver())
+        {
+            victoryScreen.SetActive(true);
+        }
     }
 
     /// <summary>
@@ -45,6 +49,7 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void TriggerGameOver()
     {
+        Debug.Log("Game over!");
         FreezeGameWorld();
 
         // Display game over screen
