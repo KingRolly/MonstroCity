@@ -63,6 +63,8 @@ public class UIManager : MonoBehaviour
     private readonly Vector2 MONEY_CHANGE_ORIGINAL_POS = new Vector2(-34, 0);
     private readonly Vector2 HEALTH_CHANGE_ORIGINAL_POS = new Vector2(0, 0);
 
+    private bool gameOver = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -316,6 +318,7 @@ public class UIManager : MonoBehaviour
             health = 0;
             healthCounter.text = health.ToString();
             gameManager.TriggerGameOver();
+            gameOver = true;
         }
 
         // Create health change text
@@ -355,12 +358,17 @@ public class UIManager : MonoBehaviour
 
     public int GetHealth()
     {
-        return money;
+        return health;
     }
 
     public void SetHealth(int amt)
     {
         health = amt;
+    }
+
+    public bool GetGameOver()
+    {
+        return gameOver;
     }
     #endregion
 }
