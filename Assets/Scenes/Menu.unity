@@ -1312,7 +1312,7 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 3
   m_fontColorGradient:
-    topLeft: {r: 0.5235849, g: 1, b: 0.91219014, a: 1}
+    topLeft: {r: 0.6528171, g: 1, b: 0.5254902, a: 1}
     topRight: {r: 0.9433962, g: 0.8232467, b: 0.8232467, a: 1}
     bottomLeft: {r: 1, g: 0, b: 0, a: 1}
     bottomRight: {r: 1, g: 0.06104764, b: 0.023584902, a: 1}
