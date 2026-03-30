@@ -58,7 +58,7 @@ public class UIManager : MonoBehaviour
     private readonly int MAX_ANNOUNCEMENTS = 10;
     private readonly int TOWER_PANEL_Y_OFFSET = 225;
     private readonly int TOWER_STATS_PANEL_X_OFFSET = 260;
-    private readonly int PATH_BUTTON_PROMPTS_X_OFFSET = 300;
+    private float pathButtonPromptsOffset;
     private readonly int MAX_TOWER_ICONS = 8;
     private readonly Vector2 MONEY_CHANGE_ORIGINAL_POS = new Vector2(-34, 0);
     private readonly Vector2 HEALTH_CHANGE_ORIGINAL_POS = new Vector2(0, 0);
@@ -69,6 +69,7 @@ public class UIManager : MonoBehaviour
         goblinCounter.text = money.ToString();
         pathPriceText.text = pathPrice.ToString();
         SetupTopBarTowersUI();
+        pathButtonPromptsOffset = pathButtonPrompts.transform.localPosition.x;
     }
 
     // Update is called once per frame
@@ -115,7 +116,7 @@ public class UIManager : MonoBehaviour
     public void HidePathButtonPrompts()
     {
         float duration = 0.5f;
-        pathButtonPrompts.transform.LeanMoveX(-PATH_BUTTON_PROMPTS_X_OFFSET, duration).setEaseInCubic();
+        pathButtonPrompts.transform.LeanMoveLocalX(-1200, duration).setEaseInCubic();
     }
 
     /// <summary>
@@ -124,7 +125,7 @@ public class UIManager : MonoBehaviour
     public void ShowPathButtonPrompts()
     {
         float duration = 0.5f;
-        pathButtonPrompts.transform.LeanMoveX(50, duration).setEaseOutCubic();
+        pathButtonPrompts.transform.LeanMoveLocalX(pathButtonPromptsOffset, duration).setEaseOutCubic();
     }
 
     /// <summary>
