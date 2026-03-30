@@ -835,7 +835,7 @@ MonoBehaviour:
   rangeText: {fileID: 1030493598}
   money: 123
   health: 123
-  pathPrice: 1
+  pathPrice: 3
   archerData: {fileID: 11400000, guid: 7680f4a057da7f0488ae45dbe94b4761, type: 2}
   gnomeData: {fileID: 11400000, guid: 7a6324922fa70d049b0fd3e234cf5ba2, type: 2}
 --- !u!4 &135745662
@@ -1149,18 +1149,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d2b6f0b59d2fb94782110225b12804c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startPathPosition: {x: 0, y: 0}
+  endPathPosition: {x: 15, y: 8}
   path: []
   placeablePositions: []
   placeableIndicators: []
+  editing: 0
   placeableIndicator: {fileID: 7085749667101040808, guid: 7ee11a5c36dd5f441adce60e2905f5ad, type: 3}
   backgroundTile: {fileID: 2502489344522406862, guid: 68e35283ab2a7094aad84b446b6b03c8, type: 3}
   obstacleTile: {fileID: -4744215399501900159, guid: 93ad36cd7a08c044584b2e4749c99435, type: 3}
   pathTile: {fileID: 5409159205120673324, guid: 5ee82fc0b6e07144cbfd34a577caf78f, type: 3}
-  editing: 0
   mouseManager: {fileID: 2019142844}
-  startPathPosition: {x: 0, y: 0}
-  endPathPosition: {x: 15, y: 8}
-  phaseManager: {fileID: 0}
+  phaseManager: {fileID: 1198051988}
+  uiManager: {fileID: 135745661}
 --- !u!1 &206352416
 GameObject:
   m_ObjectHideFlags: 0

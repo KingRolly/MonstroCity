@@ -17,6 +17,7 @@ public class MouseManager : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioClip placePathSound;
     [SerializeField] private AudioClip removePathSound;
+    private float announcementCooldown = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -133,7 +134,11 @@ public class MouseManager : MonoBehaviour
             // Can't afford path
             else if (uiManager.GetMoney() < uiManager.GetPathPrice())
             {
-                uiManager.DisplayGameAnnouncement("Not enough goblins!");
+                if (announcementCooldown == 0) // Check announcement cooldown to prevent mouse manager spamming game announcements
+                {
+                    LeanTween.value(gameObject, 1, 0, 1).setOnUpdate((float value) => announcementCooldown = value); // Intiative cooldown
+                    uiManager.DisplayGameAnnouncement("Not enough goblins!");
+                }
             }
         }
     }

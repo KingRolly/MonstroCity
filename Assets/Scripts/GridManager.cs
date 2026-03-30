@@ -4,21 +4,27 @@ using UnityEngine.UIElements;
 
 public class GridManager : MonoBehaviour
 {
+    [Header("Grid Info")]
     public static int width = 16;
     public static int height = 9;
+    public Vector2Int startPathPosition;
+    public Vector2Int endPathPosition;
     public Tile[,] grid;
     public List<Vector2Int> path;
     public List<Vector2Int> placeablePositions;
     public List<GameObject> placeableIndicators;
+    public bool editing;
+
+    [Header("References")]
     public GameObject placeableIndicator;
     public BackgroundTile backgroundTile;
     public ObstacleTile obstacleTile;
     public PathTile pathTile;
-    public bool editing;
+    
+    [Header("Managers")]
     public MouseManager mouseManager;
-    public Vector2Int startPathPosition;
-    public Vector2Int endPathPosition;
     public PhaseManager phaseManager;
+    public UIManager uiManager;
 
     //defines the initial layout of tiles, 0 for background tile, 1 for obstacle tile
     public int[,] initialLayout = {
@@ -197,6 +203,7 @@ public class GridManager : MonoBehaviour
             return true;
         } else {
             Debug.Log("Couldn't place tower :( (Is something else there?)");
+            uiManager.DisplayGameAnnouncement("Invalid tower placement!");
             return false;
         }
     }

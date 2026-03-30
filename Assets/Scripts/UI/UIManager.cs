@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour
     private int announcementsNum = 0;
 
     [Header("Constants")]
-    private readonly int MAX_ANNOUNCEMENTS = 3;
+    private readonly int MAX_ANNOUNCEMENTS = 10;
     private readonly int TOWER_PANEL_Y_OFFSET = 225;
     private readonly int TOWER_STATS_PANEL_X_OFFSET = 260;
     private readonly int MAX_TOWER_ICONS = 8;
