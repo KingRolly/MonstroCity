@@ -67,6 +67,7 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         goblinCounter.text = money.ToString();
+        healthCounter.text = health.ToString();
         pathPriceText.text = pathPrice.ToString();
         SetupTopBarTowersUI();
         pathButtonPromptsOffset = pathButtonPrompts.transform.localPosition.x;

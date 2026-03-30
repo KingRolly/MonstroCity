@@ -835,9 +835,9 @@ MonoBehaviour:
   dmgText: {fileID: 1530982285}
   atkSpdText: {fileID: 689383594}
   rangeText: {fileID: 1030493598}
-  money: 123
-  health: 123
-  pathPrice: 3
+  money: 50
+  health: 50
+  pathPrice: 1
   archerData: {fileID: 11400000, guid: 7680f4a057da7f0488ae45dbe94b4761, type: 2}
   gnomeData: {fileID: 11400000, guid: 7a6324922fa70d049b0fd3e234cf5ba2, type: 2}
 --- !u!4 &135745662
@@ -2175,7 +2175,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 72.74, y: -25}
-  m_SizeDelta: {x: 145.48, y: 50}
+  m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &419490207
 MonoBehaviour:
@@ -9246,13 +9246,14 @@ MonoBehaviour:
   spriteMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   materialReference: {fileID: 2019142841}
   <dayCounter>k__BackingField: 0
-  <totalDaysInLevel>k__BackingField: 3
+  <totalDaysInLevel>k__BackingField: 4
   currentPhase: night
   layoutIndex: 0
   currentLevelEnemyWaveLayouts:
-  - {fileID: 11400000, guid: 8c29a4d359ae0a24c93f64eb8a5c4240, type: 2}
   - {fileID: 11400000, guid: e9429dd0b51182a4698c100f395f7d3f, type: 2}
-  - {fileID: 11400000, guid: 58294c5afc9c1044c9fa9e9064d16c2d, type: 2}
+  - {fileID: 11400000, guid: 5cae130482bfaeb469aaa755060f2d4b, type: 2}
+  - {fileID: 11400000, guid: 593615b1ad74659409ea20337e9e41ce, type: 2}
+  - {fileID: 11400000, guid: 97242c50d3294fe4c951354df3f58351, type: 2}
   NIGHT_TIME_COLOUR:
     serializedVersion: 2
     rgba: 4291665053
@@ -11645,7 +11646,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 90.035, y: -75}
-  m_SizeDelta: {x: 180.07, y: 50}
+  m_SizeDelta: {x: 0, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1715703425
 MonoBehaviour:
