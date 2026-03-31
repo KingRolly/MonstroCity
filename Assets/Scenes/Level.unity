@@ -9254,6 +9254,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 5cae130482bfaeb469aaa755060f2d4b, type: 2}
   - {fileID: 11400000, guid: 593615b1ad74659409ea20337e9e41ce, type: 2}
   - {fileID: 11400000, guid: 97242c50d3294fe4c951354df3f58351, type: 2}
+  - {fileID: 11400000, guid: d4a9caf6de723f2478ecefe64cf991f2, type: 2}
+  - {fileID: 11400000, guid: f799a3968397dd64b9358f881cca1edf, type: 2}
+  - {fileID: 11400000, guid: 89303ad2983f53247b4c1f604cc19455, type: 2}
+  - {fileID: 11400000, guid: 86237526361df0e43b3c566086cd0b78, type: 2}
   NIGHT_TIME_COLOUR:
     serializedVersion: 2
     rgba: 4291665053
