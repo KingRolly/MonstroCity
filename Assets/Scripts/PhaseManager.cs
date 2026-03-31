@@ -149,7 +149,7 @@ public class PhaseManager : MonoBehaviour
             priceMultiplier = 1;
         } else
         {
-            priceMultiplier = Math.Pow(Math.Pow(daysUntilUnionization + 1, 1f/(totalDaysInLevel - daysUntilUnionization)), dayCounter - (daysUntilUnionization - 1));
+            priceMultiplier = Math.Pow(Math.Pow(3, 1f/(totalDaysInLevel - daysUntilUnionization)), dayCounter - (daysUntilUnionization - 1));
         }
     
         if (dayCounter == daysUntilUnionization)
