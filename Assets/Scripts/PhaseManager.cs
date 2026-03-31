@@ -55,7 +55,7 @@ public class PhaseManager : MonoBehaviour
 
     [SerializeField] private int daysUntilUnionization = 3; // First day the price increase should start at
 
-    public static double priceMultiplier = 1;
+    public static double priceMultiplier;
 
     #endregion
 
@@ -67,6 +67,7 @@ public class PhaseManager : MonoBehaviour
         SetPhase("Night");
         SetDayCounter(0);
         layoutIndex = 0;
+        priceMultiplier = 1;
     }
 
     // Update is called once per frame
@@ -105,6 +106,7 @@ public class PhaseManager : MonoBehaviour
         readyButtonSFXTrigger.enabled = false;
         uiManager.HideTowerPanel();
         uiManager.HidePathButtonPrompts();
+        uiManager.HideTowerStatsPanel();
 
         // Update counters
         SetPhase("Daytime");

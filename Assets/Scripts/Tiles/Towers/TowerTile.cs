@@ -126,8 +126,11 @@ public abstract class TowerTile : Tile
     {
         if (Input.GetMouseButtonDown(0))
         {
-            AudioManager.instance.PlaySoundFX(selectTower, transform, 0.8f);
-            uiManager.DisplayTowerStatsPanel(this);
+            if (phaseManager.GetCurrentPhase() == "Night")
+            {
+                AudioManager.instance.PlaySoundFX(selectTower, transform, 0.8f);
+                uiManager.DisplayTowerStatsPanel(this);
+            }
         }
     }
 
