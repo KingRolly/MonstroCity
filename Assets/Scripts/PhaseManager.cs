@@ -3,6 +3,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System;
 
 /// <summary>
 /// Manages day and night cycle within a level
@@ -52,6 +53,8 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private Color32 NIGHT_TIME_COLOUR; // muted purplish tint
     [SerializeField] private Color32 DAY_TIME_COLOUR; // no tint whatsoever
 
+    public static double priceMultiplier = 1;
+
     #endregion
 
     // Start is called before the first frame update
@@ -84,7 +87,7 @@ public class PhaseManager : MonoBehaviour
         } else
         {
             // Indicate that path is invalid
-            uiManager.DisplayGameAnnouncement("Path must be complete before starting the day!");
+            uiManager.DisplayGameAnnouncement("Path must be complete before starting the day!", 2);
             Debug.Log("Path invalid!");
         }
     }
@@ -118,6 +121,10 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     public void EndDay()
     {
+        if (dayCounter == 3)
+        {
+            uiManager.DisplayGameAnnouncement("The Goblins have unionized! Tower prices will now increase with each day.", 3.5f);
+        }
         // Check if this was the last day for the level
         if (dayCounter == totalDaysInLevel)
         {
@@ -193,6 +200,13 @@ public class PhaseManager : MonoBehaviour
     private void IncrementDayCounter()
     {
         dayCounter++;
+        if (dayCounter < 3)
+        {
+            priceMultiplier = 1;
+        } else
+        {
+            priceMultiplier = Math.Pow(Math.Pow(4, 0.2), dayCounter - 3);
+        }
         dayCounterText.text = $"{dayCounter.ToString()}/{totalDaysInLevel.ToString()} ";
     }
 

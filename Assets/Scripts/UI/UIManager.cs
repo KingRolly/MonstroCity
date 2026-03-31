@@ -196,7 +196,7 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// Briefly display a message in the middle of the screen as an announcement to the player
     /// </summary>
-    public void DisplayGameAnnouncement(string message)
+    public void DisplayGameAnnouncement(string message, float duration)
     {
 
         if (announcementsNum >= MAX_ANNOUNCEMENTS) // Check if max number of announcements has been exceeded
@@ -217,9 +217,7 @@ public class UIManager : MonoBehaviour
 
         messageText.text = message;
         
-        // Animation
-        float duration = 2f;
-        // Fade in
+        // Fade in animation
         announcementCG.LeanAlpha(1, duration / 2)
             .setEaseOutSine();
         // Slide up a bit

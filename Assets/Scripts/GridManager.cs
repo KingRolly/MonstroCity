@@ -203,7 +203,7 @@ public class GridManager : MonoBehaviour
             return true;
         } else {
             Debug.Log("Couldn't place tower :( (Is something else there?)");
-            uiManager.DisplayGameAnnouncement("Invalid tower placement!");
+            uiManager.DisplayGameAnnouncement("A tower cannot be built here!", 2);
             return false;
         }
     }

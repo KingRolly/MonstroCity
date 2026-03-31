@@ -137,7 +137,7 @@ public class MouseManager : MonoBehaviour
                 if (announcementCooldown == 0) // Check announcement cooldown to prevent mouse manager spamming game announcements
                 {
                     LeanTween.value(gameObject, 1, 0, 1).setOnUpdate((float value) => announcementCooldown = value); // Intiative cooldown
-                    uiManager.DisplayGameAnnouncement("Not enough goblins!");
+                    uiManager.DisplayGameAnnouncement("Not enough goblins!", 2);
                 }
             }
         }
