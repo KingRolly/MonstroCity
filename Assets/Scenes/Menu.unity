@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 356298997}
   - component: {fileID: 356299001}
   - component: {fileID: 356299000}
+  - component: {fileID: 356299002}
   m_Layer: 5
   m_Name: Start Game Button
   m_TagString: Untagged
@@ -310,6 +311,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &356299002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356298995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.60784316}
+  m_EffectDistance: {x: 5, y: -8}
+  m_UseGraphicAlpha: 1
 --- !u!1 &506282966
 GameObject:
   m_ObjectHideFlags: 0
@@ -992,6 +1008,7 @@ GameObject:
   - component: {fileID: 1161251877}
   - component: {fileID: 1161251880}
   - component: {fileID: 1161251876}
+  - component: {fileID: 1161251881}
   m_Layer: 5
   m_Name: Quit Game Button
   m_TagString: Untagged
@@ -1166,6 +1183,21 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+--- !u!114 &1161251881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1161251874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.60784316}
+  m_EffectDistance: {x: 5, y: -8}
+  m_UseGraphicAlpha: 1
 --- !u!1 &1507263714
 GameObject:
   m_ObjectHideFlags: 0
