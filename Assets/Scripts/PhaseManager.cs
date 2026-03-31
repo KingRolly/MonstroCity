@@ -123,7 +123,7 @@ public class PhaseManager : MonoBehaviour
     {
         if (dayCounter == 3)
         {
-            uiManager.DisplayGameAnnouncement("The Goblins have unionized! Tower prices will now increase with each day.", 3.5f);
+            uiManager.DisplayGameAnnouncement("The Goblins have unionized! Tower prices will now increase with each day.", 4f);
         }
         // Check if this was the last day for the level
         if (dayCounter == totalDaysInLevel)
