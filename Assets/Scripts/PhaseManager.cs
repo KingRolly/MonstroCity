@@ -200,7 +200,7 @@ public class PhaseManager : MonoBehaviour
     private void IncrementDayCounter()
     {
         dayCounter++;
-        if (dayCounter < 3)
+        if (dayCounter < 2)
         {
             priceMultiplier = 1;
         } else
