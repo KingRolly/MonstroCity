@@ -10011,7 +10011,7 @@ MonoBehaviour:
   placeSound: {fileID: 8300000, guid: 1d0b9cd8460f51246a78faeeaed2fe54, type: 3}
   projectileSpeed: 6
   gnomePrefab: {fileID: 6279944220403339002, guid: 395d652d02b347a4faef3a666abcfd4d, type: 3}
-  attackSFX: {fileID: 8300000, guid: dd749dba4955f9140b3d2a84539322e5, type: 3}
+  attackSFX: {fileID: 8300000, guid: 7352d80fe79682a4f84a3a1109133db3, type: 3}
   leftCannonSmoke: {fileID: 3303950007840121949}
   centreLeftCannonSmoke: {fileID: 891799903555443804}
   centreCannonSmoke: {fileID: 5020520781148555106}
