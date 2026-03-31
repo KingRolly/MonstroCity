@@ -245,7 +245,7 @@ public class UIManager : MonoBehaviour
     {
         if (gridManager.DestroyTower(new Vector2Int((int) currentlySelectedTower.GetX(), (int)currentlySelectedTower.GetY()))){
             AudioManager.instance.PlaySoundFX(sellSound, transform, 1f);
-            ChangeMoney(currentlySelectedTower.data.price);
+            ChangeMoney((int)(currentlySelectedTower.data.price * PhaseManager.priceMultiplier));
             HideTowerStatsPanel();
         }
     }

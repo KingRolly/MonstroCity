@@ -121,17 +121,19 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     public void EndDay()
     {
-        if (dayCounter < 2)
+        int daysUntilPriceIncrease = 3; // First day the price increase should start at
+        if (dayCounter < daysUntilPriceIncrease - 1)
         {
             priceMultiplier = 1;
         } else
         {
-            priceMultiplier = Math.Pow(Math.Pow(4, 0.2), dayCounter - 3);
+            priceMultiplier = Math.Pow(Math.Pow(4, 0.2), dayCounter - (daysUntilPriceIncrease - 1));
         }
-        if (dayCounter == 4)
+        if (dayCounter == daysUntilPriceIncrease)
         {
             uiManager.DisplayGameAnnouncement("The Goblins have unionized! Tower prices will now increase with each day.", 4f);
         }
+
         // Check if this was the last day for the level
         if (dayCounter == totalDaysInLevel)
         {
