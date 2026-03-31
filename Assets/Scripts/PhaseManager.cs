@@ -53,6 +53,8 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private Color32 NIGHT_TIME_COLOUR; // muted purplish tint
     [SerializeField] private Color32 DAY_TIME_COLOUR; // no tint whatsoever
 
+    [SerializeField] private int daysUntilUnionization = 3; // First day the price increase should start at
+
     public static double priceMultiplier = 1;
 
     #endregion
@@ -70,7 +72,7 @@ public class PhaseManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
 
     /// <summary>
@@ -121,19 +123,6 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     public void EndDay()
     {
-        int daysUntilPriceIncrease = 3; // First day the price increase should start at
-        if (dayCounter < daysUntilPriceIncrease - 1)
-        {
-            priceMultiplier = 1;
-        } else
-        {
-            priceMultiplier = Math.Pow(Math.Pow(4, 0.2), dayCounter - (daysUntilPriceIncrease - 1));
-        }
-        if (dayCounter == daysUntilPriceIncrease)
-        {
-            uiManager.DisplayGameAnnouncement("The Goblins have unionized! Tower prices will now increase with each day.", 4f);
-        }
-
         // Check if this was the last day for the level
         if (dayCounter == totalDaysInLevel)
         {
@@ -152,6 +141,20 @@ public class PhaseManager : MonoBehaviour
             layoutIndex++;
             uiManager.ShowTowerPanel();
             uiManager.ShowPathButtonPrompts();
+        }
+
+        // Update pricing
+        if (dayCounter < daysUntilUnionization)
+        {
+            priceMultiplier = 1;
+        } else
+        {
+            priceMultiplier = Math.Pow(Math.Pow(daysUntilUnionization + 1, 1f/(totalDaysInLevel - daysUntilUnionization)), dayCounter - (daysUntilUnionization - 1));
+        }
+    
+        if (dayCounter == daysUntilUnionization)
+        {
+            uiManager.DisplayGameAnnouncement("The Goblins have unionized! Tower prices will now increase with each day.", 4f);
         }
     }
 
