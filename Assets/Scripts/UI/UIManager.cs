@@ -259,7 +259,10 @@ public class UIManager : MonoBehaviour
         towerStatsPanel.GetComponent<RectTransform>().LeanMoveX(-TOWER_STATS_PANEL_X_OFFSET, 0.1f).setEaseInCubic();
 
         // Stop outlining selected tower
-        currentlySelectedTower.HideSelectionOutline();
+        if (currentlySelectedTower != null)
+        {
+            currentlySelectedTower.HideSelectionOutline();
+        }
     }
 
     /// <summary>
