@@ -1,22 +1,43 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class GridManager : MonoBehaviour
 {
+    [Header("Grid Info")]
     public static int width = 16;
     public static int height = 9;
+    public Vector2Int startPathPosition;
+    public Vector2Int endPathPosition;
     public Tile[,] grid;
     public List<Vector2Int> path;
     public List<Vector2Int> placeablePositions;
     public List<GameObject> placeableIndicators;
+    public bool editing;
+
+    [Header("References")]
     public GameObject placeableIndicator;
     public BackgroundTile backgroundTile;
+    public ObstacleTile obstacleTile;
     public PathTile pathTile;
-    public bool editing;
+    
+    [Header("Managers")]
     public MouseManager mouseManager;
-    public Vector2Int startPathPosition;
-    public Vector2Int endPathPosition;
     public PhaseManager phaseManager;
+    public UIManager uiManager;
+
+    //defines the initial layout of tiles, 0 for background tile, 1 for obstacle tile
+    public int[,] initialLayout = {
+        {1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0},
+        {1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1},
+        {0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1},
+        {1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+        {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+        {0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0},
+        {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}
+    };
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +61,14 @@ public class GridManager : MonoBehaviour
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 // Creates prefab at correct pos and adds to grid Array
-                grid[i, j] = Instantiate(backgroundTile, new Vector2(i, j), Quaternion.identity);
+                if (initialLayout[height - j - 1, i] == 1)
+                {
+                    grid[i, j] = Instantiate(obstacleTile, new Vector2(i, j), Quaternion.identity);
+                }
+                else
+                {
+                    grid[i, j] = Instantiate(backgroundTile, new Vector2(i, j), Quaternion.identity);
+                }
                 // Initializes tile info
                 //Tile tileData = grid[i, j].GetComponent<Tile>();
                 //tileData.Initialize("something");
@@ -74,8 +102,8 @@ public class GridManager : MonoBehaviour
     public bool PlacePath(Vector2Int position)
     {
         //Place path tile
-        if (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].GetPlaceable()) {
-
+        if (IsPosPlaceable(position)) // Check position is valid
+        {
             Destroy(grid[position.x, position.y].gameObject);
             grid[position.x, position.y] = Instantiate(pathTile, new Vector2(position.x, position.y), Quaternion.identity);
             path.Add(position);
@@ -105,6 +133,16 @@ public class GridManager : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Check if the given position is a placeable tile
+    /// </summary>
+    /// <param name="position">position to check</param>
+    /// <returns>true if tile at given position is placeable, false otherwise</returns>
+    public bool IsPosPlaceable(Vector2Int position)
+    {
+        return (IsInBounds(position) && placeablePositions.Contains(position) && grid[position.x, position.y].GetPlaceable());
     }
 
     public bool DeletePath(Vector2Int position)
@@ -165,6 +203,7 @@ public class GridManager : MonoBehaviour
             return true;
         } else {
             Debug.Log("Couldn't place tower :( (Is something else there?)");
+            uiManager.DisplayGameAnnouncement("A tower cannot be built here!", 2);
             return false;
         }
     }
@@ -257,13 +296,13 @@ public class GridManager : MonoBehaviour
             //Base this off of the previous path location
             PathDirection direction = GetDirection(path[0], path[1]);
 
-            //DONT NEED TO ALTER THE STARTING TILE 
-            //grid[path[0].x, path[0].y].setSpriteType(
-            //    (direction == PathDirection.Right || direction == PathDirection.Left) ?
-            //    PathTile.spriteType.Horizontal : PathTile.spriteType.Vertical
-            //    );
+            // Change start tile sprite
+            grid[path[0].x, path[0].y].SetSpriteType(
+                (direction == PathDirection.Right || direction == PathDirection.Left) ?
+                PathTile.spriteType.Horizontal : PathTile.spriteType.DownLeft
+                );
 
-
+            // Change second tile sprite
             grid[path[1].x, path[1].y].SetSpriteType(
                 direction == PathDirection.Right ?
                 PathTile.spriteType.RightEnd : direction == PathDirection.Left ?
@@ -281,6 +320,7 @@ public class GridManager : MonoBehaviour
 
             if (connectingToEndTile && path.Count >= 4)
             {
+                // Update middle tile sprite
                 PathDirection dirToMid =
                     GetDirection(path[path.Count - 4], path[path.Count - 3]);
 
@@ -288,9 +328,17 @@ public class GridManager : MonoBehaviour
                     GetDirection(path[path.Count - 3], path[path.Count - 2]);
 
                 UpdateMiddleTile(path.Count - 3, dirToMid, dirFromMid);
+
+                // Update end tile sprite
+                grid[width - 1, height - 1].SetSpriteType(
+                    directionToHead == PathDirection.Up ? PathTile.spriteType.Vertical : PathTile.spriteType.DownLeft);
             }
             if (!connectingToEndTile)
             {
+                // Revert end of path to default sprite if the path isn't connected to it anymore
+                grid[width - 1, height - 1].SetSpriteType(
+                    PathTile.spriteType.DownEnd);
+
                 // Update head of path
                 grid[path[path.Count - 1].x, path[path.Count - 1].y].SetSpriteType(
                     directionToHead == PathDirection.Up ? PathTile.spriteType.UpEnd :

@@ -20,9 +20,13 @@ public class DaggerThrower : TowerTile
                 yield return new WaitUntil(() => FindNearestEnemy(data.attackRange) != null);
 
                 // Throw a dagger towards the enemy with given angle
-                Vector2 difference = FindNearestEnemy(data.attackRange).transform.position - transform.position;
-                float direction = Vector2.SignedAngle(Vector2.right, difference);
-                ThrowDagger(direction);
+                if (FindNearestEnemy(data.attackRange) != null) // Preventing a NullReferenceException that shouldn't be happening anyway...
+                {
+                    Vector2 difference = FindNearestEnemy(data.attackRange).GetComponent<Enemy>()
+                        .GetSpriteAndHitboxObject().transform.position - transform.position;
+                    float direction = Vector2.SignedAngle(Vector2.right, difference);
+                    ThrowDagger(direction);
+                }
 
                 // Attack cooldown
                 yield return new WaitForSeconds(data.attackSpeed);

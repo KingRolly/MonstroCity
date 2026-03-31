@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -28,6 +29,11 @@ public class EnemyManager : MonoBehaviour
 
     [Header("Enemy Wave Layout")]
     [SerializeField] private EnemyWaveLayout currentDayWaveLayout;
+    [SerializeField] private List<Vector2Int> enemyPathLayout;
+
+    [Header("Location Constants")]
+    [SerializeField] private Vector2Int spawnPos;
+    [SerializeField] private Vector2Int exitPos;
 
     // Object pool stuff
     private IObjectPool<GameObject> enemyObjectPool;
@@ -127,6 +133,11 @@ public class EnemyManager : MonoBehaviour
         aliveEnemies.Clear();
         deadEnemies.Clear();
 
+        // Update path
+        enemyPathLayout = new List<Vector2Int>(gridManager.GetPath());
+        enemyPathLayout.Insert(0, spawnPos);
+        enemyPathLayout.Add(exitPos);
+
         // Check for empty wave layout list
         if (currentDayWaveLayout == null)
         {
@@ -192,10 +203,12 @@ public class EnemyManager : MonoBehaviour
             int money = enemyStats.moneyReward;
             Sprite sprite = enemyStats.sprite;
 
-            // Set up enemy stats and pathfinding
+            // Set up enemy stats and references
             enemyToSpawn.GetComponent<Enemy>().SetInfo(enemyType, health, speed, damage, money ,sprite);
             enemyToSpawn.GetComponent<Enemy>().AssignReferences(this, uiManager);
-            enemyToSpawn.GetComponent<Enemy>().SetPath(gridManager.GetPath());
+
+            // Set spawn pos and path
+            enemyToSpawn.GetComponent<Enemy>().SetPath(enemyPathLayout);
 
             // Keep track of spawned enemy
             aliveEnemies.Add(enemyToSpawn);

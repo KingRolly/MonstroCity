@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
+using System;
 
 /// <summary>
 /// Manages day and night cycle within a level
@@ -31,6 +33,7 @@ public class PhaseManager : MonoBehaviour
     [Header("Ready Button References")]
     [SerializeField] private Button readyButton;
     [SerializeField] private TextMeshProUGUI readyText;
+    [SerializeField] private EventTrigger readyButtonSFXTrigger;
 
     [Header("Graphics References")]
     [SerializeField] private Material spriteMaterial;
@@ -50,11 +53,14 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private Color32 NIGHT_TIME_COLOUR; // muted purplish tint
     [SerializeField] private Color32 DAY_TIME_COLOUR; // no tint whatsoever
 
+    public static double priceMultiplier = 1;
+
     #endregion
 
     // Start is called before the first frame update
     void Start()
     {
+        totalDaysInLevel = currentLevelEnemyWaveLayouts.Count;
         spriteMaterial.color = NIGHT_TIME_COLOUR;
         SetPhase("Night");
         SetDayCounter(0);
@@ -80,7 +86,8 @@ public class PhaseManager : MonoBehaviour
             StartDay();
         } else
         {
-            // TODO: Indicate that path is invalid somehow
+            // Indicate that path is invalid
+            uiManager.DisplayGameAnnouncement("Path must be complete before starting the day!", 2);
             Debug.Log("Path invalid!");
         }
     }
@@ -93,7 +100,9 @@ public class PhaseManager : MonoBehaviour
         // Update graphics
         readyButton.interactable = false;
         readyText.color = readyButton.colors.disabledColor;
+        readyButtonSFXTrigger.enabled = false;
         uiManager.HideTowerPanel();
+        uiManager.HidePathButtonPrompts();
 
         // Update counters
         SetPhase("Daytime");
@@ -112,6 +121,10 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     public void EndDay()
     {
+        if (dayCounter == 3)
+        {
+            uiManager.DisplayGameAnnouncement("The Goblins have unionized! Tower prices will now increase with each day.", 4f);
+        }
         // Check if this was the last day for the level
         if (dayCounter == totalDaysInLevel)
         {
@@ -121,13 +134,15 @@ public class PhaseManager : MonoBehaviour
         {
             // Update graphics
             readyButton.interactable = true;
-            readyText.color = Color.red;
+            readyButtonSFXTrigger.enabled = true;
+            readyText.color = Color.white;
 
             // Update counters
             SetPhase("Night");
             gridManager.ToggleEditing();
             layoutIndex++;
             uiManager.ShowTowerPanel();
+            uiManager.ShowPathButtonPrompts();
         }
     }
 
@@ -185,6 +200,13 @@ public class PhaseManager : MonoBehaviour
     private void IncrementDayCounter()
     {
         dayCounter++;
+        if (dayCounter < 3)
+        {
+            priceMultiplier = 1;
+        } else
+        {
+            priceMultiplier = Math.Pow(Math.Pow(4, 0.2), dayCounter - 3);
+        }
         dayCounterText.text = $"{dayCounter.ToString()}/{totalDaysInLevel.ToString()} ";
     }
 

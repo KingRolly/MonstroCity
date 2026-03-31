@@ -31,6 +31,10 @@ public class TowerIcon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (data != null)
+        {
+            priceText.text = GetPrice().ToString();
+        }
     }
 
     /// <summary>
@@ -41,7 +45,7 @@ public class TowerIcon : MonoBehaviour
     {
         this.data = data;
         this.isEmpty = false;
-        priceText.text = data.price.ToString();
+        priceText.text = this.data.price.ToString();
         nameText.text = data.towerName;
         icon.GetComponent<UnityEngine.UI.Image>().sprite = data.sprite;
     }
@@ -55,7 +59,7 @@ public class TowerIcon : MonoBehaviour
         this.data = null;
         this.isEmpty = true;
         priceText.text = "";
-        nameText.text = "Empty";
+        nameText.text = "";
         icon.SetActive(false);
         goblinIcon.SetActive(false);
         // Removes button functionality from this tower icon, then greys it out
@@ -110,12 +114,13 @@ public class TowerIcon : MonoBehaviour
         { 
             if (gridManager.GetEditing())
             {
-                if (uiManager.GetMoney() - data.price >= 0) // check if player can afford tower
+                if (uiManager.GetMoney() - GetPrice() >= 0) // check if player can afford tower
                 {
                     AudioManager.instance.PlayButtonClickSound();
                     mouseManager.SetSelectedTowerIcon(this); // Set the held tower to this tower
                 } else
                 {
+                    uiManager.DisplayGameAnnouncement("Not enough goblins!", 2);
                     Debug.Log("Not enough goblins!");
                 }
             } else
@@ -144,7 +149,7 @@ public class TowerIcon : MonoBehaviour
     }
     public int GetPrice()
     {
-        return data.price;
+        return (int) (data.price * PhaseManager.priceMultiplier);
     }
     public float GetDmg()
     {

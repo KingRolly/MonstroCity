@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: KnightStats
   m_EditorClassIdentifier: 
   enemyType: Knight
-  sprite: {fileID: 21300000, guid: 32ed99857c226da49b663677fc6d15e3, type: 3}
-  health: 20
+  sprite: {fileID: 21300000, guid: 555df0ceebd78c646bf3e80b656ccd49, type: 3}
+  health: 40
   speed: 6
   damage: 5
-  moneyReward: 10
+  moneyReward: 2

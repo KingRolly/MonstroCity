@@ -18,19 +18,61 @@ public class Enemy : MonoBehaviour
     [SerializeField] private int damage; // amount of damage enemy deals to player's health
     [SerializeField] private int moneyReward; // amount of money given to player when killed 
     [SerializeField] private float distanceTravelled; // distance enemy has travelled along the path so far
+    [SerializeField] private Vector3 originalPos;
+
+    [Header("References")]
+    [SerializeField] private SpriteRenderer enemySpriteRenderer;
+    [SerializeField] private GameObject spriteAndHitboxObject;
+    [SerializeField] private ParticleSystem footstepParticles;
 
     private EnemyManager enemyManager;
     private UIManager uiManager;
-    [SerializeField] AudioClip damageSound;
+
+    [Header("SFX")]
+    [SerializeField] AudioClip[] damageSounds;
+    [SerializeField] AudioClip hurtPlayerSound;
 
     [SerializeField] private List<Vector2Int> enemyPath;
     private int pathIndex;
     public IObjectPool<GameObject> enemyObjectPool;
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnDisable()
     {
-    
+        LeanTween.cancel(gameObject);
+        LeanTween.cancel(spriteAndHitboxObject);
+    }
+
+    private void OnEnable()
+    {
+        // Reset sprite animation
+        spriteAndHitboxObject.transform.rotation = Quaternion.identity;
+        spriteAndHitboxObject.transform.localPosition = originalPos;
+
+        // Enemy walking animation
+        float duration = 0.15f;
+        float bounceHeight = spriteAndHitboxObject.transform.localPosition.y + 0.15f;
+        float rotationAmount = 5f;
+
+        // Bouncing
+        spriteAndHitboxObject.transform.LeanMoveLocalY(bounceHeight, duration)
+            .setEaseOutSine()
+            .setLoopPingPong();
+
+        // Rotation
+        LeanTween.rotateZ(spriteAndHitboxObject, rotationAmount, duration * 2)
+        .setFrom(-rotationAmount)
+        .setEaseInOutSine()
+        .setLoopPingPong()
+        .setOnComplete(() => ActivateFootStepParticles()) // Create footstep particles
+        .setOnCompleteOnRepeat(true);
+    }
+
+    /// <summary>
+    /// Private helper to create footstep particles
+    /// </summary>
+    private void ActivateFootStepParticles()
+    {
+        Instantiate(footstepParticles, transform.position, Quaternion.identity);
     }
 
     // Update is called once per frame
@@ -44,7 +86,22 @@ public class Enemy : MonoBehaviour
             // Check if enemy has reached the next path coordinate
             if (transform.position == new Vector3(enemyPath[pathIndex].x, enemyPath[pathIndex].y, transform.position.z))
             {
+                // Advance to next path waypoint
                 pathIndex++;
+
+
+                if (pathIndex < enemyPath.Count) // Guard for indexing to out of bounds
+                {
+                    // Check which direction enemy needs to face next and update sprite accordingly
+                    if (enemyPath[pathIndex].x > transform.localPosition.x) // Face right
+                    {
+                        enemySpriteRenderer.flipX = true;
+                    }
+                    else if (enemyPath[pathIndex].x < transform.localPosition.x) // Face left
+                    {
+                        enemySpriteRenderer.flipX = false;
+                    }
+                }
             }
         }
         // Enemy reached end of path
@@ -75,8 +132,8 @@ public class Enemy : MonoBehaviour
         damage = dmg;
         enemySprite = sprite;
         moneyReward = money;
-        this.GetComponent<SpriteRenderer>().sprite = sprite;
-        this.GetComponent<SpriteRenderer>().color = Color.white;
+        enemySpriteRenderer.sprite = sprite;
+        enemySpriteRenderer.color = Color.white;
     }
 
     /// <summary>
@@ -94,6 +151,8 @@ public class Enemy : MonoBehaviour
     // Assign path for enemy to take
     public void SetPath(List<Vector2Int> path)
     {
+        
+        // Assign path
         enemyPath = path;
 
         // Check for enemyPath not being assigned for some reason
@@ -104,8 +163,7 @@ public class Enemy : MonoBehaviour
         else
         {
             // Set starting position of enemy
-            Vector3 startingPosition = new Vector3(enemyPath[0].x, enemyPath[0].y, transform.position.z);
-            transform.position = startingPosition;
+            transform.position = new Vector3(path[0].x, path[0].y, 0);
             pathIndex = 0;
             distanceTravelled = 0;
         }
@@ -125,6 +183,7 @@ public class Enemy : MonoBehaviour
     {
         // Update health in UIManager
         uiManager.ChangeHealth(-damage);
+        AudioManager.instance.PlaySoundFX(hurtPlayerSound, transform, 0.5f);
     }
 
     /// <summary>
@@ -135,7 +194,7 @@ public class Enemy : MonoBehaviour
     {
         // Update enemy's health to take correct amount of damage
         // If the damage kills enemy, then give player money reward, despawn enemy, and return it to object pool
-        AudioManager.instance.PlaySoundFX(damageSound, transform, 0.2f);
+        AudioManager.instance.PlayRandomSoundFX(damageSounds, transform, 0.2f);
         this.health -= dmg;
         if (this.health <= 0)
         {
@@ -156,12 +215,12 @@ public class Enemy : MonoBehaviour
     {
         float t = 0.0f;
         float duration = 0.1f;
-        gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+        enemySpriteRenderer.color = Color.red;
 
         while (t < duration)
         {
             t += Time.deltaTime;
-            gameObject.GetComponent<SpriteRenderer>().color = Color32.Lerp(Color.red, Color.white, t / duration);
+            enemySpriteRenderer.color = Color32.Lerp(Color.red, Color.white, t / duration);
             yield return null;
         }
     }
@@ -173,6 +232,15 @@ public class Enemy : MonoBehaviour
     {
         // Call enemy manager's despawn function to depsawn this enemy
         enemyManager.DespawnEnemy(this.gameObject);
+    }
+
+    /// <summary>
+    /// Get the child object of this enemy
+    /// </summary>
+    /// <returns>A game object containing the sprite and hitbox of enemy</returns>
+    public GameObject GetSpriteAndHitboxObject()
+    {
+        return spriteAndHitboxObject;
     }
 
     #region Basic Getters

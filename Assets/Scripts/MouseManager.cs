@@ -17,6 +17,7 @@ public class MouseManager : MonoBehaviour
     [Header("SFX")]
     [SerializeField] private AudioClip placePathSound;
     [SerializeField] private AudioClip removePathSound;
+    private float announcementCooldown = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -84,52 +85,99 @@ public class MouseManager : MonoBehaviour
             // 1. No selected tower - place path
             if (selectedTowerIcon == null)
             {
-                if (Input.GetMouseButton(0))
-                { // Left click places
-                    if (uiManager.GetMoney() >= uiManager.GetPathPrice() && 
-                        gridManager.PlacePath(new Vector2Int((int)selectPos.x, (int)selectPos.y)))
-                    {
-                        AudioManager.instance.PlaySoundFX(placePathSound, transform, 1f);
-                        uiManager.ChangeMoney(-uiManager.GetPathPrice());
-                    }
-                }
-                else if (Input.GetMouseButton(1))
-                { // Right click deletes
-                    if (gridManager.DeletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y)))
-                    {
-                        AudioManager.instance.PlaySoundFX(removePathSound, transform, 0.3f);
-                        uiManager.ChangeMoney(uiManager.GetPathPrice());
-                    }
-                }
+                HandlePathEditing();
             }
-
             // 2. There is a selected tower - place tower
             else
             {
-                if (Input.GetMouseButtonDown(0) && gridManager.IsInBounds(worldPos))
-                {
-                    if (gridManager.PlaceTower(Vector2Int.RoundToInt(selectPos), selectedTowerIcon.GetTowerData()))
-                    { // Call GridManager to place the tower, update money, unselect tower icon
-                        Debug.Log($"{selectedTowerIcon.GetTowerName()} purchased for {selectedTowerIcon.GetPrice()} goblins");
-                        uiManager.ChangeMoney(-selectedTowerIcon.GetPrice());
-                        if (uiManager.GetMoney() < selectedTowerIcon.GetPrice())
-                        {
-                            selectedTowerIcon = null;
-                        }
-                    }
-                }
-
-                if (Input.GetKeyUp(KeyCode.Escape))
-                { // Cancel placing of tower
-                    selectedTowerIcon = null;
-                }
-                locked = false;
+                HandleTowerPlacement(worldPos);
             }
         }
         #endregion
 
         // Update selected pos
         selectPos = new Vector2Int((int)Mathf.Round(worldPos.x), (int)Mathf.Round(worldPos.y));
+    }
+
+    /// <summary>
+    /// Private helper to handle path ediitng
+    /// </summary>
+    private void HandlePathEditing()
+    {
+        if (Input.GetMouseButton(0))
+        { // Left click places
+            HandlePlacePath();
+        }
+        else if (Input.GetMouseButton(1))
+        { // Right click deletes
+            HandlePathDeletion();
+        }
+    }
+
+    /// <summary>
+    /// Private helper to handle attempting to place a path
+    /// </summary>
+    private void HandlePlacePath()
+    {
+        Vector2Int placePosition = new Vector2Int((int)selectPos.x, (int)selectPos.y);
+
+        // Check position is placeable
+        if (gridManager.IsPosPlaceable(placePosition))
+        {
+            // Check player has enough money                        
+            if (uiManager.GetMoney() >= uiManager.GetPathPrice())
+            {
+                gridManager.PlacePath(placePosition);
+                AudioManager.instance.PlaySoundFX(placePathSound, transform, 1f);
+                uiManager.ChangeMoney(-uiManager.GetPathPrice());
+            }
+            // Can't afford path
+            else if (uiManager.GetMoney() < uiManager.GetPathPrice())
+            {
+                if (announcementCooldown == 0) // Check announcement cooldown to prevent mouse manager spamming game announcements
+                {
+                    LeanTween.value(gameObject, 1, 0, 1).setOnUpdate((float value) => announcementCooldown = value); // Intiative cooldown
+                    uiManager.DisplayGameAnnouncement("Not enough goblins!", 2);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Private helper to handle path deletion
+    /// </summary>
+    private void HandlePathDeletion()
+    {
+        if (gridManager.DeletePath(new Vector2Int((int)selectPos.x, (int)selectPos.y)))
+        {
+            AudioManager.instance.PlaySoundFX(removePathSound, transform, 0.3f);
+            uiManager.ChangeMoney(uiManager.GetPathPrice());
+        }
+    }
+
+    /// <summary>
+    /// Private helper to handle tower placement
+    /// </summary>
+    private void HandleTowerPlacement(Vector2Int worldPos)
+    {
+        if (Input.GetMouseButtonDown(0) && gridManager.IsInBounds(worldPos))
+        {
+            if (gridManager.PlaceTower(Vector2Int.RoundToInt(selectPos), selectedTowerIcon.GetTowerData()))
+            { // Call GridManager to place the tower, update money, unselect tower icon
+                Debug.Log($"{selectedTowerIcon.GetTowerName()} purchased for {selectedTowerIcon.GetPrice()} goblins");
+                uiManager.ChangeMoney(-selectedTowerIcon.GetPrice());
+                if (uiManager.GetMoney() < selectedTowerIcon.GetPrice())
+                {
+                    selectedTowerIcon = null;
+                }
+            }
+        }
+
+        if (Input.GetKeyUp(KeyCode.Escape))
+        { // Cancel placing of tower
+            selectedTowerIcon = null;
+        }
+        locked = false;
     }
 
     public bool GetLock() {

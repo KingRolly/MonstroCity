@@ -49,6 +49,25 @@ public class AudioManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Play a random sfx from given array of audio clips
+    /// </summary>
+    public void PlayRandomSoundFX(AudioClip[] audioClip, Transform spawnTransform, float volume)
+    {
+        // Generate random index
+        int rand = Random.Range(0, audioClip.Length);
+
+        // Spawn audio source to play sound and assign audio clip accordingly
+        AudioSource audioSource = Instantiate(soundFXPlayer, spawnTransform.position, Quaternion.identity);
+        audioSource.clip = audioClip[rand];
+        audioSource.volume = volume;
+        audioSource.Play();
+
+        // Destroy clip after finished playing
+        float clipLength = audioSource.clip.length;
+        Destroy(audioSource.gameObject, clipLength);
+    }
+
+    /// <summary>
     /// Play the given background music at given volume
     /// </summary>
     /// <param name="audioClip">Audio clip of BGM</param>

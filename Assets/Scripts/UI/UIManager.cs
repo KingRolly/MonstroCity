@@ -17,15 +17,24 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameManager gameManager;
 
     [Header("References")]
+    [SerializeField] private GameObject uiCanvas;
     [SerializeField] private TextMeshProUGUI goblinCounter;
-    [SerializeField] private GameObject moneyChangeTextPrefab;
     [SerializeField] private TextMeshProUGUI healthCounter;
+    [SerializeField] private GameObject moneyChangeTextPrefab;
+    [SerializeField] private GameObject healthChangeTextPrefab;
     [SerializeField] private GameObject topBar;
     [SerializeField] private GameObject towersPanel;
     [SerializeField] private GameObject towerIconPrefab;
     [SerializeField] private TowerInfoPopup towerInfoPopup;
+    [SerializeField] private GameObject pathButtonPrompts;
+    [SerializeField] private TextMeshProUGUI pathPriceText;
+    [SerializeField] private GameObject announcementMessagePrefab;
+
+    [Header("SFX")]
     [SerializeField] private AudioClip towersPanelSound;
     [SerializeField] private AudioClip sellSound;
+    [SerializeField] private AudioClip invalidSound1;
+    [SerializeField] private AudioClip invalidSound2;
 
     [Header("Tower Stats Panel References")]
     [SerializeField] private GameObject towerStatsPanel;
@@ -43,18 +52,27 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TowerData archerData;
     [SerializeField] private TowerData gnomeData;
     private List<GameObject> towersList;
+    private int announcementsNum = 0;
 
     [Header("Constants")]
+    private readonly int MAX_ANNOUNCEMENTS = 10;
     private readonly int TOWER_PANEL_Y_OFFSET = 225;
     private readonly int TOWER_STATS_PANEL_X_OFFSET = 260;
+    private float pathButtonPromptsOffset;
     private readonly int MAX_TOWER_ICONS = 8;
     private readonly Vector2 MONEY_CHANGE_ORIGINAL_POS = new Vector2(-34, 0);
+    private readonly Vector2 HEALTH_CHANGE_ORIGINAL_POS = new Vector2(0, 0);
+
+    private bool gameOver = false;
 
     // Start is called before the first frame update
     void Start()
     {
         goblinCounter.text = money.ToString();
+        healthCounter.text = health.ToString();
+        pathPriceText.text = pathPrice.ToString();
         SetupTopBarTowersUI();
+        pathButtonPromptsOffset = pathButtonPrompts.transform.localPosition.x;
     }
 
     // Update is called once per frame
@@ -71,6 +89,7 @@ public class UIManager : MonoBehaviour
         // Initialize towersList and add instantiated towerUIs to towersList to keep track of them for later use
         towersList = new List<GameObject>();
 
+        // TODO: Refactor this to work with a list of tower data instead of 2 hard coded references
         // Placeholder towers for now
         // Archer: 2 price, 1 dmg, 0.1s spd, 8 range
         GameObject archer = Instantiate(towerIconPrefab, towersPanel.transform);
@@ -92,6 +111,24 @@ public class UIManager : MonoBehaviour
             emptyIcon.GetComponent<TowerIcon>().MakeEmpty();
             towersList.Add(emptyIcon);
         }
+    }
+
+    /// <summary>
+    /// Show the path button prompts
+    /// </summary>
+    public void HidePathButtonPrompts()
+    {
+        float duration = 0.5f;
+        pathButtonPrompts.transform.LeanMoveLocalX(-1200, duration).setEaseInCubic();
+    }
+
+    /// <summary>
+    /// Show the path button prompts
+    /// </summary>
+    public void ShowPathButtonPrompts()
+    {
+        float duration = 0.5f;
+        pathButtonPrompts.transform.LeanMoveLocalX(pathButtonPromptsOffset, duration).setEaseOutCubic();
     }
 
     /// <summary>
@@ -157,6 +194,51 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
+    /// Briefly display a message in the middle of the screen as an announcement to the player
+    /// </summary>
+    public void DisplayGameAnnouncement(string message, float duration)
+    {
+
+        if (announcementsNum >= MAX_ANNOUNCEMENTS) // Check if max number of announcements has been exceeded
+        {
+            return;
+        }
+        announcementsNum++;
+
+        // Play error sound
+        AudioManager.instance.PlaySoundFX(invalidSound1, transform, 0.4f);
+        AudioManager.instance.PlaySoundFX(invalidSound2, transform, 0.4f);
+
+        // Create message popup with given string
+        GameObject announcement = Instantiate(announcementMessagePrefab, uiCanvas.transform);
+        announcement.transform.SetSiblingIndex(0);
+        TextMeshProUGUI messageText = announcement.GetComponent<TextMeshProUGUI>();
+        CanvasGroup announcementCG = announcement.GetComponent<CanvasGroup>();
+
+        messageText.text = message;
+        
+        // Fade in animation
+        announcementCG.LeanAlpha(1, duration / 2)
+            .setEaseOutSine();
+        // Slide up a bit
+        announcement.transform.LeanMoveLocalY(30, duration)
+            .setEaseOutExpo()
+            .setOnComplete
+            // Fade out
+            (() => announcementCG.LeanAlpha(0, duration / 2).setEaseInSine()
+            .setOnComplete(() => OnGameAnnouncementComplete(announcement)));
+    }
+
+    /// <summary>
+    /// Private helper that is evoked to handle completion of displaying an announcement
+    /// </summary>
+    private void OnGameAnnouncementComplete(GameObject announcement)
+    {
+        announcementsNum--;
+        Destroy(announcement);
+    }
+
+    /// <summary>
     /// Sells a tower, called by tower stats panel sell button
     /// </summary>
     public void SellTower()
@@ -203,10 +285,20 @@ public class UIManager : MonoBehaviour
         }
 
         // Animate money change text
+        CanvasGroup moneyChangeCG = moneyChangeText.GetComponent<CanvasGroup>();
+
+        float duration = 0.5f;
         moneyChangeText.transform.localPosition = MONEY_CHANGE_ORIGINAL_POS;
+        // Fade in
+        moneyChangeCG.LeanAlpha(1, duration / 2)
+            .setEaseOutSine();
+        // Slide down
         moneyChangeText.transform.LeanMoveLocalY(MONEY_CHANGE_ORIGINAL_POS.y - 70, 0.5f)
             .setEaseOutExpo()
-            .setOnComplete(() => Destroy(moneyChangeText));
+            .setOnComplete
+            // Fade out
+            (() => moneyChangeCG.LeanAlpha(0, duration / 2).setEaseInSine()
+            .setOnComplete(() => Destroy(moneyChangeText)));
     }
 
     /// <summary>
@@ -224,7 +316,28 @@ public class UIManager : MonoBehaviour
             health = 0;
             healthCounter.text = health.ToString();
             gameManager.TriggerGameOver();
+            gameOver = true;
         }
+
+        // Create health change text
+        GameObject healthChangeText = Instantiate(healthChangeTextPrefab, healthCounter.gameObject.transform);
+        healthChangeText.GetComponent<TextMeshProUGUI>().text = $"{amt}";
+
+        // Animate health change text
+        CanvasGroup healthChangeCG = healthChangeText.GetComponent<CanvasGroup>();
+
+        float duration = 0.5f;
+        healthChangeText.transform.localPosition = HEALTH_CHANGE_ORIGINAL_POS;
+        // Fade in
+        healthChangeCG.LeanAlpha(1, duration / 2)
+            .setEaseOutSine();
+        // Slide down
+        healthChangeText.transform.LeanMoveLocalY(HEALTH_CHANGE_ORIGINAL_POS.y - 55, 0.5f)
+            .setEaseOutExpo()
+            .setOnComplete
+            // Fade out
+            (() => healthChangeCG.LeanAlpha(0, duration / 2).setEaseInSine()
+            .setOnComplete(() => Destroy(healthChangeText)));
     }
 
     #region Basic Getters and Setters
@@ -243,12 +356,17 @@ public class UIManager : MonoBehaviour
 
     public int GetHealth()
     {
-        return money;
+        return health;
     }
 
     public void SetHealth(int amt)
     {
         health = amt;
+    }
+
+    public bool GetGameOver()
+    {
+        return gameOver;
     }
     #endregion
 }
