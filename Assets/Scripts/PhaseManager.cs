@@ -121,7 +121,14 @@ public class PhaseManager : MonoBehaviour
     /// </summary>
     public void EndDay()
     {
-        if (dayCounter == 3)
+        if (dayCounter < 2)
+        {
+            priceMultiplier = 1;
+        } else
+        {
+            priceMultiplier = Math.Pow(Math.Pow(4, 0.2), dayCounter - 3);
+        }
+        if (dayCounter == 4)
         {
             uiManager.DisplayGameAnnouncement("The Goblins have unionized! Tower prices will now increase with each day.", 4f);
         }
@@ -200,13 +207,6 @@ public class PhaseManager : MonoBehaviour
     private void IncrementDayCounter()
     {
         dayCounter++;
-        if (dayCounter < 2)
-        {
-            priceMultiplier = 1;
-        } else
-        {
-            priceMultiplier = Math.Pow(Math.Pow(4, 0.2), dayCounter - 3);
-        }
         dayCounterText.text = $"{dayCounter.ToString()}/{totalDaysInLevel.ToString()} ";
     }
 
