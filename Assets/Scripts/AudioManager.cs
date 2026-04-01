@@ -26,7 +26,15 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        PlayBackgroundMusic(bgm, transform, 0.1f);
+        // Assign bgm player
+        bgmPlayer = GameObject.FindWithTag("BGM Player").GetComponent<AudioSource>();
+
+        
+        // Check if bgm player is already playing music
+        if (bgmPlayer.clip == null)
+        {
+            PlayBackgroundMusic(bgm, 0.1f);
+        }
     }
 
     /// <summary>
@@ -73,13 +81,12 @@ public class AudioManager : MonoBehaviour
     /// <param name="audioClip">Audio clip of BGM</param>
     /// <param name="spawnTransform">Transform of caller</param>
     /// <param name="volume">Volume to play audio clip at</param>
-    public void PlayBackgroundMusic(AudioClip audioClip, Transform spawnTransform, float volume)
+    public void PlayBackgroundMusic(AudioClip audioClip,float volume)
     {
         // Spawn audio source to play sound and assign audio clip accordingly
-        AudioSource audioSource = Instantiate(bgmPlayer, spawnTransform.position, Quaternion.identity);
-        audioSource.clip = audioClip;
-        audioSource.volume = volume;
-        audioSource.Play();
+        bgmPlayer.clip = audioClip;
+        bgmPlayer.volume = volume;
+        bgmPlayer.Play();
     }
 
     /// <summary>

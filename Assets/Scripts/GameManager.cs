@@ -114,6 +114,11 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void QuitLevel()
     {
+        // Stop and clear level bgm
+        BGMPlayer.instance.GetComponent<AudioSource>().Stop();
+        BGMPlayer.instance.GetComponent<AudioSource>().clip = null;
+
+        // Load menu scene
         SceneManager.LoadScene("Menu");
         ResumeGame();
     }
