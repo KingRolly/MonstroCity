@@ -416,7 +416,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb7886370e122c94e9a5b23f33d3ca33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgmPlayer: {fileID: 755367320}
 --- !u!114 &356299001
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1176,10 +1175,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1101145479}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 3.821}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 448, y: 203}
-  m_SizeDelta: {x: -1416.703, y: -907.789}
+  m_SizeDelta: {x: 503.297, y: 172.211}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1069718749
 MonoBehaviour:
